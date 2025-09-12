@@ -1,13 +1,24 @@
-// Student name
-// class period
-// project name
-// date
+// Aayush Gupta
+// P2
+// Zero-Hero
+// 09/12/2025
 
 /*
- * DESCRIPTION:
- * INPUT:
- * OUTPUT:
- * EDGE CASE:
+ * DESCRIPTION: Whatever Mr. Reiber says INPUT: Unknown OUTPUT: Words in terminal EDGE CASE: All
+ * edge cases
  */
 
 package edu.bhscs;
+
+class Main {
+
+  public static void main(String[] args) {
+    System.out.println("-----------");
+    System.out.println("PGRM: START");
+    System.out.println("...");
+    System.out.println("PGRM: END");
+    System.out.println("-----------");
+
+  }
+
+}
