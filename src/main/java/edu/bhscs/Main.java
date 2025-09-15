@@ -18,7 +18,5 @@ class Main {
     System.out.println("...");
     System.out.println("PGRM: END");
     System.out.println("-----------");
-
   }
-
 }
