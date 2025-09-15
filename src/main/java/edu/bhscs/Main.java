@@ -21,8 +21,10 @@ class Main {
     int num = 102;
 
     System.out.println("67!" + A + num);
-    System.out.print(A + "?" + A + num);
-    System.out.print(A + A + num);
+    System.out.println(A + "?" + A + num);
+
+    //Why is A + A + num 296 (maybe a as an int in bits is (296-102)/2 = 97 which is 01100001, 0110 may represent that this item is a char and then 1 may be the first letter (but i should expect that 0000 represents the first number))
+    System.out.println(A + A + num);
 
     System.out.println();
     System.out.println("done");
