@@ -1,22 +1,30 @@
+package edu.bhscs;
+
 // Aayush Gupta
 // P2
-// Zero-Hero
-// 09/12/2025
+// Replacement-Assignment
+// 09/15/2025
 
 /*
- * DESCRIPTION: Whatever Mr. Reiber says INPUT: Unknown OUTPUT: Words in terminal EDGE CASE: All
- * edge cases
+ * DESCRIPTION: Replacement => abstraction
+ * INPUT: Unknown
+ * OUTPUT: Stuff in terminal
+ * EDGE CASE: All
  */
-
-package edu.bhscs;
 
 class Main {
 
+  public static final char A = 'a';
+
   public static void main(String[] args) {
-    System.out.println("-----------");
-    System.out.println("PGRM: START");
-    System.out.println("...");
-    System.out.println("PGRM: END");
-    System.out.println("-----------");
+
+    int num = 102;
+
+    System.out.println("67!" + A + num);
+    System.out.print(A + "?" + A + num);
+    System.out.print(A + A + num);
+
+    System.out.println();
+    System.out.println("done");
   }
 }
