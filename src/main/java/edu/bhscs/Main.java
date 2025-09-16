@@ -32,6 +32,8 @@ class Main {
     // I switched out the prints for println's so i could differentiate each message more easily
     System.out.println(A + A + num);
 
+    System.out.println(pushup("garlic"));
+
     System.out.println();
     System.out.println("done");
   }
@@ -39,5 +41,10 @@ class Main {
   public static int awesome(){
 
     return 3;
+  }
+
+  public static String pushup(String food) {
+
+    return "Sweat " + food;
   }
 }
