@@ -15,11 +15,13 @@ package edu.bhscs;
 class Main {
 
   public static final char A = 'a';
+  public static float FLOAT = 214.1234f;
 
   public static void main(String[] args) {
 
     int num = 102;
 
+    System.out.println(A);
     System.out.println("67!" + A + num);
     System.out.println(A + "?" + A + num);
 
@@ -32,5 +34,10 @@ class Main {
 
     System.out.println();
     System.out.println("done");
+  }
+
+  public static int awesome(){
+
+    return 3;
   }
 }
