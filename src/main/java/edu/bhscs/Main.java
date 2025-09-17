@@ -54,6 +54,7 @@ class Main {
 
     steve.learnSomething("that is also awesome");
     System.out.println(steve.getKnowledge());
+    System.out.println(john.getKnowledge());
   }
 
   public static int awesome() {
