@@ -43,14 +43,17 @@ class Main {
     Awesome sue   = new Awesome("sue");
     Awesome linda = new Awesome("linda");
     Awesome john  = new Awesome("john");
-    Awesome bob = new Awesome("bob");
-    Awesome joe = new Awesome("joe");
+    Awesome bob   = new Awesome("bob");
+    Awesome joe   = new Awesome("joe");
     System.out.println(steve.getName());
     System.out.println(sue.getName());
     System.out.println(linda.getName());
     System.out.println(john.getName());
     System.out.println(bob.getName());
     System.out.println(joe.getName());
+
+    steve.learnSomething("that is also awesome");
+    System.out.println(steve.getKnowledge());
   }
 
   public static int awesome() {
