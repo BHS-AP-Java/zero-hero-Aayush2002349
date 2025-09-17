@@ -19,6 +19,7 @@ class Main {
 
   public static void main(String[] args) {
 
+    /*
     int num = 102;
 
     System.out.println(A);
@@ -36,6 +37,16 @@ class Main {
 
     System.out.println();
     System.out.println("done");
+    */
+
+    Awesome steve = new Awesome("steve");
+    Awesome sue   = new Awesome("sue");
+    Awesome linda = new Awesome("linda");
+    Awesome john  = new Awesome("john");
+    System.out.println(steve.getName());
+    System.out.println(sue.getName());
+    System.out.println(linda.getName());
+    System.out.println(john.getName());
   }
 
   public static int awesome() {
