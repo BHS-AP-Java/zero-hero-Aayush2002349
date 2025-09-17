@@ -3,7 +3,7 @@ package edu.bhscs;
 // Aayush Gupta
 // P2
 // Replacement-Assignment
-// 09/15/2025
+// 09/17/2025
 
 /*
  * DESCRIPTION: Replacement => abstraction
@@ -15,7 +15,7 @@ package edu.bhscs;
 class Main {
 
   public static final char A = 'a';
-  public static float FLOAT = 214.1234f;
+  public static final float FLOAT = 214.1234f;
 
   public static void main(String[] args) {
 
@@ -38,7 +38,7 @@ class Main {
     System.out.println("done");
   }
 
-  public static int awesome(){
+  public static int awesome() {
 
     return 3;
   }
