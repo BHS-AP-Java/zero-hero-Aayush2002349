@@ -27,15 +27,18 @@ class Main {
     chocoCake.eatSlice();
     chocoCake.eatSlice();
     chocoCake.eatSlice();
+
   }
 
   public static int awesome() {
 
     return 3;
+
   }
 
   public static String pushup(String food) {
 
     return "Sweat " + food;
+    
   }
 }
