@@ -2,8 +2,8 @@ package edu.bhscs;
 
 // Aayush Gupta
 // P2
-// Replacement-Assignment
-// 09/17/2025
+// Zero-Hero
+// 09/19/2025
 
 /*
  * DESCRIPTION: Replacement => abstraction
@@ -14,47 +14,19 @@ package edu.bhscs;
 
 class Main {
 
-  public static final char A = 'a';
-  public static final float FLOAT = 214.1234f;
-
   public static void main(String[] args) {
 
-    /*
-    int num = 102;
-
-    System.out.println(A);
-    System.out.println("67!" + A + num);
-    System.out.println(A + "?" + A + num);
-
-    // Why is A + A + num 296 (maybe a as an int in bits is (296-102)/2 = 97 which is 01100001, 0110
-    // may represent that this item is a char and then 1 may be the first letter (but i should
-    // expect that 0000 represents the first letter))
-
-    // I switched out the prints for println's so i could differentiate each message more easily
-    System.out.println(A + A + num);
-
-    System.out.println(pushup("garlic"));
-
-    System.out.println();
-    System.out.println("done");
-    */
-
-    Awesome steve = new Awesome("steve");
-    Awesome sue   = new Awesome("sue");
-    Awesome linda = new Awesome("linda");
-    Awesome john  = new Awesome("john");
-    Awesome bob   = new Awesome("bob");
-    Awesome joe   = new Awesome("joe");
-    System.out.println(steve.getName());
-    System.out.println(sue.getName());
-    System.out.println(linda.getName());
-    System.out.println(john.getName());
-    System.out.println(bob.getName());
-    System.out.println(joe.getName());
-
-    steve.learnSomething("that is also awesome");
-    System.out.println(steve.getKnowledge());
-    System.out.println(john.getKnowledge());
+    Cake chocoCake = new Cake("chocolate");
+    chocoCake.bake();
+    chocoCake.bake();
+    chocoCake.cut(6);
+    chocoCake.eatSlice();
+    chocoCake.eatSlice();
+    chocoCake.eatSlice();
+    chocoCake.eatSlice();
+    chocoCake.eatSlice();
+    chocoCake.eatSlice();
+    chocoCake.eatSlice();
   }
 
   public static int awesome() {
