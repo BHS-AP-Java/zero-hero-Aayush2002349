@@ -13,7 +13,7 @@ public class Cake {
     this.type = type;
   }
 
-  void bake() {
+  public void bake() {
     if (this.isBaked) {
       this.isOvercooked = true;
       this.isEdible = false;
@@ -22,7 +22,7 @@ public class Cake {
     }
   }
 
-  void cut(int slices) {
+  public void cut(int slices) {
     if (!(this.isCut) && this.isBaked) {
       this.slices = slices;
       this.isCut = true;
@@ -33,7 +33,7 @@ public class Cake {
     }
   }
 
-  void eatSlice() {
+  public void eatSlice() {
     if (this.isCut && this.isBaked && !(this.isOvercooked)) {
       if (this.slices != 0) {
         this.slices -= 1;

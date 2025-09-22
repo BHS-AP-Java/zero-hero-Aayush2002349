@@ -11,33 +11,33 @@ public class Person {
     this.name = name;
   }
 
-  void learnJob(Job job) {
+  public void learnJob(Job job) {
     this.job = job;
   }
 
-  void doJob() {
+  public void doJob() {
     this.job.doJob();
     System.out.println(this.name + " did their job");
   }
 
-  void getCake(Cake cake) {
+  public void getCake(Cake cake) {
     this.cake = cake;
     System.out.println(this.name + " got a " + this.cake.type + " cake");
   }
 
-  Cake giveCake() {
+  public Cake giveCake() {
     Cake cakeTemp = this.cake;
     System.out.println(this.name + " gave their " + this.cake.type + " cake");
     this.cake = null;
     return cakeTemp;
   }
 
-  void requestCake(Bakery bakery, String type) {
+  public void requestCake(Bakery bakery, String type) {
     System.out.println(this.name + " requested a " + type + " cake from " + bakery.name);
     this.getCake(bakery.makeCake(type));
   }
 
-  void eatCakeSlice() {
+  public void eatCakeSlice() {
     if (this.cake != null) {
       if (this.cake.isEdible) {
         this.cake.eatSlice();

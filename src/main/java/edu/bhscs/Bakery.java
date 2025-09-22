@@ -13,7 +13,7 @@ public class Bakery {
     System.out.println("A new bakery named " + name + " opened");
   }
 
-  void hireChef(Person person) {
+  public void hireChef(Person person) {
     System.out.println(this.name + " hired " + person.name);
     if (chefSlot < chefs.length) {
       Job chef =
@@ -27,7 +27,7 @@ public class Bakery {
     }
   }
 
-  Cake makeCake(String type) {
+  public Cake makeCake(String type) {
     System.out.println(this.name + " started making a " + type + " cake");
     Cake cake = new Cake(type);
     chefs[chefTurn].getCake(cake);
