@@ -20,12 +20,10 @@ class Main {
     System.out.println();
     System.out.println();
 
-
-    Bakery bakery = new Bakery(4,"The Bakery");
+    Bakery bakery = new Bakery(4, "The Bakery");
 
     Person steve = new Person("Steve");
     Person linda = new Person("Linda");
-
 
     bakery.hireChef(steve);
     bakery.hireChef(linda);

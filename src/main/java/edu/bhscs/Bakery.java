@@ -6,7 +6,8 @@ public class Bakery {
   int chefSlot = 0;
   int chefTurn = 0;
   String name;
-  public Bakery(int chefCapacity,String name) {
+
+  public Bakery(int chefCapacity, String name) {
     this.chefs = new Person[5];
     this.name = name;
     System.out.println("A new bakery named " + name + " opened");
@@ -33,7 +34,7 @@ public class Bakery {
     chefs[chefTurn].doJob();
     cake = chefs[chefTurn].giveCake();
 
-    if(chefTurn == chefSlot - 1){
+    if (chefTurn == chefSlot - 1) {
       chefTurn = 0;
     } else {
       chefTurn += 1;

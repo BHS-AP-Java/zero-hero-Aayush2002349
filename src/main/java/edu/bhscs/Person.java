@@ -32,18 +32,23 @@ public class Person {
     return cakeTemp;
   }
 
-  void requestCake(Bakery bakery, String type){
+  void requestCake(Bakery bakery, String type) {
     System.out.println(this.name + " requested a " + type + " cake from " + bakery.name);
     this.getCake(bakery.makeCake(type));
-
   }
 
   void eatCakeSlice() {
-    if(this.cake != null){
+    if (this.cake != null) {
       if (this.cake.isEdible) {
         this.cake.eatSlice();
-        System.out.println(this.name + " ate a slice of " + this.cake.type + " cake. There are " + this.cake.slices + " slices left");
-        if(this.cake.slices == 0){
+        System.out.println(
+            this.name
+                + " ate a slice of "
+                + this.cake.type
+                + " cake. There are "
+                + this.cake.slices
+                + " slices left");
+        if (this.cake.slices == 0) {
           this.cake = null;
         }
       } else {
