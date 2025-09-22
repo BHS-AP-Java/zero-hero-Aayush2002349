@@ -15,32 +15,43 @@ package edu.bhscs;
 class Main {
 
   public static void main(String[] args) {
+    System.out.println();
+    System.out.println();
+    System.out.println();
+    System.out.println();
 
-    Cake chocolate_cake = new Cake("Chocolate");
-    Cake red_velvet_cake = new Cake("Red Velvet");
 
-    Bakery bakery = new Bakery();
+    Bakery bakery = new Bakery(4,"The Bakery");
 
     Person steve = new Person("Steve");
     Person linda = new Person("Linda");
 
-    bakery.trainChef(steve);
-    bakery.trainChef(linda);
 
-    steve.getCake(chocolate_cake);
-    linda.getCake(red_velvet_cake);
+    bakery.hireChef(steve);
+    bakery.hireChef(linda);
+    System.out.println();
 
-    steve.eatCakeSlice();
-    linda.eatCakeSlice();
+    Person john = new Person("John");
+    john.requestCake(bakery, "Chocolate");
+    john.eatCakeSlice();
+    System.out.println();
 
-    steve.doJob();
-    linda.doJob();
+    Person alice = new Person("Alice");
+    alice.requestCake(bakery, "Red Velvet");
+    alice.eatCakeSlice();
+    System.out.println();
 
-    steve.eatCakeSlice();
-    steve.eatCakeSlice();
-    steve.eatCakeSlice();
-    linda.eatCakeSlice();
-    linda.eatCakeSlice();
-    linda.eatCakeSlice();
+    Person bob = new Person("Bob");
+    bob.requestCake(bakery, "Cheese");
+    bob.eatCakeSlice();
+    bob.eatCakeSlice();
+    bob.eatCakeSlice();
+    bob.eatCakeSlice();
+    bob.eatCakeSlice();
+    bob.eatCakeSlice();
+    bob.eatCakeSlice();
+    System.out.println();
+
+    bob.requestCake(bakery, "Cheese");
   }
 }
