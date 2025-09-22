@@ -6,56 +6,41 @@ public class Cake {
   int slices;
   boolean isBaked = false;
   boolean isCut = false;
-  boolean isOverbaked = false;
-
+  boolean isOvercooked = false;
+  boolean isEdible = false;
 
   public Cake(String type) {
     this.type = type;
-    System.out.println("The " + this.type + " cake was mixed");
   }
 
-  void bake(){
-    if(this.isBaked){
-      this.isOverbaked = true;
-      System.out.println("The " + this.type + " cake was overcooked");
+  void bake() {
+    if (this.isBaked) {
+      this.isOvercooked = true;
+      this.isEdible = false;
     } else {
       this.isBaked = true;
-      System.out.println("The " + this.type + " cake was baked");
     }
   }
 
-  void cut(int slices){
-    if(!(this.isCut) && this.isBaked){
+  void cut(int slices) {
+    if (!(this.isCut) && this.isBaked) {
       this.slices = slices;
-      System.out.println("The " + this.type + " cake was cut into " + this.slices + " slices");
       this.isCut = true;
-    } else {
-      if(!(this.isBaked)){
-        System.out.println("The " + this.type + " cake is not baked");
-      } else {
-        System.out.println("The " + this.type + " cake was already cut");
+
+      if (!(this.isOvercooked)) {
+        this.isEdible = true;
       }
     }
-
   }
 
-  void eatSlice(){
-    if(this.isCut && this.isBaked && !(this.isOverbaked)){
-      if(this.slices == 0){
-        System.out.println("The " + this.type + " cake was already eaten");
-      } else {
+  void eatSlice() {
+    if (this.isCut && this.isBaked && !(this.isOvercooked)) {
+      if (this.slices != 0) {
         this.slices -= 1;
-        System.out.println("A slice of " + this.type + " cake was eaten. There are " + this.slices + " left");
+        if (this.slices == 0) {
+          this.isEdible = false;
+        }
       }
-    } else {
-      if(!(this.isBaked)){
-        System.out.println("The " + this.type + " cake is not baked");
-      } else if(this.isOverbaked){
-        System.out.println("The " + this.type + " cake is overcooked");
-      } else {
-        System.out.println("The " + this.type + " cake needs to be cut into slices");
-      }
-
     }
   }
 }

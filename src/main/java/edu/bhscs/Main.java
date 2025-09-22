@@ -6,7 +6,7 @@ package edu.bhscs;
 // 09/19/2025
 
 /*
- * DESCRIPTION: Replacement => abstraction
+ * DESCRIPTION: Cake bake sale
  * INPUT: Unknown
  * OUTPUT: Stuff in terminal
  * EDGE CASE: All
@@ -16,29 +16,31 @@ class Main {
 
   public static void main(String[] args) {
 
-    Cake chocoCake = new Cake("chocolate");
-    chocoCake.bake();
-    chocoCake.bake();
-    chocoCake.cut(6);
-    chocoCake.eatSlice();
-    chocoCake.eatSlice();
-    chocoCake.eatSlice();
-    chocoCake.eatSlice();
-    chocoCake.eatSlice();
-    chocoCake.eatSlice();
-    chocoCake.eatSlice();
+    Cake chocolate_cake = new Cake("Chocolate");
+    Cake red_velvet_cake = new Cake("Red Velvet");
 
-  }
+    Bakery bakery = new Bakery();
 
-  public static int awesome() {
+    Person steve = new Person("Steve");
+    Person linda = new Person("Linda");
 
-    return 3;
+    bakery.trainChef(steve);
+    bakery.trainChef(linda);
 
-  }
+    steve.getCake(chocolate_cake);
+    linda.getCake(red_velvet_cake);
 
-  public static String pushup(String food) {
+    steve.eatCakeSlice();
+    linda.eatCakeSlice();
 
-    return "Sweat " + food;
-    
+    steve.doJob();
+    linda.doJob();
+
+    steve.eatCakeSlice();
+    steve.eatCakeSlice();
+    steve.eatCakeSlice();
+    linda.eatCakeSlice();
+    linda.eatCakeSlice();
+    linda.eatCakeSlice();
   }
 }
