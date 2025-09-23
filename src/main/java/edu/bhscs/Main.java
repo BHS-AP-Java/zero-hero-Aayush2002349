@@ -52,6 +52,5 @@ class Main {
     System.out.println();
 
     bob.requestCake(bakery, "Cheese");
-
   }
 }
