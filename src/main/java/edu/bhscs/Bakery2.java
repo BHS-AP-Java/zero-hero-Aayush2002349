@@ -3,8 +3,8 @@ package edu.bhscs;
 public class Bakery2 {
 
   //Fields
-  String name;
 
+  //Kitchen related stuff
   int[][] layout;
   Cake[][] cakeLocations;
   int[][] cakeCookingTimers;
@@ -14,6 +14,12 @@ public class Bakery2 {
   int width;
   int height;
 
+  //Customer related stuff
+  String name;
+
+  int[] storedCakes;
+
+
   //Layout:
   //0 = empty
   //1 = chef starting location(considered empty)
@@ -22,12 +28,14 @@ public class Bakery2 {
   //4 = counter
   //5 = cutting station
   //6 = delivery station
-  public Bakery2(int[][] layout, int width, int height, String name){
+  //7 = trash
+  public Bakery2(int[][] layout, int width, int height, int maxCakeStorage, String name){
     this.name = name;
     this.width = width;
     this.height = height;
     this.cakeLocations = new Cake[height][width];
     this.layout = layout;
+    this.storedCakes = new int[maxCakeStorage];
 
     this.cakeCookingTimers = new int[height][width];
     for(int y = 0; y < this.height; y++){
@@ -39,6 +47,9 @@ public class Bakery2 {
 
   //Boolean returns whether the cake was or was not placed
   public Boolean placeCake(Cake cake,int x,int y){
+
+    //Place cake just places the cake (makes sure there isn't already a cake there and that a cake can be placed at the given location)
+    //All behavior of what to do when the cake is placed happens during "tick"
     if(this.cakeLocations[y][x] != null){
       return false;
     }
@@ -52,30 +63,44 @@ public class Bakery2 {
 
   //Will return null if no cake is there
   public Cake pickUpCake(int x, int y){
-
-    return this.cakeLocations[y][x];
+    Cake cakeTemp = this.cakeLocations[y][x];
+    this.cakeLocations[y][x] = null;
+    this.cakeCookingTimers[y][x] = 0;
+    return cakeTemp;
 
   }
 
+  //Cuts the cake at the given location
+  public void cutCake(int x, int y){
+    this.cakeLocations[y][x].cut(6);
+  }
+
+  //Looks at all placed cakes and figures out what to do with them
   public void tick(){
+
+
     for(int y = 0; y < this.height; y++){
       for (int x = 0; x < this.width; x++) {
 
+        //Makes sure there is a cake there
         if(this.cakeLocations[y][x] != null){
 
-          if (this.cakeLocations[y][x] != null) {
-
-            // 3 = oven
-            // 6 = delivery station
-            if(this.layout[y][x] == 3){
-              if(this.cakeLocations[y][x] != null){
-
-              }
+          // 3 = oven
+          // 6 = delivery station
+          // 7 = trash
+          if(this.layout[y][x] == 3){
+            if(this.cakeCookingTimers[y][x] == this.cookingTime){
+              this.cakeCookingTimers[y][x] = 0;
+              this.cakeLocations[y][x].bake();
             }
-            if(this.layout[y][x] == 6){
-
-            }
-
+            this.cakeCookingTimers[y][x] += 1;
+          }
+          if(this.layout[y][x] == 6){
+            this.deliver(x, y);
+          }
+          if(this.layout[y][x] == 7){
+            //Picking up the cake without giving it to anyone is the equivalent of deleting it
+            this.pickUpCake(x, y);
           }
         }
 
@@ -83,5 +108,9 @@ public class Bakery2 {
     }
   }
 
+  public Cake deliver(int x, int y) {
+    return this.pickUpCake(x, y);
+  }
 
+  
 }
