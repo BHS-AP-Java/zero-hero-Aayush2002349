@@ -17,7 +17,7 @@ public class Bakery2 {
   //Customer related stuff
   String name;
 
-  int[] storedCakes;
+  Cake[] storedCakes;
 
 
   //Layout:
@@ -35,7 +35,7 @@ public class Bakery2 {
     this.height = height;
     this.cakeLocations = new Cake[height][width];
     this.layout = layout;
-    this.storedCakes = new int[maxCakeStorage];
+    this.storedCakes = new Cake[maxCakeStorage];
 
     this.cakeCookingTimers = new int[height][width];
     for(int y = 0; y < this.height; y++){
@@ -112,5 +112,17 @@ public class Bakery2 {
     return this.pickUpCake(x, y);
   }
 
-  
+  //The boolean returns whether or not the cake was placed
+  public Boolean storeCake(Cake cake){
+
+    for(int i = 0; i < this.storedCakes.length; i++){
+      if(this.storedCakes[i] == null){
+        this.storedCakes[i] = cake;
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 }
