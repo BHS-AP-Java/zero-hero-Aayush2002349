@@ -7,6 +7,7 @@ public class Bakery2 {
   //Kitchen related stuff
   int[][] layout;
   Cake[][] cakeLocations;
+  Person[][] chefLocations;
   int[][] cakeCookingTimers;
 
   int cookingTime = 3;
@@ -34,6 +35,7 @@ public class Bakery2 {
     this.width = width;
     this.height = height;
     this.cakeLocations = new Cake[height][width];
+    this.chefLocations = new Person[height][width];
     this.layout = layout;
     this.storedCakes = new Cake[maxCakeStorage];
 
@@ -43,6 +45,23 @@ public class Bakery2 {
         this.cakeCookingTimers[y][x] = 0;
       }
     }
+  }
+
+  //Boolean returns if the chef was hired or not
+  public Boolean hireChef(Person chef){
+    for(int y = 0; y < this.height; y++){
+      for (int x = 0; x < this.width; x++) {
+
+        if(this.layout[y][x] == 1) {
+          if (this.chefLocations[y][x] == null) {
+            this.chefLocations[y][x] = chef;
+            return true;
+          }
+        }
+
+      }
+    }
+    return false;
   }
 
   //Boolean returns whether the cake was or was not placed
@@ -112,7 +131,7 @@ public class Bakery2 {
     return this.pickUpCake(x, y);
   }
 
-  //The boolean returns whether or not the cake was placed
+  //The boolean returns whether or not the cake was stored
   public Boolean storeCake(Cake cake){
 
     for(int i = 0; i < this.storedCakes.length; i++){
@@ -125,4 +144,13 @@ public class Bakery2 {
     return false;
   }
 
+  //Returns null when there is no cake of the given type
+  public Cake getStoredCake(String type){
+    for(int i = 0; i < this.storedCakes.length; i++){
+      if(this.storedCakes[i].type == type){
+        return this.storedCakes[i];
+      }
+    }
+    return null;
+  }
 }
