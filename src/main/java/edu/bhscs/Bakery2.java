@@ -123,10 +123,10 @@ public class Bakery2 {
     }
   }
 
-  //The boolean returns whether or not the cake was delivered
+  // The boolean returns whether or not the cake was delivered
   public Boolean deliver(int x, int y) {
-    Cake cake = this.pickUpCake(x,y);
-    if(cake.isEdible){
+    Cake cake = this.pickUpCake(x, y);
+    if (cake.isEdible) {
       this.storeCake(cake);
       return true;
     }
