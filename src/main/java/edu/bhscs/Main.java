@@ -2,11 +2,15 @@ package edu.bhscs;
 
 // Aayush Gupta
 // P2
-// Zero-Hero
-// 09/19/2025
+// Bake-Sale
+// 09/29/2025
 
 /*
  * DESCRIPTION: Cake bake sale
+ *  Cake
+ *  Baker (Makes the cake)
+ *  Customer (Buys the cake)
+ *  Ptsa (Gets the money from buying the cake)
  * INPUT: Unknown
  * OUTPUT: Stuff in terminal
  * EDGE CASE: All
