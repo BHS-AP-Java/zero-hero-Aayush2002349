@@ -47,10 +47,12 @@ public class Bakery2 {
   }
 
   // Boolean returns if the chef was hired or not
+  // Hires a chef and places him at one of the specified starting locations in the layout
   public Boolean hireChef(Person chef) {
     for (int y = 0; y < this.height; y++) {
       for (int x = 0; x < this.width; x++) {
 
+        //1 = chef starting location
         if (this.layout[y][x] == 1) {
           if (this.chefLocations[y][x] == null) {
             this.chefLocations[y][x] = chef;
@@ -63,6 +65,7 @@ public class Bakery2 {
   }
 
   // Boolean returns whether the cake was or was not placed
+  //places a cake at a given location
   public Boolean placeCake(Cake cake, int x, int y) {
 
     // Place cake just places the cake (makes sure there isn't already a cake there and that a cake
@@ -80,6 +83,7 @@ public class Bakery2 {
   }
 
   // Will return null if no cake is there
+  // Returns the cake at the given location
   public Cake pickUpCake(int x, int y) {
     Cake cakeTemp = this.cakeLocations[y][x];
     this.cakeLocations[y][x] = null;
@@ -101,9 +105,10 @@ public class Bakery2 {
         // Makes sure there is a cake there
         if (this.cakeLocations[y][x] != null) {
 
-          // 3 = oven
-          // 6 = delivery station
-          // 7 = trash
+          //All of these are the 3 behaviors that need to be ticked
+          // 3 = oven (it should be cooking)
+          // 6 = delivery station (it should be delivered to the cake stand)
+          // 7 = trash (it should be thrown away)
           if (this.layout[y][x] == 3) {
             if (this.cakeCookingTimers[y][x] == this.cookingTime) {
               this.cakeCookingTimers[y][x] = 0;
@@ -124,6 +129,7 @@ public class Bakery2 {
   }
 
   // The boolean returns whether or not the cake was delivered
+  // Delivering the cake takes it from the kitchen onto the bakery's inventory
   public Boolean deliver(int x, int y) {
     Cake cake = this.pickUpCake(x, y);
     if (cake.isEdible) {
@@ -134,6 +140,7 @@ public class Bakery2 {
   }
 
   // The boolean returns whether or not the cake was stored
+  //Stores a cake into the bakeries inventory
   public Boolean storeCake(Cake cake) {
 
     for (int i = 0; i < this.storedCakes.length; i++) {
@@ -147,6 +154,7 @@ public class Bakery2 {
   }
 
   // Returns null when there is no cake of the given type
+  // Gets a cake of a certain type from the inventory (if they have it)
   public Cake getStoredCake(String type) {
     for (int i = 0; i < this.storedCakes.length; i++) {
       if (this.storedCakes[i].type == type) {

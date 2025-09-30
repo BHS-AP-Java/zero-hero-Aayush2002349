@@ -1,8 +1,10 @@
 package edu.bhscs;
 
 import java.util.Scanner;
+
 public class Game {
 
+  //fields + properties
   Bakery2 bakery;
   String[] orders = new String[6];
   int completedOrders = 0;
@@ -12,10 +14,10 @@ public class Game {
     this.bakery = new Bakery2(layout, layout[0].length, layout.length, 10, "The Bakery");
   }
 
-  public void gameLoop(){
+  public void gameLoop() {
 
     Scanner scanner = new Scanner(System.in);
-    for(int i = 0; i < time; i++){
+    for (int i = 0; i < time; i++) {
 
       System.out.println();
       System.out.println("Time Left: " + (time - i));
@@ -24,30 +26,77 @@ public class Game {
       System.out.println();
       System.out.println("Baker actions: ");
       String actions = scanner.nextLine();
-
     }
   }
 
-  public void doAction(int x,int y,Person baker){
+  //Given a certain position, a baker to do the action and potentially a type (for creating a new cake) does whatever the action is
+  public void doAction(int x, int y, Person baker, String type) {
+
+
+    //If both the baker and location have a cake then one of them needs to be placed down before doing anything
+    if (baker.cake != null && this.bakery.cakeLocations[y][x] != null) {
+      return;
+    }
+
+    // This gets the kind of thing at the given location according to the key below
+
     // 2 = cake mix
     // 3 = oven
     // 4 = counter
     // 5 = cutting station
     // 6 = delivery station
     // 7 = trash
-    if(baker.cake != null && this.bakery.cakeLocations[y][x] != null){
-      return;
-    }
-    if(baker.cake != null){
-      this.bakery.placeCake(baker.giveCake(),x,y);
+    int location = this.bakery.layout[y][x];
+
+    //If the baker is holding a cake then he just places down the cake at the given location
+    if (baker.cake != null) {
+
+      if(location >= 2 && location <= 7){
+        this.bakery.placeCake(baker.giveCake(), x, y);
+      }
+
+    //If the baker isnt holding a cake but the place that the baker is performing the action on does then he either just picks up the cake or cuts it
     } else if (this.bakery.cakeLocations[y][x] != null) {
-      Cake cake = this.bakery.cakeLocations[y][x];
-      int location = this.bakery.layout[y][x];
+
+      if(location == 3 || location == 4){
+        baker.getCake(this.bakery.pickUpCake(x,y));
+      }
+
+      if(location == 5){
+        if(this.bakery.cakeLocations[y][x].isCut){
+          baker.getCake(this.bakery.pickUpCake(x, y));
+        } else {
+          this.bakery.cutCake(x,y);
+        }
+      }
+
+    //In the case that nobody is holding a cake then we get a new cake (from the cake mix station)
+    } else {
+
+      if(location == 2){
+        baker.getCake(new Cake(type));
+      }
+
     }
 
     return;
   }
 
+  //When called, this displays the currently pending orders
+  public void displayOrders(){
+    System.out.println("Pending orders: ");
+    for(int i = 0; i < this.orders.length; i++){
+
+      if(this.orders[i] == null){
+        return;
+      }
+
+      System.out.println("  Order #" + i + ": " + this.orders[i] + " cake");
+
+    }
+  }
+
+  //When called, this creates a new order
   public void createOrder(String type) {
     for (int i = 0; i < this.orders.length; i++) {
       if (this.orders[i] == null) {
@@ -57,6 +106,8 @@ public class Game {
     }
   }
 
+  //When called, this checks the bakery's inventories and completes any orders
+  //It also slides all the orders down (so if order 4 is completed then order 5 becomes order 4)
   public void completeOrders() {
     int indexShift = 0;
     for (int i = 0; i < this.orders.length; i++) {
@@ -65,10 +116,13 @@ public class Game {
 
         Cake cake = this.bakery.getStoredCake(this.orders[i]);
 
+        //Here is where the order is completed
         if (cake != null) {
           this.orders[i] = null;
           completedOrders += 1;
           indexShift += 1;
+
+        // Here is where the orders are shifted
         } else {
           this.orders[i - indexShift] = this.orders[i];
           this.orders[i] = null;
@@ -78,7 +132,8 @@ public class Game {
   }
 
   public void displayBakery() {
-    // Layout:
+
+    //Display is as follows:
     // 0 = empty
     // 1 = chef starting location(considered empty so it will be 0)
     // 2 = cake mix
@@ -95,19 +150,18 @@ public class Game {
     // z = overcooked
     // s = also cut
 
-    for(int y = 0; y < this.bakery.layout.length; y++){
-      for(int x = 0; x < this.bakery.layout[x].length; x++){
+    for (int y = 0; y < this.bakery.layout.length; y++) {
+      for (int x = 0; x < this.bakery.layout[x].length; x++) {
 
-        if(this.bakery.chefLocations[y][x] != null){
+        if (this.bakery.chefLocations[y][x] != null) {
 
-          if(this.bakery.chefLocations[y][x].cake != null){
+          if (this.bakery.chefLocations[y][x].cake != null) {
             System.out.print("9");
           } else {
             System.out.print("8");
           }
 
-
-        } else if(this.bakery.cakeLocations[y][x] != null) {
+        } else if (this.bakery.cakeLocations[y][x] != null) {
 
           Cake cake = this.bakery.cakeLocations[y][x];
 
@@ -124,7 +178,7 @@ public class Game {
 
         } else {
 
-          if(this.bakery.layout[y][x] == 1){
+          if (this.bakery.layout[y][x] == 1) {
             System.out.print("0");
           } else {
             System.out.print("" + this.bakery.layout[y][x]);

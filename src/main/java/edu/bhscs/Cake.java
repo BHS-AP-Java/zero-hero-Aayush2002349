@@ -9,10 +9,12 @@ public class Cake {
   boolean isOvercooked = false;
   boolean isEdible = false;
 
+  //The cake's only job is to know what its state is
   public Cake(String type) {
     this.type = type;
   }
 
+  //Updates the cake to be baked (or overcooked if it is baked twice)
   public void bake() {
     if (this.isBaked) {
       this.isOvercooked = true;
@@ -22,6 +24,7 @@ public class Cake {
     }
   }
 
+  //Updates the cake to be cut into slices
   public void cut(int slices) {
     if (!(this.isCut) && this.isBaked) {
       this.slices = slices;
@@ -33,6 +36,7 @@ public class Cake {
     }
   }
 
+  //Updates the cake to show that a slice of the cake has been eaten
   public void eatSlice() {
     if (this.isCut && this.isBaked && !(this.isOvercooked)) {
       if (this.slices != 0) {
