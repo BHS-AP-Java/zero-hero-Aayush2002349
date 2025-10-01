@@ -16,7 +16,7 @@ public class Game {
     this.totalBakers = totalBakers;
   }
 
-  public void gameLoop() {
+  public void doGameLoop() {
 
     Scanner scanner = new Scanner(System.in);
     for (int i = 0; i < time; i++) {
@@ -36,56 +36,58 @@ public class Game {
 
       String[] seperatedActions = this.seperateActions(actions);
       Person[] bakers = this.getBakers();
-      this.doBakerActions(seperatedActions,bakers);
-
+      this.doBakerActions(seperatedActions, bakers);
     }
 
     scanner.close();
   }
 
-  //Seperates the actions got from the user into individual actions
-  //Each action is in the form direction-additionalinfo
-  //additionalinfo doesnt have to exist
-  //wasd are the directions
-  //Additional info could be the type of cake
-  //Actions are seperated by spaces
-  public Person[] getBakers(){
+  // Seperates the actions got from the user into individual actions
+  // Each action is in the form direction-additionalinfo
+  // additionalinfo doesnt have to exist
+  // wasd are the directions
+  // Additional info could be the type of cake
+  // Actions are seperated by spaces
+  public Person[] getBakers() {
 
     Person[] bakers = new Person[this.totalBakers];
     int index = 0;
-    for(int y = 0; y < this.bakery.chefLocations.length; y++){
+    for (int y = 0; y < this.bakery.chefLocations.length; y++) {
       for (int x = 0; x < this.bakery.chefLocations[y].length; x++) {
 
-        if(this.bakery.chefLocations[y][x] != null){
+        if (this.bakery.chefLocations[y][x] != null) {
           bakers[index] = this.bakery.chefLocations[y][x];
         }
-
       }
     }
 
     return bakers;
   }
 
-  public void doBakerActions(String[] seperatedActions,Person[] bakers){
-    for(int i = 0; i < bakers.length; i++){
-      //The baker's move function returns whether or not he moved
-      Boolean moved = bakers[i].move(seperatedActions[i].charAt(0),this.bakery);
-      if(!(moved)){
-        this.doActionAtLocation(bakers[i].location[0], bakers[i].location[1], bakers[i], seperatedActions[i+this.totalBakers]);
+  public void doBakerActions(String[] seperatedActions, Person[] bakers) {
+    for (int i = 0; i < bakers.length; i++) {
+      // The baker's move function returns whether or not he moved
+      Boolean moved = bakers[i].move(seperatedActions[i].charAt(0), this.bakery);
+      if (!(moved)) {
+        this.doActionAtLocation(
+            bakers[i].location[0],
+            bakers[i].location[1],
+            bakers[i],
+            seperatedActions[i + this.totalBakers]);
       }
     }
   }
 
-  //Given the exact string the user entered, this returns the actions seperated out
-  public String[] seperateActions(String actions){
+  // Given the exact string the user entered, this returns the actions seperated out
+  public String[] seperateActions(String actions) {
 
-    //There is 1 action per baker, so the #of actions is equal to the number of bakers
-    String[] seperatedActions = new String[this.totalBakers*2];
+    // There is 1 action per baker, so the #of actions is equal to the number of bakers
+    String[] seperatedActions = new String[this.totalBakers * 2];
     int index = 0;
 
-    for(int i = 0; i < actions.length(); i++){
+    for (int i = 0; i < actions.length(); i++) {
       String action = "";
-      if(actions.charAt(i) == ' '){
+      if (actions.charAt(i) == ' ') {
         seperatedActions[index] = action;
         action = "";
         index += 1;
@@ -94,17 +96,15 @@ public class Game {
       }
     }
 
-    for(int i = 0; i < this.totalBakers; i++){
-      if(seperatedActions[i].length() != 1){
-        seperatedActions[i+ this.totalBakers] = seperatedActions[i].substring(2);
-        seperatedActions[i] = seperatedActions[i].substring(0,1);
+    for (int i = 0; i < this.totalBakers; i++) {
+      if (seperatedActions[i].length() != 1) {
+        seperatedActions[i + this.totalBakers] = seperatedActions[i].substring(2);
+        seperatedActions[i] = seperatedActions[i].substring(0, 1);
       }
     }
 
-
     return seperatedActions;
   }
-
 
   // Given a certain position, a baker to do the action and potentially a type (for creating a new
   // cake) does whatever the action is
@@ -229,7 +229,7 @@ public class Game {
     // s = also cut
 
     for (int y = 0; y < this.bakery.layout.length; y++) {
-      for (int x = 0; x < this.bakery.layout[x].length; x++) {
+      for (int x = 0; x < this.bakery.layout[y].length; x++) {
 
         if (this.bakery.chefLocations[y][x] != null) {
 

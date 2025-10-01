@@ -46,7 +46,7 @@ public class Bakery2 {
     }
   }
 
-  public void bakerMoved(int xi, int yi, int xf, int yf){
+  public void bakerMoved(int xi, int yi, int xf, int yf) {
     Person tempBaker = this.chefLocations[yi][xi];
     this.chefLocations[yi][xi] = null;
     this.chefLocations[yf][xf] = tempBaker;
@@ -70,6 +70,12 @@ public class Bakery2 {
       }
     }
     return false;
+  }
+
+  public void hireChefs(Person[] bakers) {
+    for (int i = 0; i < bakers.length; i++) {
+      this.hireChef(bakers[i]);
+    }
   }
 
   // Boolean returns whether the cake was or was not placed

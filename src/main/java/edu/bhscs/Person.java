@@ -6,19 +6,18 @@ public class Person {
   Job job;
   int[] location;
 
-
   Cake cake;
 
   public Person(String name) {
     this.name = name;
   }
 
-  //The boolean returns whetehr or not the person moved
-  public Boolean move(char direction,Bakery2 bakery){
+  // The boolean returns whetehr or not the person moved
+  public Boolean move(char direction, Bakery2 bakery) {
     int x = this.location[0];
     int y = this.location[1];
 
-    if(direction == 'w'){
+    if (direction == 'w') {
       y -= 1;
     }
 
@@ -34,16 +33,15 @@ public class Person {
       x += 1;
     }
 
-    if(x < 0 || y < 0 || x >= bakery.width || y >= bakery.height){
+    if (x < 0 || y < 0 || x >= bakery.width || y >= bakery.height) {
       return false;
     }
-    if(bakery.chefLocations[y][x] != null){
+    if (bakery.chefLocations[y][x] != null) {
       return false;
     }
 
-
-    if(bakery.layout[y][x] == 0 || bakery.layout[y][x] == 1){
-      bakery.bakerMoved(this.location[0],this.location[1],x,y);
+    if (bakery.layout[y][x] == 0 || bakery.layout[y][x] == 1) {
+      bakery.bakerMoved(this.location[0], this.location[1], x, y);
       this.location[0] = x;
       this.location[1] = y;
     } else {
