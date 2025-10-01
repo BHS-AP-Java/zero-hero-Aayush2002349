@@ -52,7 +52,7 @@ public class Bakery2 {
     for (int y = 0; y < this.height; y++) {
       for (int x = 0; x < this.width; x++) {
 
-        //1 = chef starting location
+        // 1 = chef starting location
         if (this.layout[y][x] == 1) {
           if (this.chefLocations[y][x] == null) {
             this.chefLocations[y][x] = chef;
@@ -65,7 +65,7 @@ public class Bakery2 {
   }
 
   // Boolean returns whether the cake was or was not placed
-  //places a cake at a given location
+  // places a cake at a given location
   public Boolean placeCake(Cake cake, int x, int y) {
 
     // Place cake just places the cake (makes sure there isn't already a cake there and that a cake
@@ -105,7 +105,7 @@ public class Bakery2 {
         // Makes sure there is a cake there
         if (this.cakeLocations[y][x] != null) {
 
-          //All of these are the 3 behaviors that need to be ticked
+          // All of these are the 3 behaviors that need to be ticked
           // 3 = oven (it should be cooking)
           // 6 = delivery station (it should be delivered to the cake stand)
           // 7 = trash (it should be thrown away)
@@ -140,7 +140,7 @@ public class Bakery2 {
   }
 
   // The boolean returns whether or not the cake was stored
-  //Stores a cake into the bakeries inventory
+  // Stores a cake into the bakeries inventory
   public Boolean storeCake(Cake cake) {
 
     for (int i = 0; i < this.storedCakes.length; i++) {
