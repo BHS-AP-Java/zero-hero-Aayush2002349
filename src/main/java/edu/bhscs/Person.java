@@ -4,11 +4,53 @@ public class Person {
   // fields/properties
   String name;
   Job job;
+  int[] location;
+
 
   Cake cake;
 
   public Person(String name) {
     this.name = name;
+  }
+
+  //The boolean returns whetehr or not the person moved
+  public Boolean move(char direction,Bakery2 bakery){
+    int x = this.location[0];
+    int y = this.location[1];
+
+    if(direction == 'w'){
+      y -= 1;
+    }
+
+    if (direction == 's') {
+      y += 1;
+    }
+
+    if (direction == 'a') {
+      x -= 1;
+    }
+
+    if (direction == 'd') {
+      x += 1;
+    }
+
+    if(x < 0 || y < 0 || x >= bakery.width || y >= bakery.height){
+      return false;
+    }
+    if(bakery.chefLocations[y][x] != null){
+      return false;
+    }
+
+
+    if(bakery.layout[y][x] == 0 || bakery.layout[y][x] == 1){
+      bakery.bakerMoved(this.location[0],this.location[1],x,y);
+      this.location[0] = x;
+      this.location[1] = y;
+    } else {
+      return false;
+    }
+
+    return true;
   }
 
   public void learnJob(Job job) {

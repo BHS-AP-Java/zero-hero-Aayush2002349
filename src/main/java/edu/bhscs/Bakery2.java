@@ -46,6 +46,12 @@ public class Bakery2 {
     }
   }
 
+  public void bakerMoved(int xi, int yi, int xf, int yf){
+    Person tempBaker = this.chefLocations[yi][xi];
+    this.chefLocations[yi][xi] = null;
+    this.chefLocations[yf][xf] = tempBaker;
+  }
+
   // Boolean returns if the chef was hired or not
   // Hires a chef and places him at one of the specified starting locations in the layout
   public Boolean hireChef(Person chef) {
@@ -56,6 +62,8 @@ public class Bakery2 {
         if (this.layout[y][x] == 1) {
           if (this.chefLocations[y][x] == null) {
             this.chefLocations[y][x] = chef;
+            chef.location[0] = x;
+            chef.location[1] = y;
             return true;
           }
         }
