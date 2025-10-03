@@ -20,6 +20,13 @@ class Main {
 
   public static void main(String[] args) {
 
+    /*Scanner s = new Scanner(System.in);
+    System.out.println("what can we do with a scanner");
+    System.out.println("what is your favorite color");
+    String color = s.next();
+    System.out.println("Your fav color: " + color);
+    s.close();*/
+
     // 0 = empty
     // 1 = chef starting location(considered empty)
     // 2 = cake mix
@@ -29,23 +36,23 @@ class Main {
     // 6 = delivery station
     // 7 = trash
 
-    int totalBakers = 4;
+    int totalBakers = 1;
 
     int[][] layout = {
       {3, 0, 2, 0, 2, 0, 6},
-      {5, 0, 0, 0, 0, 0, 6},
-      {6, 1, 0, 4, 0, 1, 5},
+      {5, 0, 1, 0, 0, 0, 6},
+      {6, 0, 0, 4, 0, 0, 5},
       {4, 0, 0, 4, 0, 0, 5},
-      {6, 1, 0, 4, 0, 1, 5},
+      {6, 0, 0, 4, 0, 0, 5},
       {5, 0, 0, 0, 0, 0, 7},
       {3, 0, 2, 0, 2, 0, 7}
     };
 
     Person[] bakers = new Person[totalBakers];
     bakers[0] = new Person("Alice");
-    bakers[1] = new Person("Bob");
-    bakers[2] = new Person("Carol");
-    bakers[3] = new Person("Dan");
+    //bakers[1] = new Person("Bob");
+    //bakers[2] = new Person("Carol");
+    //bakers[3] = new Person("Dan");
 
     Game game = new Game(layout, totalBakers, bakers);
     game.doGameLoop();

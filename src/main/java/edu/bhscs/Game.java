@@ -14,12 +14,15 @@ public class Game {
   public Game(int[][] layout, int totalBakers, Person[] bakers) {
     this.bakery = new Bakery2(layout, layout[0].length, layout.length, 10, "The Bakery");
     this.totalBakers = totalBakers;
+    this.bakery.hireChefs(bakers);
   }
 
   public void doGameLoop() {
 
     Scanner scanner = new Scanner(System.in);
     for (int i = 0; i < time; i++) {
+      System.out.println("Orders Completed: " + this.completedOrders);
+      this.createOrder("chocolate");
 
       System.out.println();
       System.out.println("Time Left: " + (time - i));
@@ -37,6 +40,8 @@ public class Game {
       String[] seperatedActions = this.seperateActions(actions);
       Person[] bakers = this.getBakers();
       this.doBakerActions(seperatedActions, bakers);
+
+      this.bakery.tick();
     }
 
     scanner.close();
@@ -57,6 +62,7 @@ public class Game {
 
         if (this.bakery.chefLocations[y][x] != null) {
           bakers[index] = this.bakery.chefLocations[y][x];
+          index += 1;
         }
       }
     }
@@ -66,12 +72,14 @@ public class Game {
 
   public void doBakerActions(String[] seperatedActions, Person[] bakers) {
     for (int i = 0; i < bakers.length; i++) {
-      // The baker's move function returns whether or not he moved
-      Boolean moved = bakers[i].move(seperatedActions[i].charAt(0), this.bakery);
-      if (!(moved)) {
+      // The baker's move function returns the location of whatever is blocking him (unless it is
+      // outside the bakery or is another chef)
+      int[] actionLocation = bakers[i].move(seperatedActions[i].charAt(0), this.bakery);
+      if (actionLocation != null) {
+
         this.doActionAtLocation(
-            bakers[i].location[0],
-            bakers[i].location[1],
+            actionLocation[0],
+            actionLocation[1],
             bakers[i],
             seperatedActions[i + this.totalBakers]);
       }
@@ -85,8 +93,8 @@ public class Game {
     String[] seperatedActions = new String[this.totalBakers * 2];
     int index = 0;
 
+    String action = "";
     for (int i = 0; i < actions.length(); i++) {
-      String action = "";
       if (actions.charAt(i) == ' ') {
         seperatedActions[index] = action;
         action = "";
@@ -96,9 +104,11 @@ public class Game {
       }
     }
 
+    seperatedActions[index] = action;
+
     for (int i = 0; i < this.totalBakers; i++) {
       if (seperatedActions[i].length() != 1) {
-        seperatedActions[i + this.totalBakers] = seperatedActions[i].substring(2);
+        seperatedActions[i + this.totalBakers] = seperatedActions[i].substring(1);
         seperatedActions[i] = seperatedActions[i].substring(0, 1);
       }
     }
@@ -170,7 +180,7 @@ public class Game {
         return;
       }
 
-      System.out.println("  Order #" + i + ": " + this.orders[i] + " cake");
+      System.out.println("  Order #" + (i + 1) + ": " + this.orders[i] + " cake");
     }
   }
 

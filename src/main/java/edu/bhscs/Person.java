@@ -4,7 +4,7 @@ public class Person {
   // fields/properties
   String name;
   Job job;
-  int[] location;
+  int[] location = new int[2];
 
   Cake cake;
 
@@ -12,8 +12,14 @@ public class Person {
     this.name = name;
   }
 
-  // The boolean returns whetehr or not the person moved
-  public Boolean move(char direction, Bakery2 bakery) {
+  // This moves the baker. If the baker doesn't move because there is something in the bakery that
+  // is in the way it returns the location of that thing
+  public int[] move(char direction, Bakery2 bakery) {
+
+    if (direction == 'p') {
+      return null;
+    }
+
     int x = this.location[0];
     int y = this.location[1];
 
@@ -34,10 +40,10 @@ public class Person {
     }
 
     if (x < 0 || y < 0 || x >= bakery.width || y >= bakery.height) {
-      return false;
+      return null;
     }
     if (bakery.chefLocations[y][x] != null) {
-      return false;
+      return null;
     }
 
     if (bakery.layout[y][x] == 0 || bakery.layout[y][x] == 1) {
@@ -45,10 +51,11 @@ public class Person {
       this.location[0] = x;
       this.location[1] = y;
     } else {
-      return false;
+      int[] returnLocation = {x, y};
+      return returnLocation;
     }
 
-    return true;
+    return null;
   }
 
   public void learnJob(Job job) {
