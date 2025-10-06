@@ -171,8 +171,14 @@ public class Bakery2 {
   // Gets a cake of a certain type from the inventory (if they have it)
   public Cake getStoredCake(String type) {
     for (int i = 0; i < this.storedCakes.length; i++) {
-      if (this.storedCakes[i].type == type) {
-        return this.storedCakes[i];
+      if(this.storedCakes[i] != null){
+        System.out.println(this.storedCakes[i].type + " " + type + " " + (this.storedCakes[i].type == type));
+        if (this.storedCakes[i].type == type) {
+          System.out.println("got here too");
+          Cake cake = this.storedCakes[i];
+          this.storedCakes[i] = null;
+          return cake;
+        }
       }
     }
     return null;

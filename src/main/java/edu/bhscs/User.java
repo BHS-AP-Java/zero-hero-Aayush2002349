@@ -11,8 +11,19 @@ public class User {
   }
 
   public String answerQuestion(String question) {
+    System.out.println(question);
     String answer = this.scanner.next();
-    System.out.println("Your answer was: " + answer);
+    return answer;
+  }
+
+  public String answerYN(String question){
+    String answer = "";
+
+    System.out.println(question);
+    while(answer != "yes" && answer != "no"){
+      answer = scanner.nextLine();
+    }
+
     return answer;
   }
 }

@@ -50,11 +50,12 @@ class Main {
 
     Person[] bakers = new Person[totalBakers];
     bakers[0] = new Person("Alice");
-    //bakers[1] = new Person("Bob");
-    //bakers[2] = new Person("Carol");
-    //bakers[3] = new Person("Dan");
+    // bakers[1] = new Person("Bob");
+    // bakers[2] = new Person("Carol");
+    // bakers[3] = new Person("Dan");
 
-    Game game = new Game(layout, totalBakers, bakers);
+    User user = new User("");
+    Game game = new Game(layout, totalBakers, bakers, user);
     game.doGameLoop();
 
     /*

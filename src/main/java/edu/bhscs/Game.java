@@ -1,7 +1,5 @@
 package edu.bhscs;
 
-import java.util.Scanner;
-
 public class Game {
 
   // fields + properties
@@ -10,17 +8,23 @@ public class Game {
   int completedOrders = 0;
   int time = 200;
   int totalBakers;
+  User user;
 
-  public Game(int[][] layout, int totalBakers, Person[] bakers) {
+  public Game(int[][] layout, int totalBakers, Person[] bakers, User user) {
     this.bakery = new Bakery2(layout, layout[0].length, layout.length, 10, "The Bakery");
     this.totalBakers = totalBakers;
     this.bakery.hireChefs(bakers);
+    this.user = user;
   }
-
   public void doGameLoop() {
 
-    Scanner scanner = new Scanner(System.in);
     for (int i = 0; i < time; i++) {
+
+      if(this.bakery.storedCakes[0] != null){
+        System.out.println(this.bakery.storedCakes[0].type);
+        System.out.println(this.bakery.storedCakes[0].isEdible);
+      }
+
       System.out.println("Orders Completed: " + this.completedOrders);
       this.createOrder("chocolate");
 
@@ -34,17 +38,16 @@ public class Game {
       this.displayOrders();
       System.out.println();
 
-      System.out.println("Baker actions: ");
-      String actions = scanner.nextLine();
+      String actions = this.user.answerQuestion("What should the bakers do: ");
 
       String[] seperatedActions = this.seperateActions(actions);
       Person[] bakers = this.getBakers();
       this.doBakerActions(seperatedActions, bakers);
 
       this.bakery.tick();
+      this.completeOrders();
     }
 
-    scanner.close();
   }
 
   // Seperates the actions got from the user into individual actions
@@ -203,7 +206,6 @@ public class Game {
       if (this.orders[i] != null) {
 
         Cake cake = this.bakery.getStoredCake(this.orders[i]);
-
         // Here is where the order is completed
         if (cake != null) {
           this.orders[i] = null;
@@ -211,7 +213,7 @@ public class Game {
           indexShift += 1;
 
           // Here is where the orders are shifted
-        } else {
+        } else if(indexShift != 0) {
           this.orders[i - indexShift] = this.orders[i];
           this.orders[i] = null;
         }
