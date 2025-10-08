@@ -6,7 +6,7 @@ public class Person {
   int[] location = new int[2];
 
   User user;
-  Bakery2 bakery;
+  Bakery bakery;
   Boolean isHired = false;
 
   Cake cake;
@@ -17,7 +17,7 @@ public class Person {
     this.user = user;
   }
 
-  public void getHired(Bakery2 bakery) {
+  public void getHired(Bakery bakery) {
     this.bakery = bakery;
     this.isHired = true;
   }
@@ -105,7 +105,7 @@ public class Person {
 
   // This moves the baker. If the baker doesn't move it instead returns the location at which it did
   // the action on
-  public int[] move(char direction, Bakery2 bakery) {
+  public int[] move(char direction, Bakery bakery) {
 
     if (direction == 'p') {
       return null;

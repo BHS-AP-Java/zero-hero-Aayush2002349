@@ -2,20 +2,17 @@ package edu.bhscs;
 
 public class Display {
 
-  public Display(){
+  public Display() {}
 
-  }
-
-  public void displayEverything(int ordersCompleted, int timeLeft, String[] orders, Bakery2 bakery){
+  public void displayEverything(int ordersCompleted, int timeLeft, String[] orders, Bakery bakery) {
     this.displayOrdersCompleted(ordersCompleted);
     this.displayTime(timeLeft);
     this.displayOrders(orders);
     this.displayBakery(bakery);
   }
 
-
-  //When called, displays the bakery
-  public void displayBakery(Bakery2 bakery) {
+  // When called, displays the bakery
+  public void displayBakery(Bakery bakery) {
 
     // Display is as follows:
     // 0 = empty
@@ -67,7 +64,6 @@ public class Display {
           } else {
             System.out.print("" + bakery.layout[y][x]);
           }
-
         }
       }
       System.out.println();
@@ -75,7 +71,6 @@ public class Display {
 
     System.out.println();
   }
-
 
   // When called, this displays the currently pending orders
   public void displayOrders(String[] orders) {
@@ -92,14 +87,14 @@ public class Display {
     System.out.println();
   }
 
-  //Displays the time
-  public void displayTime(int timeLeft){
+  // Displays the time
+  public void displayTime(int timeLeft) {
     System.out.println("Time Left: " + timeLeft);
     System.out.println();
   }
 
-  //Displays the number of orders completed
-  public void displayOrdersCompleted(int ordersCompleted){
+  // Displays the number of orders completed
+  public void displayOrdersCompleted(int ordersCompleted) {
     System.out.println("Orders Completed: " + ordersCompleted);
     System.out.println();
   }

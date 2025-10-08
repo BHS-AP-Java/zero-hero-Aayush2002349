@@ -5,7 +5,7 @@ import java.util.Random;
 public class Game {
 
   // fields + properties
-  Bakery2 bakery;
+  Bakery bakery;
   String[] orders = new String[6];
   int ordersCompleted = 0;
   int time = 200;
@@ -17,7 +17,7 @@ public class Game {
   Display display = new Display();
 
   public Game(int[][] layout, int totalBakers, Person[] bakers, User user, String[] menu) {
-    this.bakery = new Bakery2(layout, layout[0].length, layout.length, 10, "The Bakery");
+    this.bakery = new Bakery(layout, layout[0].length, layout.length, 10, "The Bakery");
     this.totalBakers = totalBakers;
     this.bakery.hireChefs(bakers);
     this.user = user;
@@ -35,7 +35,6 @@ public class Game {
       }
 
       this.display.displayEverything(this.ordersCompleted, (time - i), this.orders, this.bakery);
-
 
       for (int j = 0; j < this.bakers.length; j++) {
         this.bakers[j].getAndDoAction();

@@ -1,6 +1,6 @@
 package edu.bhscs;
 
-public class Bakery2 {
+public class Bakery {
 
   // Fields
 
@@ -28,7 +28,7 @@ public class Bakery2 {
   // 5 = cutting station
   // 6 = delivery station
   // 7 = trash
-  public Bakery2(int[][] layout, int width, int height, int maxCakeStorage, String name) {
+  public Bakery(int[][] layout, int width, int height, int maxCakeStorage, String name) {
     this.name = name;
     this.width = width;
     this.height = height;
