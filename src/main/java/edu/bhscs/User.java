@@ -15,15 +15,4 @@ public class User {
     String answer = this.scanner.next();
     return answer;
   }
-
-  public String answerYN(String question) {
-    String answer = "";
-
-    System.out.println(question);
-    while (answer != "yes" && answer != "no") {
-      answer = scanner.nextLine();
-    }
-
-    return answer;
-  }
 }
