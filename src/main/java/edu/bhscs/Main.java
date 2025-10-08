@@ -44,14 +44,16 @@ class Main {
     };
 
     Person[] bakers = new Person[totalBakers];
-    bakers[0] = new Person("Alice");
+
+    User player1 = new User("");
+
+    bakers[0] = new Person("Alice",player1);
     // bakers[1] = new Person("Bob");
     // bakers[2] = new Person("Carol");
     // bakers[3] = new Person("Dan");
 
-    User user = new User("");
     String[] menu = {"chocolate", "red-velvet", "spice"};
-    Game game = new Game(layout, totalBakers, bakers, user, menu);
+    Game game = new Game(layout, totalBakers, bakers, player1, menu);
     game.doGameLoop();
   }
 }

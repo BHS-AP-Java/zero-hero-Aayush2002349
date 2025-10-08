@@ -75,6 +75,7 @@ public class Bakery2 {
   public void hireChefs(Person[] bakers) {
     for (int i = 0; i < bakers.length; i++) {
       this.hireChef(bakers[i]);
+      bakers[i].getHired(this);
     }
   }
 
