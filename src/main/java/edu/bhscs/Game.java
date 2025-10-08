@@ -1,5 +1,7 @@
 package edu.bhscs;
 
+import java.util.Random;
+
 public class Game {
 
   // fields + properties
@@ -8,25 +10,32 @@ public class Game {
   int completedOrders = 0;
   int time = 200;
   int totalBakers;
+  String[] menu;
   User user;
+  Random random = new Random();
 
-  public Game(int[][] layout, int totalBakers, Person[] bakers, User user) {
+  public Game(int[][] layout, int totalBakers, Person[] bakers, User user, String[] menu) {
     this.bakery = new Bakery2(layout, layout[0].length, layout.length, 10, "The Bakery");
     this.totalBakers = totalBakers;
     this.bakery.hireChefs(bakers);
     this.user = user;
+    this.menu = menu;
   }
+
   public void doGameLoop() {
 
     for (int i = 0; i < time; i++) {
 
-      if(this.bakery.storedCakes[0] != null){
+      if (this.bakery.storedCakes[0] != null) {
         System.out.println(this.bakery.storedCakes[0].type);
         System.out.println(this.bakery.storedCakes[0].isEdible);
       }
 
       System.out.println("Orders Completed: " + this.completedOrders);
-      this.createOrder("chocolate");
+
+      if (i % 3 == 0) {
+        this.createOrder();
+      }
 
       System.out.println();
       System.out.println("Time Left: " + (time - i));
@@ -47,7 +56,6 @@ public class Game {
       this.bakery.tick();
       this.completeOrders();
     }
-
   }
 
   // Seperates the actions got from the user into individual actions
@@ -187,10 +195,11 @@ public class Game {
     }
   }
 
-  // When called, this creates a new order
-  public void createOrder(String type) {
+  // When called, this creates a new order (currently picks a random item from the menu)
+  public void createOrder() {
     for (int i = 0; i < this.orders.length; i++) {
       if (this.orders[i] == null) {
+        String type = this.menu[random.nextInt(this.menu.length)];
         this.orders[i] = type;
         return;
       }
@@ -213,7 +222,7 @@ public class Game {
           indexShift += 1;
 
           // Here is where the orders are shifted
-        } else if(indexShift != 0) {
+        } else if (indexShift != 0) {
           this.orders[i - indexShift] = this.orders[i];
           this.orders[i] = null;
         }

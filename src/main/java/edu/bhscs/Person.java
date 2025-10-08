@@ -3,7 +3,6 @@ package edu.bhscs;
 public class Person {
   // fields/properties
   String name;
-  Job job;
   int[] location = new int[2];
 
   Cake cake;
@@ -12,8 +11,7 @@ public class Person {
     this.name = name;
   }
 
-  // This moves the baker. If the baker doesn't move because there is something in the bakery that
-  // is in the way it returns the location of that thing
+  // This moves the baker. If the baker doesn't move it instead returns the location at which it did the action on
   public int[] move(char direction, Bakery2 bakery) {
 
     if (direction == 'p') {
@@ -58,15 +56,6 @@ public class Person {
     return null;
   }
 
-  public void learnJob(Job job) {
-    this.job = job;
-  }
-
-  public void doJob() {
-    this.job.doJob();
-    System.out.println(this.name + " did their job");
-  }
-
   public void getCake(Cake cake) {
     this.cake = cake;
     System.out.println(this.name + " got a " + this.cake.type + " cake");
@@ -77,11 +66,6 @@ public class Person {
     System.out.println(this.name + " gave their " + this.cake.type + " cake");
     this.cake = null;
     return cakeTemp;
-  }
-
-  public void requestCake(Bakery bakery, String type) {
-    System.out.println(this.name + " requested a " + type + " cake from " + bakery.name);
-    this.getCake(bakery.makeCake(type));
   }
 
   public void eatCakeSlice() {

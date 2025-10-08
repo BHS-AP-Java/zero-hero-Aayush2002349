@@ -16,11 +16,11 @@ public class User {
     return answer;
   }
 
-  public String answerYN(String question){
+  public String answerYN(String question) {
     String answer = "";
 
     System.out.println(question);
-    while(answer != "yes" && answer != "no"){
+    while (answer != "yes" && answer != "no") {
       answer = scanner.nextLine();
     }
 

@@ -16,16 +16,11 @@ package edu.bhscs;
  *  For example if a baker 1 was at (0,0) and baker 2 was at (1,1) then telling baker 1 to move down and baker 2 to move left, baker 1 will move down and baker 2 won't move left (because baker 1 is there)
  */
 
+// Springboot + sockets
+
 class Main {
 
   public static void main(String[] args) {
-
-    /*Scanner s = new Scanner(System.in);
-    System.out.println("what can we do with a scanner");
-    System.out.println("what is your favorite color");
-    String color = s.next();
-    System.out.println("Your fav color: " + color);
-    s.close();*/
 
     // 0 = empty
     // 1 = chef starting location(considered empty)
@@ -55,29 +50,8 @@ class Main {
     // bakers[3] = new Person("Dan");
 
     User user = new User("");
-    Game game = new Game(layout, totalBakers, bakers, user);
+    String[] menu = {"chocolate", "red-velvet", "spice"};
+    Game game = new Game(layout, totalBakers, bakers, user, menu);
     game.doGameLoop();
-
-    /*
-     * System.out.println(); System.out.println(); System.out.println(); System.out.println();
-     *
-     * Bakery bakery = new Bakery(4, "The Bakery");
-     *
-     * Person steve = new Person("Steve"); Person linda = new Person("Linda");
-     *
-     * bakery.hireChef(steve); bakery.hireChef(linda); System.out.println();
-     *
-     * Person john = new Person("John"); john.requestCake(bakery, "Chocolate"); john.eatCakeSlice();
-     * System.out.println();
-     *
-     * Person alice = new Person("Alice"); alice.requestCake(bakery, "Red Velvet");
-     * alice.eatCakeSlice(); System.out.println();
-     *
-     * Person bob = new Person("Bob"); bob.requestCake(bakery, "Cheese"); bob.eatCakeSlice();
-     * bob.eatCakeSlice(); bob.eatCakeSlice(); bob.eatCakeSlice(); bob.eatCakeSlice();
-     * bob.eatCakeSlice(); bob.eatCakeSlice(); System.out.println();
-     *
-     * bob.requestCake(bakery, "Cheese");
-     */
   }
 }
