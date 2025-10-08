@@ -7,6 +7,7 @@ public class Person {
 
   User user;
   Bakery2 bakery;
+  Boolean isHired = false;
 
   Cake cake;
 
@@ -18,11 +19,12 @@ public class Person {
 
   public void getHired(Bakery2 bakery){
     this.bakery = bakery;
+    this.isHired = true;
   }
 
   //This gets and does the action given by the player
   public void getAndDoAction(){
-
+    
     //Gets the action
     String action = this.user.answerQuestion("Enter " + this.name + "'s action: ");
 
