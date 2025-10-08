@@ -8,7 +8,6 @@ public class Bakery2 {
   int[][] layout;
   Cake[][] cakeLocations;
   Person[][] chefLocations;
-  int[][] cakeCookingTimers;
 
   int cookingTime = 3;
 
@@ -37,13 +36,6 @@ public class Bakery2 {
     this.chefLocations = new Person[height][width];
     this.layout = layout;
     this.storedCakes = new Cake[maxCakeStorage];
-
-    this.cakeCookingTimers = new int[height][width];
-    for (int y = 0; y < this.height; y++) {
-      for (int x = 0; x < this.width; x++) {
-        this.cakeCookingTimers[y][x] = 0;
-      }
-    }
   }
 
   public void bakerMoved(int xi, int yi, int xf, int yf) {
@@ -102,7 +94,6 @@ public class Bakery2 {
   public Cake pickUpCake(int x, int y) {
     Cake cakeTemp = this.cakeLocations[y][x];
     this.cakeLocations[y][x] = null;
-    this.cakeCookingTimers[y][x] = 0;
     return cakeTemp;
   }
 
@@ -125,11 +116,8 @@ public class Bakery2 {
           // 6 = delivery station (it should be delivered to the cake stand)
           // 7 = trash (it should be thrown away)
           if (this.layout[y][x] == 3) {
-            if (this.cakeCookingTimers[y][x] == this.cookingTime) {
-              this.cakeCookingTimers[y][x] = 0;
-              this.cakeLocations[y][x].bake();
-            }
-            this.cakeCookingTimers[y][x] += 1;
+
+            this.cakeLocations[y][x].bake();
           }
           if (this.layout[y][x] == 6) {
             this.deliver(x, y);

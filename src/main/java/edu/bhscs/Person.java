@@ -11,41 +11,43 @@ public class Person {
 
   Cake cake;
 
-  //Constructor
+  // Constructor
   public Person(String name, User user) {
     this.name = name;
     this.user = user;
   }
 
-  public void getHired(Bakery2 bakery){
+  public void getHired(Bakery2 bakery) {
     this.bakery = bakery;
     this.isHired = true;
   }
 
-  //This gets and does the action given by the player
-  public void getAndDoAction(){
-    
-    //Gets the action
+  // This gets and does the action given by the player
+  public void getAndDoAction() {
+
+    // Gets the action
     String action = this.user.answerQuestion("Enter " + this.name + "'s action: ");
 
-    //Seperates the action into its 2 components
+    // Seperates the action into its 2 components
     String cakeType = null;
 
-    if(action.length() != 1){
+    if (action.length() != 1) {
       cakeType = action.substring(1);
     }
     char direction = action.charAt(0);
 
-    //Moves the baker and if the baker doesn't move then has the baker do the action at the given location
-    int[] actionLocation = this.move(direction,bakery);
+    // Moves the baker and if the baker doesn't move then has the baker do the action at the given
+    // location
+    int[] actionLocation = this.move(direction, bakery);
 
-    if(actionLocation != null){
+    if (actionLocation != null) {
       this.doActionAtLocation(actionLocation, cakeType);
     }
   }
 
-  // Given a certain position to do the action on and potentially a type (for creating a new cake) does whatever the action is
-  public void doActionAtLocation(int[] actionLocation,String cakeType){
+  // Given a certain position to do the action on and potentially a type (for creating a new cake)
+  // does whatever the action is
+  public void doActionAtLocation(int[] actionLocation, String cakeType) {
     // If both the baker and location have a cake then one of them needs to be placed down before
     // doing anything
 
@@ -100,7 +102,9 @@ public class Person {
 
     return;
   }
-  // This moves the baker. If the baker doesn't move it instead returns the location at which it did the action on
+
+  // This moves the baker. If the baker doesn't move it instead returns the location at which it did
+  // the action on
   public int[] move(char direction, Bakery2 bakery) {
 
     if (direction == 'p') {
@@ -147,12 +151,10 @@ public class Person {
 
   public void getCake(Cake cake) {
     this.cake = cake;
-    System.out.println(this.name + " got a " + this.cake.type + " cake");
   }
 
   public Cake giveCake() {
     Cake cakeTemp = this.cake;
-    System.out.println(this.name + " gave their " + this.cake.type + " cake");
     this.cake = null;
     return cakeTemp;
   }

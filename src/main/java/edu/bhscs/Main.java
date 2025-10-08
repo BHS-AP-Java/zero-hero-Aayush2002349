@@ -47,7 +47,7 @@ class Main {
 
     User player1 = new User("");
 
-    bakers[0] = new Person("Alice",player1);
+    bakers[0] = new Person("Alice", player1);
     // bakers[1] = new Person("Bob");
     // bakers[2] = new Person("Carol");
     // bakers[3] = new Person("Dan");
