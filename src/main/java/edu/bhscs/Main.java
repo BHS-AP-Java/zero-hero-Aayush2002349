@@ -12,8 +12,7 @@ package edu.bhscs;
  *  There is a limited amount of time to bake as many cakes as possible
  * INPUT: Actions for each baker
  * OUTPUT: The results of the actions (either moving or performing an action on a cake) for each baker
- * EDGE CASE: During baker collisions the bakers do move if an earlier executed one runs into a later executed baker's path
- *  For example if a baker 1 was at (0,0) and baker 2 was at (1,1) then telling baker 1 to move down and baker 2 to move left, baker 1 will move down and baker 2 won't move left (because baker 1 is there)
+ * EDGE CASE: There are a lot, one example is in the case that the bakeries rating goes below 0, it needs to be set to 0
  */
 
 // Springboot + sockets
@@ -22,38 +21,8 @@ class Main {
 
   public static void main(String[] args) {
 
-    // 0 = empty
-    // 1 = chef starting location(considered empty)
-    // 2 = cake mix
-    // 3 = oven
-    // 4 = counter
-    // 5 = cutting station
-    // 6 = delivery station
-    // 7 = trash
-
-    int totalBakers = 1;
-
-    int[][] layout = {
-      {3, 0, 2, 0, 2, 0, 6},
-      {5, 0, 1, 0, 0, 0, 6},
-      {6, 0, 0, 4, 0, 0, 5},
-      {4, 0, 0, 4, 0, 0, 5},
-      {6, 0, 0, 4, 0, 0, 5},
-      {5, 0, 0, 0, 0, 0, 7},
-      {3, 0, 2, 0, 2, 0, 7}
-    };
-
-    Person[] bakers = new Person[totalBakers];
-
-    User player1 = new User("");
-
-    bakers[0] = new Person("Alice", player1);
-    // bakers[1] = new Person("Bob");
-    // bakers[2] = new Person("Carol");
-    // bakers[3] = new Person("Dan");
-
-    String[] menu = {"chocolate", "red-velvet", "spice"};
-    Game game = new Game(layout, totalBakers, bakers, player1, menu);
+    //Creating a new game with no arguments creates a default game
+    Game game = new Game();
     game.doGameLoop();
   }
 }

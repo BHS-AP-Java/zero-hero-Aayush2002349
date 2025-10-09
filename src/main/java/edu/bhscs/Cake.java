@@ -13,7 +13,7 @@ public class Cake {
   int overCookingTime = 6;
   int timeCooked = 0;
 
-  // The cake's only job is to know what its state is
+  //Constructor
   public Cake(String type) {
     this.type = type;
   }

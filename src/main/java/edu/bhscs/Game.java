@@ -1,28 +1,52 @@
 package edu.bhscs;
 
-import java.util.Random;
-
 public class Game {
 
   // fields + properties
+
   Bakery bakery;
-  String[] orders = new String[6];
-  int ordersCompleted = 0;
-  int time = 200;
-  int totalBakers;
-  String[] menu;
-  User user;
-  Random random = new Random();
   Person[] bakers;
+
+  int time = 200;
   Display display = new Display();
 
-  public Game(int[][] layout, int totalBakers, Person[] bakers, User user, String[] menu) {
-    this.bakery = new Bakery(layout, layout[0].length, layout.length, 10, "The Bakery");
-    this.totalBakers = totalBakers;
+  //Constructors below
+  //This one creates a game with the given inputs
+  public Game(int[][] layout, Person[] bakers, String[] menu) {
+    this.bakery = new Bakery(layout, layout[0].length, layout.length, 10, "The Bakery",menu);
     this.bakery.hireChefs(bakers);
-    this.user = user;
-    this.menu = menu;
     this.bakers = bakers;
+  }
+
+  //Giving no inputs just creates a demo game
+  public Game(){
+    // 0 = empty
+    // 1 = chef starting location(considered empty)
+    // 2 = cake mix
+    // 3 = oven
+    // 4 = counter
+    // 5 = cutting station
+    // 6 = delivery station
+    // 7 = trash
+    int[][] layout = {
+      {3, 0, 2, 0, 2, 0, 6},
+      {5, 0, 1, 0, 0, 0, 6},
+      {6, 0, 0, 4, 0, 0, 5},
+      {4, 0, 0, 4, 0, 0, 5},
+      {6, 0, 0, 4, 0, 0, 5},
+      {5, 0, 0, 0, 0, 0, 7},
+      {3, 0, 2, 0, 2, 0, 7}
+    };
+
+    this.bakers = new Person[1];
+
+    User player1 = new User("");
+    this.bakers[0] = new Person("Alice", player1);
+
+    String[] menu = {"chocolate", "red-velvet", "spice"};
+
+    this.bakery = new Bakery(layout, layout[0].length, layout.length, 10, "The Bakery",menu);
+    this.bakery.hireChefs(bakers);
   }
 
   public void doGameLoop() {
@@ -31,10 +55,10 @@ public class Game {
 
       // Creates an order every 3 turns
       if (i % 3 == 0) {
-        this.createOrder();
+        this.bakery.takeOrder(new Order(this.bakery.menu,this.bakery.rating));
       }
 
-      this.display.displayEverything(this.ordersCompleted, (time - i), this.orders, this.bakery);
+      this.display.displayEverything((time - i), this.bakery);
 
       for (int j = 0; j < this.bakers.length; j++) {
         this.bakers[j].getAndDoAction();
@@ -42,44 +66,6 @@ public class Game {
 
       // Has the bakery do all the bakery stuff (ex: cooking a cake in the oven)
       this.bakery.tick();
-
-      // Based on the cakes in the bakery, completes pending orders
-      this.completeOrders();
-    }
-  }
-
-  // When called, this creates a new order (currently picks a random item from the menu)
-  public void createOrder() {
-    for (int i = 0; i < this.orders.length; i++) {
-      if (this.orders[i] == null) {
-        String type = this.menu[random.nextInt(this.menu.length)];
-        this.orders[i] = type;
-        return;
-      }
-    }
-  }
-
-  // When called, this checks the bakery's inventories and completes any orders
-  // It also slides all the orders down (so if order 4 is completed then order 5 becomes order 4)
-  public void completeOrders() {
-    int indexShift = 0;
-    for (int i = 0; i < this.orders.length; i++) {
-
-      if (this.orders[i] != null) {
-
-        Cake cake = this.bakery.getStoredCake(this.orders[i]);
-        // Here is where the order is completed
-        if (cake != null) {
-          this.orders[i] = null;
-          this.ordersCompleted += 1;
-          indexShift += 1;
-
-          // Here is where the orders are shifted
-        } else if (indexShift != 0) {
-          this.orders[i - indexShift] = this.orders[i];
-          this.orders[i] = null;
-        }
-      }
     }
   }
 }

@@ -2,16 +2,18 @@ package edu.bhscs;
 
 public class Display {
 
+  //Constructor
   public Display() {}
 
-  public void displayEverything(int ordersCompleted, int timeLeft, String[] orders, Bakery bakery) {
-    this.displayOrdersCompleted(ordersCompleted);
+  public void displayEverything(int timeLeft, Bakery bakery) {
     this.displayTime(timeLeft);
-    this.displayOrders(orders);
+    this.displayBakeryRating(bakery.rating);
+    this.displayBakeryMoney(bakery.money);
+    this.displayBakeryOrders(bakery.orders);
     this.displayBakery(bakery);
   }
 
-  // When called, displays the bakery
+  // Displays the bakery
   public void displayBakery(Bakery bakery) {
 
     // Display is as follows:
@@ -72,16 +74,20 @@ public class Display {
     System.out.println();
   }
 
-  // When called, this displays the currently pending orders
-  public void displayOrders(String[] orders) {
+  // Displays the currently pending orders
+  public void displayBakeryOrders(Order[] orders) {
     System.out.println("Pending orders: ");
     for (int i = 0; i < orders.length; i++) {
 
       if (orders[i] == null) {
+        System.out.println();
         return;
       }
-
-      System.out.println("  Order #" + (i + 1) + ": " + orders[i] + " cake");
+      if(orders[i].late){
+        System.out.println("  Order #" + (i + 1) + ": " + orders[i].type + " cake" + ": This order is failed");
+      } else {
+        System.out.println("  Order #" + (i + 1) + ": " + orders[i].type + " cake" + ": Time left " + (orders[i].timeToComplete - orders[i].timeElapsed));
+      }
     }
 
     System.out.println();
@@ -94,8 +100,14 @@ public class Display {
   }
 
   // Displays the number of orders completed
-  public void displayOrdersCompleted(int ordersCompleted) {
-    System.out.println("Orders Completed: " + ordersCompleted);
+  public void displayBakeryRating(int rating) {
+    System.out.println("Rating: " + rating);
+    System.out.println();
+  }
+
+  // Displays the bakery's money
+  public void displayBakeryMoney(int rating) {
+    System.out.println("Money: " + rating);
     System.out.println();
   }
 }

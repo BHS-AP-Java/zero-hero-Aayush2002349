@@ -3,9 +3,12 @@ package edu.bhscs;
 import java.util.Scanner;
 
 public class User {
+
+  //Fields and properties
   Scanner scanner = new Scanner(System.in);
   String name;
 
+  //Constructor
   public User(String name) {
     this.name = name;
   }

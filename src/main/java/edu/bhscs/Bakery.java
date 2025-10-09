@@ -2,7 +2,7 @@ package edu.bhscs;
 
 public class Bakery {
 
-  // Fields
+  // Fields and properties
 
   // Kitchen related stuff
   int[][] layout;
@@ -19,6 +19,12 @@ public class Bakery {
 
   Cake[] storedCakes;
 
+  int money = 0;
+
+  Order[] orders = new Order[5];
+  int rating = 10;
+  String[] menu;
+
   // Layout:
   // 0 = empty
   // 1 = chef starting location(considered empty)
@@ -28,7 +34,7 @@ public class Bakery {
   // 5 = cutting station
   // 6 = delivery station
   // 7 = trash
-  public Bakery(int[][] layout, int width, int height, int maxCakeStorage, String name) {
+  public Bakery(int[][] layout, int width, int height, int maxCakeStorage, String name, String[] menu) {
     this.name = name;
     this.width = width;
     this.height = height;
@@ -36,6 +42,7 @@ public class Bakery {
     this.chefLocations = new Person[height][width];
     this.layout = layout;
     this.storedCakes = new Cake[maxCakeStorage];
+    this.menu = menu;
   }
 
   public void bakerMoved(int xi, int yi, int xf, int yf) {
@@ -103,6 +110,7 @@ public class Bakery {
   }
 
   // Looks at all placed cakes and figures out what to do with them
+  //Additionally completes any orders that can be completed and ticks the pending orders as well
   public void tick() {
 
     for (int y = 0; y < this.height; y++) {
@@ -127,6 +135,20 @@ public class Bakery {
             this.pickUpCake(x, y);
           }
         }
+      }
+    }
+
+    //Completes orders and ticks them as well and loses rating if orders are late
+    this.completeOrders();
+    for(int i = 0; i < this.orders.length; i++){
+      if(this.orders[i] != null){
+        if(this.orders[i].late){
+          this.rating -= 1;
+          if(this.rating < 0){
+            this.rating = 0;
+          }
+        }
+        this.orders[i].tick();
       }
     }
   }
@@ -158,10 +180,10 @@ public class Bakery {
 
   // Returns null when there is no cake of the given type
   // Gets a cake of a certain type from the inventory (if they have it)
-  public Cake getStoredCake(String type) {
+  public Cake getCake(Order order) {
     for (int i = 0; i < this.storedCakes.length; i++) {
       if (this.storedCakes[i] != null) {
-        if (this.storedCakes[i].type.equals(type)) {
+        if (this.storedCakes[i].type.equals(order.type)) {
           Cake cake = this.storedCakes[i];
           this.storedCakes[i] = null;
           return cake;
@@ -169,5 +191,48 @@ public class Bakery {
       }
     }
     return null;
+  }
+
+  //Takes an order
+  public void takeOrder(Order order){
+    for (int i = 0; i < this.orders.length; i++) {
+      if (this.orders[i] == null) {
+        this.orders[i] = order;
+        return;
+      }
+    }
+  }
+
+  // When called, this checks the bakery's inventories and completes any orders
+  // it will be called every tick
+  public void completeOrders() {
+    int indexShift = 0;
+    for (int i = 0; i < this.orders.length; i++) {
+
+      if (this.orders[i] != null) {
+
+        Cake cake = this.getCake(this.orders[i]);
+        // Here is where the order is completed
+        if (cake != null) {
+          if(!(this.orders[i].late)){
+            this.rating += 15;
+          }
+          if(i == 0){
+            this.rating += 5;
+          }
+
+          this.money += this.orders[i].orderCompleted(cake);
+
+          this.orders[i] = null;
+
+          indexShift += 1;
+
+          // Here is where the orders are shifted
+        } else if (indexShift != 0) {
+          this.orders[i - indexShift] = this.orders[i];
+          this.orders[i] = null;
+        }
+      }
+    }
   }
 }
