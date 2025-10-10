@@ -1,6 +1,7 @@
 package edu.bhscs;
 
-//A person can both be a customer and a baker, a baker theoretically can order a cake from the bakery they work at and a customer can theoretically become a baker
+// A person can both be a customer and a baker, a baker theoretically can order a cake from the
+// bakery they work at and a customer can theoretically become a baker
 public class Person {
   // fields/properties
   String name;
@@ -16,19 +17,18 @@ public class Person {
 
   // Constructors
 
-  //This one is to create a baker
+  // This one is to create a baker
   public Person(String name, User user) {
     this.name = name;
     this.user = user;
   }
 
-  //This one is to create a customer
+  // This one is to create a customer
   public Person(String name) {
     this.name = name;
   }
 
-
-  //All of these methods can be used by both customers and bakers
+  // All of these methods can be used by both customers and bakers
   public void getCake(Cake cake) {
     this.cake = cake;
   }
@@ -43,8 +43,13 @@ public class Person {
     if (this.cake != null) {
       if (this.cake.isEdible) {
         this.cake.eatSlice();
-        System.out.println(this.name + " ate a slice of " + this.cake.type + " cake. There are "
-            + this.cake.slices + " slices left");
+        System.out.println(
+            this.name
+                + " ate a slice of "
+                + this.cake.type
+                + " cake. There are "
+                + this.cake.slices
+                + " slices left");
         if (this.cake.slices == 0) {
           this.cake = null;
         }
@@ -56,7 +61,7 @@ public class Person {
     }
   }
 
-  //All methods below are generally specific bakers
+  // All methods below are generally specific bakers
   public void getHired(Bakery bakery) {
     this.bakery = bakery;
     this.isHired = true;

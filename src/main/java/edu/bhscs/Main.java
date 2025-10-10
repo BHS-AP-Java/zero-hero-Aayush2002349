@@ -21,8 +21,11 @@ class Main {
 
   public static void main(String[] args) {
 
-    //Creating a new game with no arguments creates a default game
-    Game game = new Game();
-    game.doGameLoop();
+    // Creating a new game with no arguments creates a default game
+    //Game game = new Game();
+    //game.doGameLoop();
+
+    Display display = new Display();
+    display.displayBurger(new Burger());
   }
 }

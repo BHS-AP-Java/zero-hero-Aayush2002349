@@ -34,7 +34,8 @@ public class Bakery {
   // 5 = cutting station
   // 6 = delivery station
   // 7 = trash
-  public Bakery(int[][] layout, int width, int height, int maxCakeStorage, String name, String[] menu) {
+  public Bakery(
+      int[][] layout, int width, int height, int maxCakeStorage, String name, String[] menu) {
     this.name = name;
     this.width = width;
     this.height = height;
@@ -110,7 +111,7 @@ public class Bakery {
   }
 
   // Looks at all placed cakes and figures out what to do with them
-  //Additionally completes any orders that can be completed and ticks the pending orders as well
+  // Additionally completes any orders that can be completed and ticks the pending orders as well
   public void tick() {
 
     for (int y = 0; y < this.height; y++) {
@@ -138,13 +139,13 @@ public class Bakery {
       }
     }
 
-    //Completes orders and ticks them as well and loses rating if orders are late
+    // Completes orders and ticks them as well and loses rating if orders are late
     this.completeOrders();
-    for(int i = 0; i < this.orders.length; i++){
-      if(this.orders[i] != null){
-        if(this.orders[i].late){
+    for (int i = 0; i < this.orders.length; i++) {
+      if (this.orders[i] != null) {
+        if (this.orders[i].late) {
           this.rating -= 1;
-          if(this.rating < 0){
+          if (this.rating < 0) {
             this.rating = 0;
           }
         }
@@ -193,8 +194,8 @@ public class Bakery {
     return null;
   }
 
-  //Takes an order
-  public void takeOrder(Order order){
+  // Takes an order
+  public void takeOrder(Order order) {
     for (int i = 0; i < this.orders.length; i++) {
       if (this.orders[i] == null) {
         this.orders[i] = order;
@@ -214,10 +215,10 @@ public class Bakery {
         Cake cake = this.getCake(this.orders[i]);
         // Here is where the order is completed
         if (cake != null) {
-          if(!(this.orders[i].late)){
+          if (!(this.orders[i].late)) {
             this.rating += 15;
           }
-          if(i == 0){
+          if (i == 0) {
             this.rating += 5;
           }
 

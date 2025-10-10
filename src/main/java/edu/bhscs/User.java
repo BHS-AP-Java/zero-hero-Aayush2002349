@@ -4,11 +4,11 @@ import java.util.Scanner;
 
 public class User {
 
-  //Fields and properties
+  // Fields and properties
   Scanner scanner = new Scanner(System.in);
   String name;
 
-  //Constructor
+  // Constructor
   public User(String name) {
     this.name = name;
   }
