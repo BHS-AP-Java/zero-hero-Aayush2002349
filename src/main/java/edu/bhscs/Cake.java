@@ -1,57 +1,29 @@
 package edu.bhscs;
 
-public class Cake {
-  // fields/properties
-  String type;
-  int slices;
-  boolean isBaked = false;
-  boolean isCut = false;
-  boolean isOvercooked = false;
-  boolean isEdible = false;
+// Check Food class for fields and properties
+public class Cake extends Food {
 
-  int bakingTime = 3;
-  int overCookingTime = 6;
-  int timeCooked = 0;
+  // fields and propeties (most are found in the food class)
 
   // Constructor
-  public Cake(String type) {
-    this.type = type;
+  public Cake() {
+    this.isCookable = true;
+    this.cookingTime = 15;
+    this.overcookingTime = 20;
+
+    this.isCuttable = true;
+
+    this.hasMultipleIngredients = false;
+
+    this.foodType = "cake";
+
+    this.baseCost = 30;
   }
 
-  // Updates the cake to be baked (or overcooked if it is baked twice)
-  public void bake() {
-    if (!(this.isOvercooked)) {
-      this.timeCooked += 1;
+  public String getFoodTitle() {
+    if (this.ingredient == null) {
+      return "cake mix";
     }
-    if (this.timeCooked == this.overCookingTime) {
-      this.isOvercooked = true;
-      this.isEdible = false;
-    } else if (this.timeCooked == this.bakingTime) {
-      this.isBaked = true;
-    }
-  }
-
-  // Updates the cake to be cut into slices
-  public void cut(int slices) {
-    if (!(this.isCut) && this.isBaked) {
-      this.slices = slices;
-      this.isCut = true;
-
-      if (!(this.isOvercooked)) {
-        this.isEdible = true;
-      }
-    }
-  }
-
-  // Updates the cake to show that a slice of the cake has been eaten
-  public void eatSlice() {
-    if (this.isCut && this.isBaked && !(this.isOvercooked)) {
-      if (this.slices != 0) {
-        this.slices -= 1;
-        if (this.slices == 0) {
-          this.isEdible = false;
-        }
-      }
-    }
+    return this.ingredient + " cake";
   }
 }

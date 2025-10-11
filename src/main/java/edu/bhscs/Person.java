@@ -1,23 +1,23 @@
 package edu.bhscs;
 
-// A person can both be a customer and a baker, a baker theoretically can order a cake from the
-// bakery they work at and a customer can theoretically become a baker
+// A person can both be a customer and a chef, a chef theoretically can order a food item from the
+// restaurant they work at and a customer can theoretically become a chef
 public class Person {
   // fields/properties
   String name;
   int[] location = new int[2];
 
   User user;
-  Bakery bakery;
+  Restaurant restaurant;
   Boolean isHired = false;
 
   Order order;
 
-  Cake cake;
+  Food food;
 
   // Constructors
 
-  // This one is to create a baker
+  // This one is to create a chef
   public Person(String name, User user) {
     this.name = name;
     this.user = user;
@@ -28,42 +28,38 @@ public class Person {
     this.name = name;
   }
 
-  // All of these methods can be used by both customers and bakers
-  public void getCake(Cake cake) {
-    this.cake = cake;
+  // All of these methods can be used by both customers and chefs
+  public void getFood(Food food) {
+    this.food = food;
+    System.out.println(this.name + " got a " + this.food.getFoodTitle());
   }
 
-  public Cake giveCake() {
-    Cake cakeTemp = this.cake;
-    this.cake = null;
-    return cakeTemp;
+  public Food giveFood() {
+    Food foodTemp = this.food;
+    this.food = null;
+    return foodTemp;
   }
 
-  public void eatCakeSlice() {
-    if (this.cake != null) {
-      if (this.cake.isEdible) {
-        this.cake.eatSlice();
-        System.out.println(
-            this.name
-                + " ate a slice of "
-                + this.cake.type
-                + " cake. There are "
-                + this.cake.slices
-                + " slices left");
-        if (this.cake.slices == 0) {
-          this.cake = null;
-        }
+  public void eatFood() {
+    if (this.food != null) {
+      if (this.food.isEdible()) {
+        this.food.eat();
+        System.out.println(this.name + " ate a " + this.food.getFoodTitle());
       } else {
-        System.out.println(this.name + " can't eat the " + this.cake.type + " cake.");
+        System.out.println(this.name + " can't eat the " + this.food.getFoodTitle());
+      }
+
+      if (this.food.isEaten) {
+        this.food = null;
       }
     } else {
-      System.out.println(this.name + " doesn't have a cake");
+      System.out.println(this.name + " doesn't have anything to eat");
     }
   }
 
-  // All methods below are generally specific bakers
-  public void getHired(Bakery bakery) {
-    this.bakery = bakery;
+  // All methods below are generally specific chefs
+  public void getHired(Restaurant restaurant) {
+    this.restaurant = restaurant;
     this.isHired = true;
   }
 
@@ -74,83 +70,102 @@ public class Person {
     String action = this.user.answerQuestion("Enter " + this.name + "'s action: ");
 
     // Seperates the action into its 2 components
-    String cakeType = null;
+    String additionalInfo = null;
 
     if (action.length() != 1) {
-      cakeType = action.substring(1);
+      additionalInfo = action.substring(1);
     }
     char direction = action.charAt(0);
 
-    // Moves the baker and if the baker doesn't move then has the baker do the action at the given
+    // Moves the chef and if the chef doesn't move then has the chef do the action at the given
     // location
-    int[] actionLocation = this.move(direction, bakery);
-
-    if (actionLocation != null) {
-      this.doActionAtLocation(actionLocation, cakeType);
+    int[] actionLocation = this.move(direction, this.restaurant);
+    if(actionLocation != null){
+      this.doActionAtLocation(actionLocation, additionalInfo);
     }
+
   }
 
-  // Given a certain position to do the action on and potentially a type (for creating a new cake)
+  // Given a certain position to do the action on and potentially any additional information (like
+  // what to create)
   // does whatever the action is
-  public void doActionAtLocation(int[] actionLocation, String cakeType) {
-    // If both the baker and location have a cake then one of them needs to be placed down before
+  public void doActionAtLocation(int[] actionLocation, String additionalInfo) {
+    // If both the chef and location have a food then one of them needs to be placed down before
     // doing anything
 
     int x = actionLocation[0];
     int y = actionLocation[1];
 
-    if (this.cake != null && this.bakery.cakeLocations[y][x] != null) {
+    if (this.food != null && this.restaurant.foodLocations[y][x] != null) {
       return;
     }
 
     // This gets the kind of thing at the given location according to the key below
 
-    // 2 = cake mix
+    // 2 = base station
     // 3 = oven
     // 4 = counter
     // 5 = cutting station
     // 6 = delivery station
     // 7 = trash
-    int location = this.bakery.layout[y][x];
+    // 8 = ingredient station
+    int location = this.restaurant.layout[y][x];
 
-    // If the baker is holding a cake then he just places down the cake at the given location
-    if (this.cake != null) {
+    // If the chef is holding a food then he just places down the food at the given location
+    if (this.food != null) {
 
-      if (location >= 2 && location <= 7) {
-        this.bakery.placeCake(this.giveCake(), x, y);
+      if (location >= 2 && location <= 8) {
+        this.restaurant.placeFood(this.giveFood(), x, y);
+        return;
       }
 
-      // If the baker isnt holding a cake but the place that the baker is performing the action on
-      // does then he either just picks up the cake or cuts it
-    } else if (this.bakery.cakeLocations[y][x] != null) {
-
+      // If the chef isnt holding a food but the place that the chef is performing the action on
+      // does then he either just picks up the food or performs an action on it
+    } else if (this.restaurant.foodLocations[y][x] != null) {
+      //In the case there is no additional information about the action the default is to pick it up
+      if (additionalInfo == null) {
+        this.getFood(this.restaurant.pickUpFood(x, y));
+        return;
+      }
+      //In the case of an oven or counter the chef simply picks it up
       if (location == 3 || location == 4) {
-        this.getCake(this.bakery.pickUpCake(x, y));
+        this.getFood(this.restaurant.pickUpFood(x, y));
+        return;
       }
 
+      //In the case of a cutting station the chef cuts
       if (location == 5) {
-        if (this.bakery.cakeLocations[y][x].isCut) {
-          this.getCake(this.bakery.pickUpCake(x, y));
-        } else {
-          this.bakery.cutCake(x, y);
-        }
+        this.restaurant.cutFood(x, y);
+        return;
       }
 
-      // In the case that nobody is holding a cake then we get a new cake (from the cake mix
-      // station)
+      //In the case of an ingrediant station the chef adds the ingrediant
+      if (location == 8) {
+        this.restaurant.addIngredient(x,y,additionalInfo);
+        return;
+      }
+
+      // In the case that nobody is holding a food then we get a new food
     } else {
 
       if (location == 2) {
-        this.getCake(new Cake(cakeType));
-      }
-    }
+        if(additionalInfo != null){
+          if (additionalInfo.equals("cake")) {
+            this.getFood(new Cake());
+          }
+          if (additionalInfo.equals("burger")) {
+            this.getFood(new Burger());
+          }
+        }
 
-    return;
+      }
+      return;
+    }
   }
 
-  // This moves the baker. If the baker doesn't move it instead returns the location at which it did
+  // This moves the chef. If the chef doesn't move it instead returns the location at which it did
   // the action on
-  public int[] move(char direction, Bakery bakery) {
+  public int[] move(char direction, Restaurant restaurant) {
 
     if (direction == 'p') {
       return null;
@@ -175,15 +190,15 @@ public class Person {
       x += 1;
     }
 
-    if (x < 0 || y < 0 || x >= bakery.width || y >= bakery.height) {
+    if (x < 0 || y < 0 || x >= restaurant.width || y >= restaurant.height) {
       return null;
     }
-    if (bakery.chefLocations[y][x] != null) {
+    if (restaurant.chefLocations[y][x] != null) {
       return null;
     }
 
-    if (bakery.layout[y][x] == 0 || bakery.layout[y][x] == 1) {
-      bakery.bakerMoved(this.location[0], this.location[1], x, y);
+    if (restaurant.layout[y][x] == 0 || restaurant.layout[y][x] == 1) {
+      restaurant.chefMoved(this.location[0], this.location[1], x, y);
       this.location[0] = x;
       this.location[1] = y;
     } else {

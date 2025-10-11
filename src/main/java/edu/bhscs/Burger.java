@@ -1,46 +1,36 @@
 package edu.bhscs;
 
-public class Burger {
-  //Fields/properties
+// Check Food class for fields and properties
+public class Burger extends Food {
 
-  String[] ingredients = new String[0];
-  Boolean isCooked = false;
-  Boolean isBurnt = false;
-  Boolean isEdible = false;
+  // fields and propeties (most are found in the food class)
 
-  int cookingTime = 3;
-  int burningTime = 5;
-  int timeCooked = 0;
+  // Constructor
+  public Burger() {
+    this.isCookable = true;
+    this.cookingTime = 3;
+    this.overcookingTime = 6;
 
-  //Constructor
-  public Burger(){
+    this.isCuttable = false;
 
+    this.hasMultipleIngredients = true;
+    this.minIngredients = 1;
+
+    this.foodType = "burger";
+
+    this.baseCost = 15;
   }
 
-  //Adds an ingredient to the burger
-  public void addIngredient(String ingredient){
-    if(this.isCooked){
-      String[] newIngredients = new String[this.ingredients.length + 1];
-      for (int i = 0; i < this.ingredients.length; i++) {
-        newIngredients[i] = this.ingredients[i];
-      }
-      newIngredients[newIngredients.length - 1] = ingredient;
-      this.ingredients = newIngredients;
+  public String getFoodTitle() {
+    if (this.ingredients.length == 0) {
+      return "burger";
+    }
+    String ingredientNames = "";
+    for (int i = 0; i < this.ingredients.length - 1; i++) {
+      ingredientNames += this.ingredients[i] + ", ";
     }
 
+    ingredientNames += "and " + this.ingredients[this.ingredients.length - 1];
+    return "burger with " + ingredientNames;
   }
-
-  //changes the state of the burger to be cooked
-  public void cook(){
-    if (!(this.isBurnt)) {
-      this.timeCooked += 1;
-    }
-    if (this.timeCooked == this.burningTime) {
-      this.isBurnt = true;
-      this.isEdible = false;
-    } else if (this.timeCooked == this.cookingTime) {
-      this.isCooked = true;
-    }
-  }
-
 }
