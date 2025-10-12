@@ -5,16 +5,16 @@ public class Display {
   // Constructor
   public Display() {}
 
-  public void displayEverything(int timeLeft, Restaurant bakery) {
+  public void displayEverything(int timeLeft, Restaurant restaurant) {
     this.displayTime(timeLeft);
-    this.displayBakeryRating(bakery.rating);
-    this.displayBakeryMoney(bakery.money);
-    this.displayBakeryOrders(bakery.orders);
-    this.displayBakery(bakery);
+    this.displayRestaurantRating(restaurant.rating);
+    this.displayRestaurantMoney(restaurant.money);
+    this.displayRestaurantOrders(restaurant.orders);
+    this.displayRestaurant(restaurant);
   }
 
-  // Displays the bakery
-  public void displayBakery(Restaurant bakery) {
+  // Displays the restaurant
+  public void displayRestaurant(Restaurant restaurant) {
 
     // Display is as follows:
     // 0 = empty
@@ -27,45 +27,57 @@ public class Display {
     // 7 = trash
     // 8 = ingredient station
     // u = chef
-    // U = chef holding food
-    // a = food mix
-    // a,b,c,d,e,f,h,i,j = food cooking
-    // j = fully cooked
-    // z = overcooked
-    // s = fully ready (this overrides everything)
+    // U = chef holding edible
+    // Uppercase represents a food while lowercase represents an ingredient
+    // A = edible mix
+    // A,B,C,D,E,F,H,I,J = edible cooking
+    // J = fully cooked
+    // K = also cut
+    // Z = overcooked
+    // S = ready to serve (this overrides everything)
 
-    for (int y = 0; y < bakery.layout.length; y++) {
-      for (int x = 0; x < bakery.layout[y].length; x++) {
+    for (int y = 0; y < restaurant.layout.length; y++) {
+      for (int x = 0; x < restaurant.layout[y].length; x++) {
 
-        if (bakery.chefLocations[y][x] != null) {
+        if (restaurant.chefLocations[y][x] != null) {
 
-          if (bakery.chefLocations[y][x].food != null) {
+          if (restaurant.chefLocations[y][x].edible != null) {
             System.out.print("U");
           } else {
             System.out.print("u");
           }
 
-        } else if (bakery.foodLocations[y][x] != null) {
+        } else if (restaurant.edibleLocations[y][x] != null) {
 
-          Food food = bakery.foodLocations[y][x];
+          Edible edible = restaurant.edibleLocations[y][x];
 
-          if (food.isEdible()) {
-            System.out.print("s");
-          } else if (food.isOvercooked) {
-            System.out.print("z");
-          } else if (food.isCooked) {
-            System.out.print("j");
+          char character;
+
+          if (edible.isEdible()) {
+            character = 's';
+          } else if (edible.isOvercooked) {
+            character = 'z';
+          } else if (edible.isCut) {
+            character = 'k';
+          } else if (edible.isCooked) {
+            character = 'j';
           } else {
             char[] numToLetter = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'};
-            System.out.print("" + numToLetter[bakery.foodLocations[y][x].timeCooked]);
+            character = numToLetter[restaurant.edibleLocations[y][x].timeCooked];
+          }
+
+          if (edible instanceof Food) {
+            System.out.print(Character.toUpperCase(character));
+          } else {
+            System.out.print(character);
           }
 
         } else {
 
-          if (bakery.layout[y][x] == 1) {
+          if (restaurant.layout[y][x] == 1) {
             System.out.print("0");
           } else {
-            System.out.print("" + bakery.layout[y][x]);
+            System.out.print("" + restaurant.layout[y][x]);
           }
         }
       }
@@ -76,7 +88,7 @@ public class Display {
   }
 
   // Displays the currently pending orders
-  public void displayBakeryOrders(Order[] orders) {
+  public void displayRestaurantOrders(Order[] orders) {
     System.out.println("Pending orders: ");
     for (int i = 0; i < orders.length; i++) {
 
@@ -86,10 +98,19 @@ public class Display {
       }
       if (orders[i].late) {
         System.out.println(
-            "  Order #" + (i + 1) + ": " + orders[i].food.getFoodTitle() + ": This order is failed");
+            "  Order #"
+                + (i + 1)
+                + ": "
+                + orders[i].food.getFoodTitle()
+                + ": This order is failed");
       } else {
         System.out.println(
-            "  Order #" + (i + 1) + ": " + orders[i].food.getFoodTitle() + ": Time left " + (orders[i].timeToComplete - orders[i].timeElapsed));
+            "  Order #"
+                + (i + 1)
+                + ": "
+                + orders[i].food.getFoodTitle()
+                + ": Time left "
+                + (orders[i].timeToComplete - orders[i].timeElapsed));
       }
     }
 
@@ -103,18 +124,18 @@ public class Display {
   }
 
   // Displays the number of orders completed
-  public void displayBakeryRating(int rating) {
+  public void displayRestaurantRating(int rating) {
     System.out.println("Rating: " + rating);
     System.out.println();
   }
 
-  // Displays the bakery's money
-  public void displayBakeryMoney(int rating) {
+  // Displays the restaurant's money
+  public void displayRestaurantMoney(int rating) {
     System.out.println("Money: " + rating);
     System.out.println();
   }
 
-  public void displayBurger(Burger burger) {
+  public void displayBurger() {
     int size = 12;
     this.displayBun(size);
     this.displayFilling(size);

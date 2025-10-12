@@ -1,8 +1,6 @@
 package edu.bhscs;
 
-// Note: this class just serves as a template for all the other foods since they all work mostly the
-// same with a few slight differences
-class Food {
+class Food extends Edible {
   // Fields and properties
 
   // All of these fields depend on the food and will be set in the constructor
@@ -12,30 +10,70 @@ class Food {
 
   Boolean isCuttable;
 
-  Boolean hasMultipleIngredients;
-  int minIngredients;
-
   String foodType;
 
-  int baseCost;
+  Ingredient[] requiredIngredients;
 
   // These fields store information about the state of the food
 
-  int timeCooked = 0;
-  Boolean isCooked = false;
-  Boolean isOvercooked = false;
+  // These commented ones also exist but are inside the edible class
+  // int timeCooked = 0;
+  // Boolean isCooked = false;
+  // Boolean isOvercooked = false;
 
-  Boolean isCut = false;
+  // Boolean isCut = false;
+
   int slices = -1;
 
-  String[] ingredients = new String[0];
-  String ingredient = null;
+  Ingredient[] essentialIngredients = new Ingredient[0];
+  Ingredient[] specialtyIngredients = new Ingredient[0];
 
   Boolean isEaten = false;
 
-  // There is no constructor it will be made by the class that extends this one
+  // A food may also be used to represent the menu
+  Boolean isMenu = false;
+
+  public Food(String foodType) {
+    this.foodType = foodType;
+
+    if (foodType.matches("cake")) {
+      this.isCookable = true;
+      this.cookingTime = 5;
+      this.overcookingTime = 7;
+
+      this.isCuttable = true;
+
+      this.requiredIngredients = new Ingredient[2];
+      this.requiredIngredients[0] = new Ingredient("egg");
+      this.requiredIngredients[1] = new Ingredient("flour");
+    }
+    if (foodType.matches("burger")) {
+      this.isCookable = false;
+      // this.cookingTime;
+      // this.overcookingTime;
+
+      this.isCuttable = false;
+
+      this.requiredIngredients = new Ingredient[1];
+      this.requiredIngredients[0] = new Ingredient("bun");
+    }
+  }
+
+  public int getBaseCost() {
+    int cost = 0;
+
+    for (int i = 0; i < this.essentialIngredients.length; i++) {
+      cost += this.essentialIngredients[i].baseCost;
+    }
+    for (int i = 0; i < this.specialtyIngredients.length; i++) {
+      cost += this.specialtyIngredients[i].baseCost;
+    }
+
+    return cost;
+  }
 
   // Returns whether or not the food is edible
+  @Override
   public Boolean isEdible() {
 
     // Checks if the food is eaten
@@ -53,12 +91,19 @@ class Food {
       return false;
     }
 
-    if (this.hasMultipleIngredients) {
-      if (this.ingredients.length < minIngredients) {
+    // Make sure that all the required ingredients are present
+    if (!(this.matchIngredients(essentialIngredients, requiredIngredients))) {
+      return false;
+    }
+
+    // Finally make sure that all ingredients in the food are also edible
+    for (int i = 0; i < this.essentialIngredients.length; i++) {
+      if (!(this.essentialIngredients[i].isEdible())) {
         return false;
       }
-    } else {
-      if (this.ingredient == null) {
+    }
+    for (int i = 0; i < this.specialtyIngredients.length; i++) {
+      if (!(this.specialtyIngredients[i].isEdible())) {
         return false;
       }
     }
@@ -66,20 +111,31 @@ class Food {
     return true;
   }
 
-  // Adds an ingredient to the ingredients or sets the ingredient (if there is only supposed to be
-  // 1)
-  public void addIngredient(String ingredient) {
-    if(!(this.isCookable) || !(this.isCooked))
-      if (this.hasMultipleIngredients) {
-        String[] newIngredients = new String[this.ingredients.length + 1];
-        for (int i = 0; i < this.ingredients.length; i++) {
-          newIngredients[i] = this.ingredients[i];
-        }
-        newIngredients[newIngredients.length - 1] = ingredient;
-        this.ingredients = newIngredients;
+  // Adds an ingredient to the ingredients
+  public void addIngredient(Ingredient ingredient) {
+    if (!(this.isCookable) || !(this.isCooked)) {
+
+      Ingredient[] currentIngredients;
+
+      if (ingredient.isEssential) {
+        currentIngredients = this.essentialIngredients;
       } else {
-        this.ingredient = ingredient;
+        currentIngredients = this.specialtyIngredients;
       }
+      Ingredient[] newIngredients = new Ingredient[currentIngredients.length + 1];
+      for (int i = 0; i < currentIngredients.length; i++) {
+        newIngredients[i] = currentIngredients[i];
+      }
+      newIngredients[newIngredients.length - 1] = ingredient;
+
+      currentIngredients = newIngredients;
+
+      if (ingredient.isEssential) {
+        this.essentialIngredients = newIngredients;
+      } else {
+        this.specialtyIngredients = newIngredients;
+      }
+    }
   }
 
   // The boolean returns whether or not the state was updated to be eaten
@@ -105,9 +161,9 @@ class Food {
   }
 
   // Ticks the state of cooking (if it can cook)
+  @Override
   public void cook() {
     if (this.isCookable) {
-
       // Stop time cooked from becoming too high because display uses the time cooked as part of its
       // display process
       if (!(this.isOvercooked)) {
@@ -122,10 +178,11 @@ class Food {
   }
 
   // Updates the state of the food to be cut (if it can be cut)
-  public void cut(int slices) {
+  @Override
+  public void cut() {
     if (this.isCuttable) {
       if (!(this.isCut) && this.isCooked) {
-        this.slices = slices;
+        this.slices = 6;
         this.isCut = true;
       }
     }
@@ -139,45 +196,86 @@ class Food {
       return false;
     }
 
-    // If they do then there are 2 cases, either there are multiple ingredients (the order of the
-    // ingredients does not matter) or there is only 1
-    if (food.hasMultipleIngredients) {
-
-      // If there are multiple ingredients first we check if they are the same number
-      if (food.ingredients.length != this.ingredients.length) {
+    // If they do then the specialty and essential ingredients must be matched (in the case that its a menu item we are matching with then instead we check the required ingredients)
+    if(this.isMenu){
+      if (!(this.matchIngredients(food.essentialIngredients, this.requiredIngredients))) {
         return false;
       }
-
-      // Then for each ingredient in one we see if it appears in the other, if it doesnt that means
-      // the ingredients dont match
-      for (int i = 0; i < food.ingredients.length; i++) {
-
-        Boolean ingredientFound = false;
-
-        for (int j = 0; j < this.ingredients.length; j++) {
-          if (food.ingredients[i].equals(this.ingredients[j])) {
-            ingredientFound = true;
-          }
-        }
-
-        if (!(ingredientFound)) {
-          return false;
-        }
+    } else if(food.isMenu) {
+      if (!(this.matchIngredients(food.requiredIngredients, this.essentialIngredients))) {
+        return false;
       }
     } else {
-
-      // If there is only 1 then simply check if the ingredients are the same
-      if (!(food.ingredient.equals(this.ingredient))) {
+      if (!(this.matchIngredients(food.essentialIngredients, this.essentialIngredients))) {
+        System.out.println("failed match essential test");
         return false;
       }
     }
+    if (!(this.matchIngredients(food.specialtyIngredients, this.specialtyIngredients))) {
+      System.out.println("failed match specialty test");
+      return false;
+    }
+
+    System.out.println("success");
+
     return true;
   }
 
-  // All methods from here on out are set by the classes associated with each food
+  public Boolean matchIngredients(Ingredient[] set1, Ingredient[] set2) {
+    if (set1.length != set2.length) {
+      return false;
+    }
 
-  // This gets whatever the food is called (ex: burger with cheese and lettuce or chocolate cake)
+    // Then for each ingredient in one we see if it appears in the other, if it doesnt that means
+    // the ingredients dont match
+    for (int i = 0; i < set1.length; i++) {
+
+      Boolean ingredientFound = false;
+
+      for (int j = 0; j < set2.length; j++) {
+        if (set2[i].matches(set1[j])) {
+          ingredientFound = true;
+        }
+      }
+
+      if (!(ingredientFound)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  // This gets whatever the food is called (ex: burger with cheese and lettuce or chocolate cake or
+  // burger with cheese, lettuce, and meat)
+  @Override
   public String getFoodTitle() {
-    return null;
+
+    if ((!(this.matchIngredients(this.essentialIngredients, this.requiredIngredients))
+            || this.specialtyIngredients.length == 0)
+        && !(this.isMenu)) {
+      return this.foodType;
+    }
+
+    if (this.specialtyIngredients.length == 1) {
+      return this.specialtyIngredients[0].name + " " + this.foodType;
+    }
+
+    if (this.specialtyIngredients.length == 2) {
+      return this.foodType
+          + " with "
+          + this.specialtyIngredients[0].name
+          + " and "
+          + this.specialtyIngredients[1].name;
+    }
+
+    String ingredientNames = "";
+    for (int i = 0; i < this.specialtyIngredients.length - 1; i++) {
+      ingredientNames += this.specialtyIngredients[i].name + ", ";
+    }
+
+    ingredientNames +=
+        "and " + this.specialtyIngredients[this.specialtyIngredients.length - 1].name;
+    return this.foodType + " with " + ingredientNames;
   }
 }

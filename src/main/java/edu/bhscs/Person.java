@@ -13,7 +13,7 @@ public class Person {
 
   Order order;
 
-  Food food;
+  Edible edible;
 
   // Constructors
 
@@ -29,28 +29,35 @@ public class Person {
   }
 
   // All of these methods can be used by both customers and chefs
-  public void getFood(Food food) {
-    this.food = food;
-    System.out.println(this.name + " got a " + this.food.getFoodTitle());
+  public void getEdible(Edible edible) {
+    this.edible = edible;
+    System.out.println(this.name + " got a " + this.edible.getFoodTitle());
   }
 
-  public Food giveFood() {
-    Food foodTemp = this.food;
-    this.food = null;
-    return foodTemp;
+  public Edible giveEdible() {
+    Edible edibleTemp = this.edible;
+    this.edible = null;
+    return edibleTemp;
   }
 
   public void eatFood() {
-    if (this.food != null) {
-      if (this.food.isEdible()) {
-        this.food.eat();
-        System.out.println(this.name + " ate a " + this.food.getFoodTitle());
+    Food food;
+    if ((this.edible instanceof Food)) {
+      food = (Food) this.edible;
+    } else {
+      System.out.println(this.name + " can't eat the " + this.edible.getFoodTitle());
+      return;
+    }
+    if (food != null) {
+      if (food.isEdible()) {
+        food.eat();
+        System.out.println(this.name + " ate a " + food.getFoodTitle());
       } else {
-        System.out.println(this.name + " can't eat the " + this.food.getFoodTitle());
+        System.out.println(this.name + " can't eat the " + food.getFoodTitle());
       }
 
-      if (this.food.isEaten) {
-        this.food = null;
+      if (food.isEaten) {
+        this.edible = null;
       }
     } else {
       System.out.println(this.name + " doesn't have anything to eat");
@@ -80,23 +87,48 @@ public class Person {
     // Moves the chef and if the chef doesn't move then has the chef do the action at the given
     // location
     int[] actionLocation = this.move(direction, this.restaurant);
-    if(actionLocation != null){
+    if (actionLocation != null) {
       this.doActionAtLocation(actionLocation, additionalInfo);
     }
-
   }
 
   // Given a certain position to do the action on and potentially any additional information (like
   // what to create)
   // does whatever the action is
   public void doActionAtLocation(int[] actionLocation, String additionalInfo) {
-    // If both the chef and location have a food then one of them needs to be placed down before
-    // doing anything
 
     int x = actionLocation[0];
     int y = actionLocation[1];
 
-    if (this.food != null && this.restaurant.foodLocations[y][x] != null) {
+    // If both the chef and location have an edible then either they are traded or an ingredient is
+    // added to the food
+    if (this.edible != null && this.restaurant.edibleLocations[y][x] != null) {
+      Edible bakerEdible = this.giveEdible();
+      Edible restaurantEdible = this.restaurant.pickUpEdible(x, y);
+
+      // If the if statement is true that means that both are ingredients or foods meaning they
+      // cannot be combined
+      if ((bakerEdible instanceof Ingredient && restaurantEdible instanceof Ingredient)
+          || (bakerEdible instanceof Food && restaurantEdible instanceof Food)) {
+
+        this.getEdible(restaurantEdible);
+        this.restaurant.placeEdible(bakerEdible, x, y);
+        return;
+      }
+
+      // Otherwise the ingredient is added to the food and the food is placed in the kitchen
+      Food food;
+      Ingredient ingredient;
+      if ((bakerEdible instanceof Food)) {
+        food = (Food) bakerEdible;
+        ingredient = (Ingredient) restaurantEdible;
+      } else {
+        food = (Food) restaurantEdible;
+        ingredient = (Ingredient) bakerEdible;
+      }
+
+      food.addIngredient(ingredient);
+      this.restaurant.placeEdible(food, x, y);
       return;
     }
 
@@ -111,53 +143,47 @@ public class Person {
     // 8 = ingredient station
     int location = this.restaurant.layout[y][x];
 
-    // If the chef is holding a food then he just places down the food at the given location
-    if (this.food != null) {
+    // If the chef is holding an edible then he just places down the edible at the given location
+    if (this.edible != null) {
 
       if (location >= 2 && location <= 8) {
-        this.restaurant.placeFood(this.giveFood(), x, y);
+        this.restaurant.placeEdible(this.giveEdible(), x, y);
         return;
       }
 
-      // If the chef isnt holding a food but the place that the chef is performing the action on
-      // does then he either just picks up the food or performs an action on it
-    } else if (this.restaurant.foodLocations[y][x] != null) {
-      //In the case there is no additional information about the action the default is to pick it up
+      // If the chef isnt holding an edible but the place that the chef is performing the action on
+      // does then he either just picks up the edible or performs an action on it
+    } else if (this.restaurant.edibleLocations[y][x] != null) {
+      // In the case there is no additional information about the action the default is to pick it
+      // up
       if (additionalInfo == null) {
-        this.getFood(this.restaurant.pickUpFood(x, y));
+        this.getEdible(this.restaurant.pickUpEdible(x, y));
         return;
       }
-      //In the case of an oven or counter the chef simply picks it up
+      // In the case of an oven or counter the chef simply picks it up
       if (location == 3 || location == 4) {
-        this.getFood(this.restaurant.pickUpFood(x, y));
+        this.getEdible(this.restaurant.pickUpEdible(x, y));
         return;
       }
 
-      //In the case of a cutting station the chef cuts
+      // In the case of a cutting station the chef cuts
       if (location == 5) {
-        this.restaurant.cutFood(x, y);
+        this.restaurant.cutEdible(x, y);
         return;
       }
 
-      //In the case of an ingrediant station the chef adds the ingrediant
-      if (location == 8) {
-        this.restaurant.addIngredient(x,y,additionalInfo);
-        return;
-      }
-
-      // In the case that nobody is holding a food then we get a new food
+      // In the case that nobody is holding a edible then we get a new edible
     } else {
-
+      if (additionalInfo == null) {
+        return;
+      }
       if (location == 2) {
-        if(additionalInfo != null){
-          if (additionalInfo.equals("cake")) {
-            this.getFood(new Cake());
-          }
-          if (additionalInfo.equals("burger")) {
-            this.getFood(new Burger());
-          }
-        }
-
+        this.getEdible(new Food(additionalInfo));
+      }
+      // In the case of an ingrediant station the chef gets an ingredient
+      if (location == 8) {
+        this.getEdible(new Ingredient(additionalInfo));
+        return;
       }
       return;
     }

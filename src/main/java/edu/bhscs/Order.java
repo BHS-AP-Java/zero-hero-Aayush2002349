@@ -22,19 +22,19 @@ public class Order {
     this.food = food;
     this.timeToComplete = timeToComplete;
     this.payment = payment;
+    this.tip = tip;
   }
 
   // This order creates a random order
   public Order(Food[] menu, int tip) {
-    this.payment = 30;
     this.tip = tip;
     this.food = menu[random.nextInt(menu.length)];
+    this.payment = this.food.getBaseCost();
     this.timeToComplete = 30;
   }
 
   // If an order is completed then it returns the payment, returns -1 if the food isnt correct
   public int orderCompleted(Food food) {
-
     if (food.matches(this.food)) {
       return this.payment + this.tip;
     }

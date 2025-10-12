@@ -13,7 +13,8 @@ public class Game {
   // Constructors below
   // This one creates a game with the given inputs
   public Game(int[][] layout, Person[] bakers, Food[] menu) {
-    this.restaurant = new Restaurant(layout, layout[0].length, layout.length, 10, "The Restaurant", menu);
+    this.restaurant =
+        new Restaurant(layout, layout[0].length, layout.length, 10, "The Restaurant", menu);
     this.restaurant.hireChefs(bakers);
     this.bakers = bakers;
   }
@@ -46,21 +47,27 @@ public class Game {
     // this.bakers[1] = new Person("Bob", player1);
 
     Food[] menu = new Food[5];
-    menu[0] = new Cake();
-    menu[0].addIngredient("chocolate");
-    menu[1] = new Cake();
-    menu[1].addIngredient("spice");
-    menu[2] = new Burger();
-    menu[2].addIngredient("meat");
-    menu[3] = new Burger();
-    menu[3].addIngredient("meat");
-    menu[3].addIngredient("cheese");
-    menu[4] = new Burger();
-    menu[4].addIngredient("meat");
-    menu[4].addIngredient("cheese");
-    menu[4].addIngredient("lettuce");
+    menu[0] = new Food("cake");
+    menu[0].isMenu = true;
+    menu[0].addIngredient(new Ingredient("chocolate"));
+    menu[1] = new Food("cake");
+    menu[1].isMenu = true;
+    menu[1].addIngredient(new Ingredient("spice"));
+    menu[2] = new Food("burger");
+    menu[2].isMenu = true;
+    menu[2].addIngredient(new Ingredient("meat"));
+    menu[3] = new Food("burger");
+    menu[3].isMenu = true;
+    menu[3].addIngredient(new Ingredient("meat"));
+    menu[3].addIngredient(new Ingredient("cheese"));
+    menu[4] = new Food("burger");
+    menu[4].isMenu = true;
+    menu[4].addIngredient(new Ingredient("meat"));
+    menu[4].addIngredient(new Ingredient("cheese"));
+    menu[4].addIngredient(new Ingredient("lettuce"));
 
-    this.restaurant = new Restaurant(layout, layout[0].length, layout.length, 10, "The Restaurant", menu);
+    this.restaurant =
+        new Restaurant(layout, layout[0].length, layout.length, 10, "The Restaurant", menu);
     this.restaurant.hireChefs(bakers);
   }
 
