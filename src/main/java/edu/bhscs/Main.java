@@ -8,7 +8,7 @@ package edu.bhscs;
 /*
  * DESCRIPTION: Restaurant coop thing (based on overcooked 2) (it was originally a bakery until burgers got added...)
  *  A game in which the player controls chefs to make them cook stuff according to orders that the player will be getting
- *  Certain foods like cakes and burgers need to be created add ingredient(s) to them, cooked and sometimes cut into slices
+ *  Certain foods like cakes and burgers need to be created add ingredient(s) to them, sometimes cooked and sometimes cut into slices (both ingredients and cakes/burgers can be cooked and cut)
  *  There is a limited amount of time to complete as many orders as possible
  *  The goal is to get the most money (which serves as a score) by the end of the time.
  *  Completing orders gets you money and you get even more based on your restaurant's rating from tips, your rating can go up by completing orders and also completing them in order but will go down if you take too long
@@ -57,10 +57,11 @@ class Main {
     // cake up (ex: sx)
 
     // Creating a new game with no arguments creates a default game
+
     Game game = new Game();
     game.doGameLoop();
 
-    // Display display = new Display();
-    // display.displayBurger(new Burger());
+    //Display display = new Display();
+    //display.displayBurger();
   }
 }
