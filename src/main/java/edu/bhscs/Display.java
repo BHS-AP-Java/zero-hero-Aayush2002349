@@ -135,6 +135,54 @@ public class Display {
     System.out.println();
   }
 
+  public void displayFood(Food food){
+    if(food.foodType == "cake"){
+      this.displayCake(food);
+    }
+  }
+
+  public void displayCake(Food food){
+    //4 params of cake
+  }
+
+  public void drawConvexPolygon(double[][] points, char[][] surface){
+
+    double[][] projectedPoints = this.projPoints(points);
+
+    for(int i = 0; i < surface.length; i++){
+      for (int j = 0; j < surface.length; j++) {
+        //We need to iterate thourgh all points and check whether or not (j,i) is inside the polygon
+        //One way to do this is to check if some line (ex a horizontal one) intersects one edge of the polygon on both sides (ex: the left and right side)
+        //The slope between (x1,y1),(x2,y2) is (y2-y1)/(x2,x1) and the equation would be y=(y2-y1)/(x2,x1) * (x-x1)+y1. For a horizonal line we already know the y coordinate at the location at which they intersect (since the line is horizontal)
+        //y=i y=(y2-y1)/(x2,x1) * (x-x1)+y1, So we need to solve for x which is:
+        //i=(y2-y1)/(x2,x1) * (x-x1)+y1 i-y1 = (y2-y1)/(x2,x1) * (x-x1) x-x1 = (i-y1)(x2,x1)/(y2-y1) or x = (i-y1)(x2,x1)/(y2-y1)+x1
+        //For a given point to intersect there must be an x on the left and one on the right
+
+        Boolean foundLeft = false;
+        Boolean foundRight = false;
+        for(int pt = 0; pt < projectedPoints.length; pt++){
+          int[] pt1;
+          int x;
+        }
+
+      }
+    }
+
+  }
+
+  //This projection is a very simple perspective projection (x,y,z) -> (x/z,y/z)
+  public double[][] projPoints(double[][] points){
+
+    double[][] projectedPoints = new double[points.length][2];
+    for(int i = 0; i < points.length; i++){
+      double[] projectedPoint = {points[i][0]/points[i][2], points[i][1] / points[i][2]};
+      projectedPoints[i] = projectedPoint;
+    }
+
+    return projectedPoints;
+
+  }
+
   public void displayBurger() {
     int size = 12;
     this.displayBun(size);

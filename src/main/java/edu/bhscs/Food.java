@@ -196,12 +196,13 @@ class Food extends Edible {
       return false;
     }
 
-    // If they do then the specialty and essential ingredients must be matched (in the case that its a menu item we are matching with then instead we check the required ingredients)
-    if(this.isMenu){
+    // If they do then the specialty and essential ingredients must be matched (in the case that its
+    // a menu item we are matching with then instead we check the required ingredients)
+    if (this.isMenu) {
       if (!(this.matchIngredients(food.essentialIngredients, this.requiredIngredients))) {
         return false;
       }
-    } else if(food.isMenu) {
+    } else if (food.isMenu) {
       if (!(this.matchIngredients(food.requiredIngredients, this.essentialIngredients))) {
         return false;
       }

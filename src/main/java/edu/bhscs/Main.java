@@ -21,7 +21,24 @@ package edu.bhscs;
 
 class Main {
 
-  public static void main(String[] args) {
+  public static void main(String[] args){
+    Display display = new Display();
+    // Just getting the food (normally all of these steps are done by the player)
+    Food food = new Food("cake");
+    food.addIngredient(new Ingredient("egg"));
+    food.addIngredient(new Ingredient("flour"));
+    Ingredient choco = new Ingredient("chocolate");
+    choco.cut();
+    food.addIngredient(choco);
+    for (int i = 0; i < 6; i++) {
+      food.cook();
+    }
+    food.cut();
+
+    display.displayFood(food);
+    display.displayBurger();
+  }
+  public static void tmain(String[] args) {
 
     // Layout:
     // 0 = empty
@@ -60,8 +77,5 @@ class Main {
 
     Game game = new Game();
     game.doGameLoop();
-
-    //Display display = new Display();
-    //display.displayBurger();
   }
 }
