@@ -143,11 +143,35 @@ public class Display {
 
   public void displayCake(Food food){
     //4 params of cake
+
+    String[][] surface = this.getSurface(30,30);
+    double[][] points = {{0,30},{6,12},{30,0},{30,30}};
+    this.drawConvexPolygon(points,surface);
+    this.displaySurface(surface);
   }
 
-  public void drawConvexPolygon(double[][] points, char[][] surface){
+  public String[][] getSurface(int width,int height){
+    String[][] surface = new String[height][width];
+    for (int i = 0; i < surface.length; i++) {
+      for (int j = 0; j < surface[i].length; j++) {
+        surface[i][j] = "  ";
+      }
+    }
 
-    double[][] projectedPoints = this.projPoints(points);
+    return surface;
+  }
+
+  public void displaySurface(String[][] surface){
+    for(int i = 0; i < surface.length; i++){
+      for(int j = 0; j < surface[i].length; j++){
+        System.out.print(surface[i][j]);
+      }
+      System.out.println();
+    }
+  }
+
+  //Draws a polygon given the points of the polygon as well as something to draw the polygon on
+  public void drawConvexPolygon(double[][] points, String[][] surface){
 
     for(int i = 0; i < surface.length; i++){
       for (int j = 0; j < surface.length; j++) {
@@ -157,12 +181,55 @@ public class Display {
         //y=i y=(y2-y1)/(x2,x1) * (x-x1)+y1, So we need to solve for x which is:
         //i=(y2-y1)/(x2,x1) * (x-x1)+y1 i-y1 = (y2-y1)/(x2,x1) * (x-x1) x-x1 = (i-y1)(x2,x1)/(y2-y1) or x = (i-y1)(x2,x1)/(y2-y1)+x1
         //For a given point to intersect there must be an x on the left and one on the right
+        //Finally if the y coordinate is inbetween y1 and y2 that means that there is an intersection with the line segment of the polygon, if not, then there is no intersection
 
+        //For the purposes of this assignment the indexes of the surface are equal to the coordinate point that surface represents
         Boolean foundLeft = false;
         Boolean foundRight = false;
-        for(int pt = 0; pt < projectedPoints.length; pt++){
-          int[] pt1;
-          int x;
+        for(int pt = 0; pt < points.length; pt++){
+
+          //Getting the points
+          double[] pt1 = points[pt];
+          double[] pt2;
+
+          if(pt == points.length - 1){
+            pt2 = points[0];
+          } else {
+            pt2 = points[pt+1];
+          }
+
+          //Getting the coordinates of the points
+          double x1 = pt1[0];
+          double x2 = pt2[0];
+          double y1 = pt1[1];
+          double y2 = pt2[1];
+
+          //Check to make sure the y coordinate is inbetween the y coordinates of the points on the polygon
+          if ((i >= y1 && i <= y2) || (i <= y1 && i >= y2)) {
+            // Formula for x coord of intersection point
+            double x;
+
+            // If the line is close to vertical there will be a / by 0 error
+            if (y2 - y1 < 0.0001 && y2 - y1 > 0.0001) {
+              x = x1;
+            } else {
+              x = ((i - y1) * (x2 - x1) / (y2 - y1)) + x1;
+            }
+            //Finally we check whether this point is on the left or right (remember j represnts the x coordinate)
+            if(x <= j){
+              foundLeft = true;
+            }
+
+            if(x >= j){
+              foundRight = true;
+            }
+
+          }
+
+        }
+
+        if(foundLeft && foundRight){
+          surface[i][j] = "##";
         }
 
       }
@@ -171,16 +238,29 @@ public class Display {
   }
 
   //This projection is a very simple perspective projection (x,y,z) -> (x/z,y/z)
-  public double[][] projPoints(double[][] points){
+  public double[][] projPoints(double[][] points,double[] cameraPos, double[] cameraDir, double[] up){
+
+    
 
     double[][] projectedPoints = new double[points.length][2];
     for(int i = 0; i < points.length; i++){
-      double[] projectedPoint = {points[i][0]/points[i][2], points[i][1] / points[i][2]};
+      double[] projectedPoint = {points[i][0], points[i][1]};
       projectedPoints[i] = projectedPoint;
     }
 
     return projectedPoints;
 
+  }
+
+  public double[] crossProduct(double[] vec1,double[] vec2){
+    // https://en.wikipedia.org/wiki/Cross_product
+    // The cross product formula used is found above ^^^
+    double[] crossed = {
+      vec1[1] * vec2[2] - vec1[2] * vec2[1],
+      vec1[2] * vec2[0] - vec1[0] * vec2[2],
+      vec1[0] * vec2[1] - vec1[1] * vec2[0]
+    };
+    return crossed;
   }
 
   public void displayBurger() {
