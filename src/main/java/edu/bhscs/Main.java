@@ -36,7 +36,7 @@ class Main {
     food.cut();
 
     display.displayFood(food);
-    //display.displayBurger();
+    // display.displayBurger();
   }
 
   public static void tmain(String[] args) {

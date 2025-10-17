@@ -135,28 +135,39 @@ public class Display {
     System.out.println();
   }
 
-  public void displayFood(Food food){
-    if(food.foodType == "cake"){
+  public void displayFood(Food food) {
+    if (food.foodType == "cake") {
       this.displayCake(food);
     }
   }
 
-  //Displays a 3d cake
-  public void displayCake(Food food){
-    for(double test = 0; test < 6.3; test = test + 0.1){
-      String[][] surface = this.getSurface(30,30);
-      double[][] points = {{10,10,3},{20,10,4},{10,20,2}};
+  // Displays a 3d cake
+  public void displayCake(Food food) {
 
-      double[] cameraPos = {12,12,7};
+    double[][] rightFace = {{0, 0, 0}, {0, 5, 0}, {5, 5, 20}, {5, 0, 20}};
+    double[][] frontFace = {{0, 0, 0}, {0, 5, 0}, {10, 5, 0}, {10, 0, 0}};
+    double[][] bottomFace = {{0, 0, 0}, {10, 0, 0}, {5, 0, 20}};
+    double[][] topFace = {{0, 5, 0}, {10, 5, 0}, {5, 5, 20}};
+    double[][] leftFace = {{10, 0, 0}, {10, 5, 0}, {5, 5, 20}, {5, 0, 20}};
 
-      double[] cameraDir = {Math.sin(test),0,Math.cos(test)};
+    //The 3d cake is a wedge-like shape
+    double[][][] cake3d = {rightFace,frontFace,bottomFace,topFace,leftFace};
+
+    for (double test = 0; test < 6.3; test = test + 0.1) {
+      String[][] surface = this.getSurface(30, 30);
+
+      double[] cameraPos = {0,0,0};
+
+      double[] cameraDir = {Math.sin(test), 0, Math.cos(test)};
       /*for (int i = 0; i < cameraDir.length; i++) {
         System.out.print(cameraDir[i]);
         System.out.print(" ");
       }*/
-      double[] up = {0,1,0};
 
-      double[][] projectedPoints = this.projPoints(points,cameraPos,cameraDir,up);
+      //The up vector is just a 90 degree rotation from the camera pos
+      double[] up = {cameraDir[0], cameraDir[2], -cameraDir[1]};
+
+
 
       /*for(int i = 0; i < projectedPoints.length; i++){
         System.out.print("  ");
@@ -166,13 +177,19 @@ public class Display {
         }
       }*/
 
+      for(int i = 0; i < cake3d.length; i++){
+        double[][] projectedPoints = this.projPoints(cake3d[i], cameraPos, cameraDir, up);
+        // $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'.
+        String[] faces = {"$$","hh","{}","//","::"};
+        this.drawConvexPolygon(projectedPoints, surface, faces[i]);
+      }
 
-      this.drawConvexPolygon(projectedPoints,surface,"##");
+
       this.displaySurface(surface);
     }
   }
 
-  public String[][] getSurface(int width,int height){
+  public String[][] getSurface(int width, int height) {
     String[][] surface = new String[height][width];
     for (int i = 0; i < surface.length; i++) {
       for (int j = 0; j < surface[i].length; j++) {
@@ -183,54 +200,62 @@ public class Display {
     return surface;
   }
 
-  public void displaySurface(String[][] surface){
-    for(int i = 0; i < surface.length; i++){
-      for(int j = 0; j < surface[i].length; j++){
+  public void displaySurface(String[][] surface) {
+    for (int i = 0; i < surface.length; i++) {
+      for (int j = 0; j < surface[i].length; j++) {
         System.out.print(surface[i][j]);
       }
       System.out.println();
     }
   }
 
-  //Draws a polygon given the points of the polygon as well as something to draw the polygon on
-  //Note: 0,0 is the center of the surface
-  public void drawConvexPolygon(double[][] points, String[][] surface,String color){
+  // Draws a polygon given the points of the polygon as well as something to draw the polygon on
+  // Note: 0,0 is the center of the surface
+  public void drawConvexPolygon(double[][] points, String[][] surface, String color) {
 
-    for(int i = 0; i < surface.length; i++){
+    for (int i = 0; i < surface.length; i++) {
       for (int j = 0; j < surface[i].length; j++) {
-        //We need to iterate thourgh all points and check whether or not (j,i) is inside the polygon
-        //One way to do this is to check if some line (ex a horizontal one) intersects one edge of the polygon on both sides (ex: the left and right side)
-        //The slope between (x1,y1),(x2,y2) is (y2-y1)/(x2,x1) and the equation would be y=(y2-y1)/(x2,x1) * (x-x1)+y1. For a horizonal line we already know the y coordinate at the location at which they intersect (since the line is horizontal)
-        //y=i y=(y2-y1)/(x2,x1) * (x-x1)+y1, So we need to solve for x which is:
-        //i=(y2-y1)/(x2,x1) * (x-x1)+y1 i-y1 = (y2-y1)/(x2,x1) * (x-x1) x-x1 = (i-y1)(x2,x1)/(y2-y1) or x = (i-y1)(x2,x1)/(y2-y1)+x1
-        //For a given point to intersect there must be an x on the left and one on the right
-        //Finally if the y coordinate is inbetween y1 and y2 that means that there is an intersection with the line segment of the polygon, if not, then there is no intersection
+        // We need to iterate thourgh all points and check whether or not (j,i) is inside the
+        // polygon
+        // One way to do this is to check if some line (ex a horizontal one) intersects one edge of
+        // the polygon on both sides (ex: the left and right side)
+        // The slope between (x1,y1),(x2,y2) is (y2-y1)/(x2,x1) and the equation would be
+        // y=(y2-y1)/(x2,x1) * (x-x1)+y1. For a horizonal line we already know the y coordinate at
+        // the location at which they intersect (since the line is horizontal)
+        // y=i y=(y2-y1)/(x2,x1) * (x-x1)+y1, So we need to solve for x which is:
+        // i=(y2-y1)/(x2,x1) * (x-x1)+y1 i-y1 = (y2-y1)/(x2,x1) * (x-x1) x-x1 =
+        // (i-y1)(x2,x1)/(y2-y1) or x = (i-y1)(x2,x1)/(y2-y1)+x1
+        // For a given point to intersect there must be an x on the left and one on the right
+        // Finally if the y coordinate is inbetween y1 and y2 that means that there is an
+        // intersection with the line segment of the polygon, if not, then there is no intersection
 
         Boolean foundLeft = false;
         Boolean foundRight = false;
-        for(int pt = 0; pt < points.length; pt++){
+        for (int pt = 0; pt < points.length; pt++) {
 
-          //These are just centered coordinates of i and j (so that the center of surface can be 0,0)
+          // These are just centered coordinates of i and j (so that the center of surface can be
+          // 0,0)
           double i1 = i - (surface.length / 2);
           double j1 = j - (surface[i].length / 2);
 
-          //Getting the points
+          // Getting the points
           double[] pt1 = points[pt];
           double[] pt2;
 
-          if(pt == points.length - 1){
+          if (pt == points.length - 1) {
             pt2 = points[0];
           } else {
-            pt2 = points[pt+1];
+            pt2 = points[pt + 1];
           }
 
-          //Getting the coordinates of the points
+          // Getting the coordinates of the points
           double x1 = pt1[0];
           double x2 = pt2[0];
           double y1 = pt1[1];
           double y2 = pt2[1];
 
-          //Check to make sure the y coordinate is inbetween the y coordinates of the points on the polygon
+          // Check to make sure the y coordinate is inbetween the y coordinates of the points on the
+          // polygon
           if ((i1 >= y1 && i1 <= y2) || (i1 <= y1 && i1 >= y2)) {
             // Formula for x coord of intersection point
             double x;
@@ -241,44 +266,43 @@ public class Display {
             } else {
               x = ((i1 - y1) * (x2 - x1) / (y2 - y1)) + x1;
             }
-            //Finally we check whether this point is on the left or right (remember j represnts the x coordinate)
-            if(x <= j1){
+            // Finally we check whether this point is on the left or right (remember j represnts the
+            // x coordinate)
+            if (x <= j1) {
               foundLeft = true;
             }
 
-            if(x >= j1){
+            if (x >= j1) {
               foundRight = true;
             }
-
           }
-
         }
 
-        if(foundLeft && foundRight){
+        if (foundLeft && foundRight) {
           surface[i][j] = color;
         }
-
       }
     }
-
   }
 
-  //This projection is a very simple perspective projection (x,y,z) -> (x/z,y/z)
-  public double[][] projPoints(double[][] points,double[] cameraPos, double[] cameraDir, double[] up){
+  // This projection is a very simple perspective projection (x,y,z) -> (x/z,y/z)
+  public double[][] projPoints(
+      double[][] points, double[] cameraPos, double[] cameraDir, double[] up) {
 
-
-    //Projecting a point involves 2 steps, the first is to convert the points from global space to the camera's local space
-    //The second step is to perform some projection to convert those 3d points to 2d points
+    // Projecting a point involves 2 steps, the first is to convert the points from global space to
+    // the camera's local space
+    // The second step is to perform some projection to convert those 3d points to 2d points
     double[][] projectedPoints = new double[points.length][2];
 
-    //This is the first step
-    double[][] transformedPoints = this.globalToLocalSpace(points,this.crossProduct(cameraDir,up),up,cameraDir,cameraPos);
+    // This is the first step
+    double[][] transformedPoints =
+        this.globalToLocalSpace(points, this.crossProduct(cameraDir, up), up, cameraDir, cameraPos);
 
-    //This is the second step
-    for(int i = 0; i < points.length; i++){
+    // This is the second step
+    for (int i = 0; i < points.length; i++) {
       double[] projectedPoint = new double[2];
 
-      //Currently we are using a very simple orthographic projection (x,y,z) -> (x,y)
+      // Currently we are using a very simple orthographic projection (x,y,z) -> (x,y)
       projectedPoint[0] = transformedPoints[i][0];
       projectedPoint[1] = transformedPoints[i][1];
 
@@ -286,25 +310,24 @@ public class Display {
     }
 
     return projectedPoints;
-
   }
 
-  public double[][] globalToLocalSpace(double[][] points,double[] basisX,double[] basisY, double[] basisZ, double[] origin){
+  public double[][] globalToLocalSpace(
+      double[][] points, double[] basisX, double[] basisY, double[] basisZ, double[] origin) {
 
     double[][] transformedPoints = new double[points.length][3];
 
-    for(int i = 0; i < points.length; i++){
+    for (int i = 0; i < points.length; i++) {
 
-      //Translates the point so that the origin of the points is now the specified origin
+      // Translates the point so that the origin of the points is now the specified origin
       double[] translatedPoint = {
-        points[i][0] - origin[0],
-        points[i][1] - origin[1],
-        points[i][2] - origin[2]
+        points[i][0] - origin[0], points[i][1] - origin[1], points[i][2] - origin[2]
       };
 
-      //Gets the lengths of the basis vectors associated with the point, this is now the fully transformed point
+      // Gets the lengths of the basis vectors associated with the point, this is now the fully
+      // transformed point
       double[] transformedPoint = {
-        this.dotProduct(translatedPoint,basisX),
+        this.dotProduct(translatedPoint, basisX),
         this.dotProduct(translatedPoint, basisY),
         this.dotProduct(translatedPoint, basisZ)
       };
@@ -312,21 +335,19 @@ public class Display {
       transformedPoints[i] = transformedPoint;
     }
 
-
     return transformedPoints;
   }
 
-  public double dotProduct(double[] vec1, double[] vec2){
+  public double dotProduct(double[] vec1, double[] vec2) {
 
     double dot = 0;
-    for(int i = 0; i < vec1.length; i++){
+    for (int i = 0; i < vec1.length; i++) {
       dot += vec1[i] * vec2[i];
     }
     return dot;
-
   }
 
-  public double[] crossProduct(double[] vec1,double[] vec2){
+  public double[] crossProduct(double[] vec1, double[] vec2) {
     // https://en.wikipedia.org/wiki/Cross_product
     // The cross product formula used is found above ^^^
     double[] crossed = {

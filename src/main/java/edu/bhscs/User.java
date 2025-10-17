@@ -19,7 +19,7 @@ public class User {
     return answer;
   }
 
-  public int getNumber(){
+  public int getNumber() {
     System.out.println("Enter number: ");
     return this.scanner.nextInt();
   }
