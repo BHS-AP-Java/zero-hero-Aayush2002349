@@ -144,6 +144,13 @@ public class Display {
   // Displays a 3d cake
   public void displayCake(Food food) {
 
+    // The process of drawing some 3d shape has a few steps
+    // First we need to figure out what 3d points and polygons to actually draw
+    // Then we need to convert those 3d points and polygons into 2d ones
+    // Finally we draw all those polygons onto a surface, making sure we draw the ones further back first so that closer ones cover the further ones
+    // Then we display that surface
+
+    //Here is where we get the polygons of a cake
     double[][] rightFace = {{0, 0, 0}, {0, 5, 0}, {5, 5, 20}, {5, 0, 20}};
     double[][] frontFace = {{0, 0, 0}, {0, 5, 0}, {10, 5, 0}, {10, 0, 0}};
     double[][] bottomFace = {{0, 0, 0}, {10, 0, 0}, {5, 0, 20}};
@@ -153,54 +160,116 @@ public class Display {
     // The 3d cake is a wedge-like shape
     double[][][] cake3d = {rightFace, frontFace, bottomFace, topFace, leftFace};
 
+    //Then we move around this cake a bit and scale it as well
     for (int i = 0; i < cake3d.length; i++) {
       for (int j = 0; j < cake3d[i].length; j++) {
         cake3d[i][j][0] -= 5;
         cake3d[i][j][1] -= 2;
         cake3d[i][j][2] -= 10;
-      } ;
-    } ;
+      }
+      ;
+    }
+    ;
 
-
-    for(int i = 0; i < cake3d.length; i++){
+    for (int i = 0; i < cake3d.length; i++) {
       for (int j = 0; j < cake3d[i].length; j++) {
         for (int k = 0; k < cake3d[i][j].length; k++) {
           cake3d[i][j][k] *= 3;
-        } ;
-      } ;
-    };
+        }
+        ;
+      }
+      ;
+    }
+    ;
 
-    for (double test = 0; test < 6.3; test = test + 0.1) {
+
+    for (double test = 0; test < 6.3; test = test + 0.6) {
+
+      //This is the surface we will draw the polygons onto
       String[][] surface = this.getSurface(60, 60);
 
-      double[] cameraPos = {0, 0, 0};
+      //To do all the specific renderering we need to find a specific point in space to be in as well as a direction to face in and which way is up
+      double[] cameraPos = {0, 0, 10};
 
       double[] cameraDir = {Math.sin(test), 0, Math.cos(test)};
-      /*for (int i = 0; i < cameraDir.length; i++) {
-        System.out.print(cameraDir[i]);
-        System.out.print(" ");
-      }*/
 
-      // The up vector is just a 90 degree rotation from the camera pos
+
+      // The up vector is just a 90 degree rotation from the camera direction
       double[] up = {cameraDir[0], cameraDir[2], -cameraDir[1]};
 
-      /*for(int i = 0; i < projectedPoints.length; i++){
-        System.out.print("  ");
-        for (int j = 0; j < projectedPoints[i].length; j++) {
-          System.out.print(projectedPoints[i][j]);
-          System.out.print(" ");
-        }
-      }*/
+      // To convert our 3d points to 2d ones there are 2 steps.
+      // First we need to figure out where the shapes are relative to the camera, if you move the camera left then we would expect to see everything move to the right
+      // Then we need to apply some process to take 3d points and make them 2d
+
+      // This is where we calculate where the 3d points are relative to the camera
+      double[][][] transformedPolygons = new double[cake3d.length][][];
 
       for (int i = 0; i < cake3d.length; i++) {
-        double[][] projectedPoints = this.projPoints(cake3d[i], cameraPos, cameraDir, up);
+        double[][] transformedPoints = this.globalToLocalSpace(cake3d[i],this.crossProduct(cameraDir, up), up, cameraDir, cameraPos);
+        transformedPolygons[i] = transformedPoints;
+      }
+
+
+      //One of the other things that we need to do is make sure that the polygons drawn first are the ones at the very back, that is done here
+      transformedPolygons = this.zSort(transformedPolygons);
+
+      //Then the points are converted from 3d to 2d and also drawn onto the surface
+      for (int i = 0; i < transformedPolygons.length; i++) {
+        double[][] projectedPoints = this.projPoints(transformedPolygons[i]);
         // $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'.
         String[] faces = {"$$", "hh", "{}", "//", "::"};
         this.drawConvexPolygon(projectedPoints, surface, faces[i]);
       }
 
+      //Finally the surface is displayed
       this.displaySurface(surface);
     }
+  }
+
+  //Sorts polygons so they can be drawn from back to front (higher z coordinate = further back)
+  public double[][][] zSort(double[][][] polygons){
+    if(polygons.length == 1 || polygons.length == 0){
+      return polygons;
+    }
+
+    //Gets the z coordinates of all the polygons (for now its just their average center)
+    double[] zCoords = new double[polygons.length];
+    for(int i = 0; i < polygons.length; i++){
+      zCoords[i] = (this.averagePoints(polygons[i])[2]);
+    }
+
+    //Sorts using bubble sort
+    for(int i = 1; i < polygons.length; i++){
+      for(int j = 0; j < polygons.length - i; j++){
+        if(zCoords[j] < zCoords[j+1]){
+
+          double[][] temp = polygons[j];
+          polygons[j] = polygons[j + 1];
+          polygons[j + 1] = temp;
+
+
+          double temp1 = zCoords[j];
+          zCoords[j] = zCoords[j+1];
+          zCoords[j+1] = temp1;
+        }
+      }
+    }
+
+    return polygons;
+  }
+
+  public double[] averagePoints(double[][] points){
+    double x = 0;
+    double y = 0;
+    double z = 0;
+    for(int i = 0; i < points.length; i++){
+      x += points[i][0];
+      y += points[i][1];
+      z += points[i][2];
+    }
+
+    double[] average = {x/points.length,y/points.length, z / points.length};
+    return average;
   }
 
   public String[][] getSurface(int width, int height) {
@@ -299,26 +368,18 @@ public class Display {
     }
   }
 
-  // This projection is a very simple perspective projection (x,y,z) -> (x/z,y/z)
-  public double[][] projPoints(
-      double[][] points, double[] cameraPos, double[] cameraDir, double[] up) {
+  // This projection is a very simple orthographic projection (x,y,z) -> (x,y)
+  public double[][] projPoints(double[][] points) {
 
-    // Projecting a point involves 2 steps, the first is to convert the points from global space to
-    // the camera's local space
-    // The second step is to perform some projection to convert those 3d points to 2d points
-    double[][] projectedPoints = new double[points.length][2];
-
-    // This is the first step
-    double[][] transformedPoints =
-        this.globalToLocalSpace(points, this.crossProduct(cameraDir, up), up, cameraDir, cameraPos);
+    double[][] projectedPoints = new double[points.length][3];
 
     // This is the second step
     for (int i = 0; i < points.length; i++) {
       double[] projectedPoint = new double[2];
 
       // Currently we are using a very simple orthographic projection (x,y,z) -> (x,y)
-      projectedPoint[0] = transformedPoints[i][0];
-      projectedPoint[1] = transformedPoints[i][1];
+      projectedPoint[0] = points[i][0];
+      projectedPoint[1] = points[i][1];
 
       projectedPoints[i] = projectedPoint;
     }
