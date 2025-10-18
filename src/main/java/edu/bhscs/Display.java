@@ -150,13 +150,30 @@ public class Display {
     double[][] topFace = {{0, 5, 0}, {10, 5, 0}, {5, 5, 20}};
     double[][] leftFace = {{10, 0, 0}, {10, 5, 0}, {5, 5, 20}, {5, 0, 20}};
 
-    //The 3d cake is a wedge-like shape
-    double[][][] cake3d = {rightFace,frontFace,bottomFace,topFace,leftFace};
+    // The 3d cake is a wedge-like shape
+    double[][][] cake3d = {rightFace, frontFace, bottomFace, topFace, leftFace};
+
+    for (int i = 0; i < cake3d.length; i++) {
+      for (int j = 0; j < cake3d[i].length; j++) {
+        cake3d[i][j][0] -= 5;
+        cake3d[i][j][1] -= 2;
+        cake3d[i][j][2] -= 10;
+      } ;
+    } ;
+
+
+    for(int i = 0; i < cake3d.length; i++){
+      for (int j = 0; j < cake3d[i].length; j++) {
+        for (int k = 0; k < cake3d[i][j].length; k++) {
+          cake3d[i][j][k] *= 3;
+        } ;
+      } ;
+    };
 
     for (double test = 0; test < 6.3; test = test + 0.1) {
-      String[][] surface = this.getSurface(30, 30);
+      String[][] surface = this.getSurface(60, 60);
 
-      double[] cameraPos = {0,0,0};
+      double[] cameraPos = {0, 0, 0};
 
       double[] cameraDir = {Math.sin(test), 0, Math.cos(test)};
       /*for (int i = 0; i < cameraDir.length; i++) {
@@ -164,10 +181,8 @@ public class Display {
         System.out.print(" ");
       }*/
 
-      //The up vector is just a 90 degree rotation from the camera pos
+      // The up vector is just a 90 degree rotation from the camera pos
       double[] up = {cameraDir[0], cameraDir[2], -cameraDir[1]};
-
-
 
       /*for(int i = 0; i < projectedPoints.length; i++){
         System.out.print("  ");
@@ -177,13 +192,12 @@ public class Display {
         }
       }*/
 
-      for(int i = 0; i < cake3d.length; i++){
+      for (int i = 0; i < cake3d.length; i++) {
         double[][] projectedPoints = this.projPoints(cake3d[i], cameraPos, cameraDir, up);
         // $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'.
-        String[] faces = {"$$","hh","{}","//","::"};
+        String[] faces = {"$$", "hh", "{}", "//", "::"};
         this.drawConvexPolygon(projectedPoints, surface, faces[i]);
       }
-
 
       this.displaySurface(surface);
     }
