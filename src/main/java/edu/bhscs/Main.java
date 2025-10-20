@@ -35,7 +35,13 @@ class Main {
     }
     food.cut();
 
-    display.displayFood(food);
+    User user = new User("");
+
+    double width = user.getNumber("Width: ");
+    double height = user.getNumber("Height: ");
+    double depth = user.getNumber("Depth: ");
+
+    display.displayFood(food,width,height,depth);
     // display.displayBurger();
   }
 

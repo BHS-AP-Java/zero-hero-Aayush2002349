@@ -1,6 +1,10 @@
 package edu.bhscs;
 
+import java.util.Random;
 public class Display {
+
+  //Fields and properties
+  Random random = new Random();
 
   // Constructor
   public Display() {}
@@ -135,14 +139,14 @@ public class Display {
     System.out.println();
   }
 
-  public void displayFood(Food food) {
+  public void displayFood(Food food,double width,double height,double depth) {
     if (food.foodType == "cake") {
-      this.displayCake(food,30,15,30);
+      this.displayCake(food, width, height, depth);
     }
   }
 
   // Displays a 3d cake
-  public void displayCake(Food food,double width,double height, double depth) {
+  public void displayCake(Food cake, double width, double height, double depth) {
 
     // The process of drawing some 3d shape has a few steps
     // First we need to figure out what 3d points and polygons to actually draw
@@ -154,7 +158,7 @@ public class Display {
     // Here is where we get the polygons of a cake
     double[][] frontFace = {{0, 0, 0}, {0, 5, 0}, {4, 5, 20}, {4, 1, 20}};
     double[][] leftFace = {{0, 0, 0}, {0, 5, 0}, {10, 5, 0}, {10, 0, 0}};
-    double[][] bottomFace = {{0, 0, 0}, {10, 0, 0}, {6, 1, 20},{4,1,20}};
+    double[][] bottomFace = {{0, 0, 0}, {10, 0, 0}, {6, 1, 20}, {4, 1, 20}};
     double[][] topFace = {{0, 5, 0}, {10, 5, 0}, {6, 5, 20}, {4, 5, 20}};
     double[][] backFace = {{10, 0, 0}, {10, 5, 0}, {6, 5, 20}, {6, 1, 20}};
     double[][] rightFace = {{4, 1, 20}, {4, 5, 20}, {6, 5, 20}, {6, 1, 20}};
@@ -175,9 +179,9 @@ public class Display {
 
     for (int i = 0; i < cake3d.length; i++) {
       for (int j = 0; j < cake3d[i].length; j++) {
-        cake3d[i][j][0] *= width/10;
-        cake3d[i][j][1] *= height/5;
-        cake3d[i][j][2] *= depth/10;
+        cake3d[i][j][0] *= width / 10;
+        cake3d[i][j][1] *= height / 5;
+        cake3d[i][j][2] *= depth / 10;
       }
       ;
     }
@@ -185,9 +189,9 @@ public class Display {
 
     // This is the surface we will draw the polygons onto
 
-    int length = (int) (Math.max(Math.max(width,height),depth)+10);
+    int length = (int) (Math.max(Math.max(width, height), depth) + 10);
 
-    String[][] surface = this.getSurface(2* length , 2* length);
+    String[][] surface = this.getSurface(2 * length, 2 * length);
 
     // To do all the specific renderering we need to find a specific point in space to be in as
     // well as a direction to face in and which way is up
@@ -221,8 +225,16 @@ public class Display {
     for (int i = 0; i < transformedPolygons.length; i++) {
       double[][] projectedPoints = this.projPoints(transformedPolygons[i]);
       // $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'.
-      String[] faces = {"$$", "hh", "{}","$$","//", "::"};
-      this.drawConvexPolygon(projectedPoints, surface, faces[i]);
+      String[] faces = {"$$", "hh", "{}", "$$", "//", "::"};
+
+      String additionalIngredient = null;
+      if(cake.specialtyIngredients[0].name == "chocolate"){
+        additionalIngredient = "  ";
+      } else if(cake.specialtyIngredients[0].name == "spice") {
+        additionalIngredient = "-;";
+      }
+
+      this.drawConvexPolygon(projectedPoints, surface, faces[i], additionalIngredient);
     }
 
     // Finally the surface is displayed
@@ -241,10 +253,6 @@ public class Display {
       zCoords[i] = Math.abs((this.averagePoints(polygons[i])[2]));
     }
 
-    for (int i = 0; i < zCoords.length; i++) {
-      System.out.println(zCoords[i]);
-    }
-
     // Sorts using bubble sort
     for (int i = 1; i < polygons.length; i++) {
       for (int j = 0; j < polygons.length - i; j++) {
@@ -259,10 +267,6 @@ public class Display {
           zCoords[j + 1] = temp1;
         }
       }
-    }
-
-    for (int i = 0; i < zCoords.length; i++) {
-      System.out.println(zCoords[i]);
     }
 
     return polygons;
@@ -304,7 +308,7 @@ public class Display {
 
   // Draws a polygon given the points of the polygon as well as something to draw the polygon on
   // Note: 0,0 is the center of the surface
-  public void drawConvexPolygon(double[][] points, String[][] surface, String color) {
+  public void drawConvexPolygon(double[][] points, String[][] surface, String color, String additionalColor) {
 
     for (int i = 0; i < surface.length; i++) {
       for (int j = 0; j < surface[i].length; j++) {
@@ -372,7 +376,12 @@ public class Display {
         }
 
         if (foundLeft && foundRight) {
-          surface[i][j] = color;
+          if(random.nextInt(50) != 1 || additionalColor == null){
+            surface[i][j] = color;
+          } else {
+            surface[i][j] = additionalColor;
+          }
+
         }
       }
     }
