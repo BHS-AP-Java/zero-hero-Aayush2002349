@@ -137,12 +137,12 @@ public class Display {
 
   public void displayFood(Food food) {
     if (food.foodType == "cake") {
-      this.displayCake(food);
+      this.displayCake(food,30,15,30);
     }
   }
 
   // Displays a 3d cake
-  public void displayCake(Food food) {
+  public void displayCake(Food food,double width,double height, double depth) {
 
     // The process of drawing some 3d shape has a few steps
     // First we need to figure out what 3d points and polygons to actually draw
@@ -152,14 +152,15 @@ public class Display {
     // Then we display that surface
 
     // Here is where we get the polygons of a cake
-    double[][] rightFace = {{0, 0, 0}, {0, 5, 0}, {5, 5, 20}, {5, 0, 20}};
-    double[][] backFace = {{0, 0, 0}, {0, 5, 0}, {10, 5, 0}, {10, 0, 0}};
-    double[][] bottomFace = {{0, 0, 0}, {10, 0, 0}, {5, 0, 20}};
-    double[][] topFace = {{0, 5, 0}, {10, 5, 0}, {5, 5, 20}};
-    double[][] leftFace = {{10, 0, 0}, {10, 5, 0}, {5, 5, 20}, {5, 0, 20}};
+    double[][] frontFace = {{0, 0, 0}, {0, 5, 0}, {4, 5, 20}, {4, 1, 20}};
+    double[][] leftFace = {{0, 0, 0}, {0, 5, 0}, {10, 5, 0}, {10, 0, 0}};
+    double[][] bottomFace = {{0, 0, 0}, {10, 0, 0}, {6, 1, 20},{4,1,20}};
+    double[][] topFace = {{0, 5, 0}, {10, 5, 0}, {6, 5, 20}, {4, 5, 20}};
+    double[][] backFace = {{10, 0, 0}, {10, 5, 0}, {6, 5, 20}, {6, 1, 20}};
+    double[][] rightFace = {{4, 1, 20}, {4, 5, 20}, {6, 5, 20}, {6, 1, 20}};
 
     // The 3d cake is a wedge-like shape
-    double[][][] cake3d = {rightFace, backFace, bottomFace, topFace, leftFace};
+    double[][][] cake3d = {frontFace, leftFace, bottomFace, topFace, backFace, rightFace};
 
     // Then we move around this cake a bit and scale it as well
     for (int i = 0; i < cake3d.length; i++) {
@@ -174,24 +175,25 @@ public class Display {
 
     for (int i = 0; i < cake3d.length; i++) {
       for (int j = 0; j < cake3d[i].length; j++) {
-        for (int k = 0; k < cake3d[i][j].length; k++) {
-          cake3d[i][j][k] *= 3;
-        }
-        ;
+        cake3d[i][j][0] *= width/10;
+        cake3d[i][j][1] *= height/5;
+        cake3d[i][j][2] *= depth/10;
       }
       ;
     }
     ;
 
-
     // This is the surface we will draw the polygons onto
-    String[][] surface = this.getSurface(60, 60);
+
+    int length = (int) (Math.max(Math.max(width,height),depth)+10);
+
+    String[][] surface = this.getSurface(2* length , 2* length);
 
     // To do all the specific renderering we need to find a specific point in space to be in as
     // well as a direction to face in and which way is up
-    double[] cameraPos = {10,-10,0};
+    double[] cameraPos = {10, -10, 0};
 
-    double[] cameraDir = {1/Math.sqrt(3),-1 / Math.sqrt(3), 1 / Math.sqrt(3)};
+    double[] cameraDir = {1 / Math.sqrt(3), -1 / Math.sqrt(3), 1 / Math.sqrt(3)};
 
     // The up vector is just a 90 degree rotation from the camera direction
     double[] up = {1 / Math.sqrt(6), 2 / Math.sqrt(6), 1 / Math.sqrt(6)};
@@ -219,7 +221,7 @@ public class Display {
     for (int i = 0; i < transformedPolygons.length; i++) {
       double[][] projectedPoints = this.projPoints(transformedPolygons[i]);
       // $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'.
-      String[] faces = {"$$", "hh", "{}", "//", "::"};
+      String[] faces = {"$$", "hh", "{}","$$","//", "::"};
       this.drawConvexPolygon(projectedPoints, surface, faces[i]);
     }
 
@@ -259,7 +261,7 @@ public class Display {
       }
     }
 
-    for(int i = 0; i < zCoords.length; i++){
+    for (int i = 0; i < zCoords.length; i++) {
       System.out.println(zCoords[i]);
     }
 
