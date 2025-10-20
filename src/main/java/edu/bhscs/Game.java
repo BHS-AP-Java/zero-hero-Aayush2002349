@@ -40,10 +40,12 @@ public class Game {
       {3, 0, 2, 8, 2, 0, 7}
     };
 
-    this.bakers = new Person[1];
+    this.bakers = new Person[2];
 
     User player1 = new User("");
+    //
     this.bakers[0] = new Person("Alice", player1);
+    this.bakers[1] = new Person("Bob", player1);
     // this.bakers[1] = new Person("Bob", player1);
 
     Food[] menu = new Food[5];

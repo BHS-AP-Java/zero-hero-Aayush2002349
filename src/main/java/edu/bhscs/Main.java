@@ -21,7 +21,7 @@ package edu.bhscs;
 
 class Main {
 
-  public static void main(String[] args) {
+  public static void maain(String[] args) {
     Display display = new Display();
     // Just getting the food (normally all of these steps are done by the player)
     Food food = new Food("cake");
@@ -45,7 +45,7 @@ class Main {
     // display.displayBurger();
   }
 
-  public static void tmain(String[] args) {
+  public static void main(String[] args) {
 
     // Layout:
     // 0 = empty
