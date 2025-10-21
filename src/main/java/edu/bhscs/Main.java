@@ -21,30 +21,6 @@ package edu.bhscs;
 
 class Main {
 
-  public static void maain(String[] args) {
-    Display display = new Display();
-    // Just getting the food (normally all of these steps are done by the player)
-    Food food = new Food("cake");
-    food.addIngredient(new Ingredient("egg"));
-    food.addIngredient(new Ingredient("flour"));
-    Ingredient choco = new Ingredient("chocolate");
-    choco.cut();
-    food.addIngredient(choco);
-    for (int i = 0; i < 6; i++) {
-      food.cook();
-    }
-    food.cut();
-
-    User user = new User("");
-
-    double width = user.getNumber("Width: ");
-    double height = user.getNumber("Height: ");
-    double depth = user.getNumber("Depth: ");
-
-    display.displayFood(food, width, height, depth);
-    // display.displayBurger();
-  }
-
   public static void main(String[] args) {
 
     // Layout:

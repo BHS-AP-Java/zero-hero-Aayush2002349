@@ -8,7 +8,6 @@ public class Game {
   Person[] bakers;
 
   int time = 200;
-  Display display = new Display();
 
   // Constructors below
   // This one creates a game with the given inputs
@@ -43,7 +42,7 @@ public class Game {
     this.bakers = new Person[2];
 
     User player1 = new User("");
-    
+
     this.bakers[0] = new Person("Alice", player1);
     this.bakers[1] = new Person("Bob", player1);
     // this.bakers[1] = new Person("Bob", player1);
@@ -82,7 +81,7 @@ public class Game {
         this.restaurant.takeOrder(new Order(this.restaurant.menu, this.restaurant.rating));
       }
 
-      this.display.displayEverything((time - i), this.restaurant);
+      Display.displayEverything((time - i), this.restaurant);
 
       for (int j = 0; j < this.bakers.length; j++) {
         this.bakers[j].getAndDoAction();

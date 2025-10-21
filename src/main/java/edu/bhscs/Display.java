@@ -4,22 +4,19 @@ import java.util.Random;
 
 public class Display {
 
-  // Fields and properties
-  Random random = new Random();
-
   // Constructor
   public Display() {}
 
-  public void displayEverything(int timeLeft, Restaurant restaurant) {
-    this.displayTime(timeLeft);
-    this.displayRestaurantRating(restaurant.rating);
-    this.displayRestaurantMoney(restaurant.money);
-    this.displayRestaurantOrders(restaurant.orders);
-    this.displayRestaurant(restaurant);
+  public static void displayEverything(int timeLeft, Restaurant restaurant) {
+    displayTime(timeLeft);
+    displayRestaurantRating(restaurant.rating);
+    displayRestaurantMoney(restaurant.money);
+    displayRestaurantOrders(restaurant.orders);
+    displayRestaurant(restaurant);
   }
 
   // Displays the restaurant
-  public void displayRestaurant(Restaurant restaurant) {
+  public static void displayRestaurant(Restaurant restaurant) {
 
     // Display is as follows:
     // 0 = empty
@@ -93,7 +90,7 @@ public class Display {
   }
 
   // Displays the currently pending orders
-  public void displayRestaurantOrders(Order[] orders) {
+  public static void displayRestaurantOrders(Order[] orders) {
     System.out.println("Pending orders: ");
     for (int i = 0; i < orders.length; i++) {
 
@@ -123,31 +120,31 @@ public class Display {
   }
 
   // Displays the time
-  public void displayTime(int timeLeft) {
+  public static void displayTime(int timeLeft) {
     System.out.println("Time Left: " + timeLeft);
     System.out.println();
   }
 
   // Displays the number of orders completed
-  public void displayRestaurantRating(int rating) {
+  public static void displayRestaurantRating(int rating) {
     System.out.println("Rating: " + rating);
     System.out.println();
   }
 
   // Displays the restaurant's money
-  public void displayRestaurantMoney(int rating) {
+  public static void displayRestaurantMoney(int rating) {
     System.out.println("Money: " + rating);
     System.out.println();
   }
 
-  public void displayFood(Food food, double width, double height, double depth) {
+  public static void displayFood(Food food, double width, double height, double depth) {
     if (food.foodType == "cake") {
-      this.displayCake(food, width, height, depth);
+      displayCake(food, width, height, depth);
     }
   }
 
   // Displays a 3d cake
-  public void displayCake(Food cake, double width, double height, double depth) {
+  public static void displayCake(Food cake, double width, double height, double depth) {
 
     // The process of drawing some 3d shape has a few steps
     // First we need to figure out what 3d points and polygons to actually draw
@@ -192,7 +189,7 @@ public class Display {
 
     int length = (int) (Math.max(Math.max(width, height), depth) + 10);
 
-    String[][] surface = this.getSurface(2 * length, 2 * length);
+    String[][] surface = getSurface(2 * length, 2 * length);
 
     // To do all the specific renderering we need to find a specific point in space to be in as
     // well as a direction to face in and which way is up
@@ -213,37 +210,37 @@ public class Display {
 
     for (int i = 0; i < cake3d.length; i++) {
       double[][] transformedPoints =
-          this.globalToLocalSpace(
-              cake3d[i], this.crossProduct(cameraDir, up), up, cameraDir, cameraPos);
+          globalToLocalSpace(
+              cake3d[i], crossProduct(cameraDir, up), up, cameraDir, cameraPos);
       transformedPolygons[i] = transformedPoints;
     }
 
     // One of the other things that we need to do is make sure that the polygons drawn first are
     // the ones at the very back, that is done here
-    transformedPolygons = this.zSort(transformedPolygons);
+    transformedPolygons = zSort(transformedPolygons);
 
     // Then the points are converted from 3d to 2d and also drawn onto the surface
     for (int i = 0; i < transformedPolygons.length; i++) {
-      double[][] projectedPoints = this.projPoints(transformedPolygons[i]);
+      double[][] projectedPoints = projPoints(transformedPolygons[i]);
       // $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'.
       String[] faces = {"$$", "hh", "{}", "$$", "//", "::"};
 
       String additionalIngredient = null;
       if (cake.specialtyIngredients[0].name == "chocolate") {
-        additionalIngredient = "  ";
+        additionalIngredient = "SS";
       } else if (cake.specialtyIngredients[0].name == "spice") {
         additionalIngredient = "-;";
       }
 
-      this.drawConvexPolygon(projectedPoints, surface, faces[i], additionalIngredient);
+      drawConvexPolygon(projectedPoints, surface, faces[i], additionalIngredient);
     }
 
     // Finally the surface is displayed
-    this.displaySurface(surface);
+    displaySurface(surface);
   }
 
   // Sorts polygons so they can be drawn from back to front (higher z coordinate = further back)
-  public double[][][] zSort(double[][][] polygons) {
+  public static double[][][] zSort(double[][][] polygons) {
     if (polygons.length == 1 || polygons.length == 0) {
       return polygons;
     }
@@ -251,7 +248,7 @@ public class Display {
     // Gets the z coordinates of all the polygons (for now its just their average center)
     double[] zCoords = new double[polygons.length];
     for (int i = 0; i < polygons.length; i++) {
-      zCoords[i] = Math.abs((this.averagePoints(polygons[i])[2]));
+      zCoords[i] = Math.abs((averagePoints(polygons[i])[2]));
     }
 
     // Sorts using bubble sort
@@ -273,7 +270,7 @@ public class Display {
     return polygons;
   }
 
-  public double[] averagePoints(double[][] points) {
+  public static double[] averagePoints(double[][] points) {
     double x = 0;
     double y = 0;
     double z = 0;
@@ -287,7 +284,7 @@ public class Display {
     return average;
   }
 
-  public String[][] getSurface(int width, int height) {
+  public static String[][] getSurface(int width, int height) {
     String[][] surface = new String[height][width];
     for (int i = 0; i < surface.length; i++) {
       for (int j = 0; j < surface[i].length; j++) {
@@ -298,7 +295,7 @@ public class Display {
     return surface;
   }
 
-  public void displaySurface(String[][] surface) {
+  public static void displaySurface(String[][] surface) {
     for (int i = 0; i < surface.length; i++) {
       for (int j = 0; j < surface[i].length; j++) {
         System.out.print(surface[i][j]);
@@ -309,9 +306,10 @@ public class Display {
 
   // Draws a polygon given the points of the polygon as well as something to draw the polygon on
   // Note: 0,0 is the center of the surface
-  public void drawConvexPolygon(
+  public static void drawConvexPolygon(
       double[][] points, String[][] surface, String color, String additionalColor) {
 
+    Random random = new Random();
     for (int i = 0; i < surface.length; i++) {
       for (int j = 0; j < surface[i].length; j++) {
         // We need to iterate thourgh all points and check whether or not (j,i) is inside the
@@ -389,7 +387,7 @@ public class Display {
   }
 
   // This projection is a very simple orthographic projection (x,y,z) -> (x,y)
-  public double[][] projPoints(double[][] points) {
+  public static double[][] projPoints(double[][] points) {
 
     double[][] projectedPoints = new double[points.length][3];
 
@@ -407,7 +405,7 @@ public class Display {
     return projectedPoints;
   }
 
-  public double[][] globalToLocalSpace(
+  public static double[][] globalToLocalSpace(
       double[][] points, double[] basisX, double[] basisY, double[] basisZ, double[] origin) {
 
     double[][] transformedPoints = new double[points.length][3];
@@ -422,9 +420,9 @@ public class Display {
       // Gets the lengths of the basis vectors associated with the point, this is now the fully
       // transformed point
       double[] transformedPoint = {
-        this.dotProduct(translatedPoint, basisX),
-        this.dotProduct(translatedPoint, basisY),
-        this.dotProduct(translatedPoint, basisZ)
+        dotProduct(translatedPoint, basisX),
+        dotProduct(translatedPoint, basisY),
+        dotProduct(translatedPoint, basisZ)
       };
 
       transformedPoints[i] = transformedPoint;
@@ -433,7 +431,7 @@ public class Display {
     return transformedPoints;
   }
 
-  public double dotProduct(double[] vec1, double[] vec2) {
+  public static double dotProduct(double[] vec1, double[] vec2) {
 
     double dot = 0;
     for (int i = 0; i < vec1.length; i++) {
@@ -442,7 +440,7 @@ public class Display {
     return dot;
   }
 
-  public double[] crossProduct(double[] vec1, double[] vec2) {
+  public static double[] crossProduct(double[] vec1, double[] vec2) {
     // https://en.wikipedia.org/wiki/Cross_product
     // The cross product formula used is found above ^^^
     double[] crossed = {
@@ -451,89 +449,5 @@ public class Display {
       vec1[0] * vec2[1] - vec1[1] * vec2[0]
     };
     return crossed;
-  }
-
-  public void displayBurger() {
-    int size = 12;
-    this.displayBun(size);
-    this.displayFilling(size);
-    this.displayBun(size);
-    String burgerDisplay =
-        """
-
-                                    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-                                ▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓
-                            ▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓
-                        ▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓
-                    ▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓
-                  ▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▓▓
-                ▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓
-              ▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓
-              ▓▓▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓
-            ▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓
-            ▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓
-          ▓▓▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓
-        ▓▓▓▓▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓
-        ▓▓▓▓▒▒▓▓▒▒▒▒▓▓▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓
-        ▓▓▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓
-        ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-      ▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓
-  ▓▓▓▓▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▓▓▒▒▒▒▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▓▓
-  ▓▓▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▓▓▒▒▒▒▒▒▒▒▓▓▓▓▒▒▒▒▒▒▒▒▓▓▓▓▒▒▒▒▓▓
-  ▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓
-  ░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░
-        ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████████▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-      ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-      ▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓
-      ░░▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░
-      ▒▒▒▒▒▒░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▒▒▒▒██
-    ██████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░████████
-    ████▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▓▓▓▓▓▓▓▓▓▓████
-    ████▓▓██▓▓▓▓▓▓▓▓▓▓██▓▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▓▓██▓▓▓▓▓▓▓▓██████
-    ████▓▓██▓▓██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓████
-    ████▓▓▓▓██▓▓▓▓██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░░░░░░░░░░░░░░░░░▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██▓▓▓▓████
-    ████▓▓▓▓▓▓▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░░░░░░░░░▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓▓██▓▓████
-    ████▓▓▓▓▓▓██▓▓▓▓▓▓▓▓▓▓██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██▓▓▓▓▓▓████
-    ░░██████████████████████████████████████████████████████████████████████████████████████████░░
-      ░░▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓
-        ▓▓▒▒▓▓▒▒▓▓▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▓▓▒▒▒▒▒▒▓▓
-        ▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▓▓
-        ▓▓▒▒▒▒▓▓▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒▓▓▓▓
-        ▓▓▓▓▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒▓▓▒▒▓▓▓▓
-          ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-        """;
-    // System.out.println(burgerDisplay);
-  }
-
-  private void displayBun(int size) {
-    String crust = "HH";
-    int width = size * 7 / 8;
-    int height = size / 4;
-    String layer = "";
-
-    // A space is half of the total
-    for (int i = 0; i < size - (size * 7 / 8); i++) {
-      layer += " ";
-    }
-    for (int i = 0; i < width; i++) {
-      layer += crust;
-    }
-    for (int j = 0; j < height; j++) {
-      System.out.println(layer);
-    }
-  }
-
-  private void displayFilling(int size) {
-    String crust = "##";
-    int width = size;
-
-    int height = size / 5;
-    String layer = "";
-    for (int i = 0; i < width; i++) {
-      layer += crust;
-    }
-    for (int j = 0; j < height; j++) {
-      System.out.println(layer);
-    }
   }
 }

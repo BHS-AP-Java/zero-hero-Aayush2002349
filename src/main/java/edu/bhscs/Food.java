@@ -279,4 +279,10 @@ class Food extends Edible {
         "and " + this.specialtyIngredients[this.specialtyIngredients.length - 1].name;
     return this.foodType + " with " + ingredientNames;
   }
+
+
+  //draws the cake
+  public void draw(double width,double height,double depth){
+    Display.displayFood(this,width,height,depth);
+  }
 }
