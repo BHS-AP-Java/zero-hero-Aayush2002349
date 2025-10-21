@@ -41,7 +41,7 @@ class Main {
     double height = user.getNumber("Height: ");
     double depth = user.getNumber("Depth: ");
 
-    display.displayFood(food,width,height,depth);
+    display.displayFood(food, width, height, depth);
     // display.displayBurger();
   }
 

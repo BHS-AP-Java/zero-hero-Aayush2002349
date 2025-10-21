@@ -1,9 +1,10 @@
 package edu.bhscs;
 
 import java.util.Random;
+
 public class Display {
 
-  //Fields and properties
+  // Fields and properties
   Random random = new Random();
 
   // Constructor
@@ -139,7 +140,7 @@ public class Display {
     System.out.println();
   }
 
-  public void displayFood(Food food,double width,double height,double depth) {
+  public void displayFood(Food food, double width, double height, double depth) {
     if (food.foodType == "cake") {
       this.displayCake(food, width, height, depth);
     }
@@ -228,9 +229,9 @@ public class Display {
       String[] faces = {"$$", "hh", "{}", "$$", "//", "::"};
 
       String additionalIngredient = null;
-      if(cake.specialtyIngredients[0].name == "chocolate"){
+      if (cake.specialtyIngredients[0].name == "chocolate") {
         additionalIngredient = "  ";
-      } else if(cake.specialtyIngredients[0].name == "spice") {
+      } else if (cake.specialtyIngredients[0].name == "spice") {
         additionalIngredient = "-;";
       }
 
@@ -308,7 +309,8 @@ public class Display {
 
   // Draws a polygon given the points of the polygon as well as something to draw the polygon on
   // Note: 0,0 is the center of the surface
-  public void drawConvexPolygon(double[][] points, String[][] surface, String color, String additionalColor) {
+  public void drawConvexPolygon(
+      double[][] points, String[][] surface, String color, String additionalColor) {
 
     for (int i = 0; i < surface.length; i++) {
       for (int j = 0; j < surface[i].length; j++) {
@@ -376,12 +378,11 @@ public class Display {
         }
 
         if (foundLeft && foundRight) {
-          if(random.nextInt(50) != 1 || additionalColor == null){
+          if (random.nextInt(50) != 1 || additionalColor == null) {
             surface[i][j] = color;
           } else {
             surface[i][j] = additionalColor;
           }
-
         }
       }
     }
