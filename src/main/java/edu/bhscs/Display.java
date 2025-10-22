@@ -210,8 +210,7 @@ public class Display {
 
     for (int i = 0; i < cake3d.length; i++) {
       double[][] transformedPoints =
-          globalToLocalSpace(
-              cake3d[i], crossProduct(cameraDir, up), up, cameraDir, cameraPos);
+          globalToLocalSpace(cake3d[i], crossProduct(cameraDir, up), up, cameraDir, cameraPos);
       transformedPolygons[i] = transformedPoints;
     }
 
@@ -226,11 +225,14 @@ public class Display {
       String[] faces = {"$$", "hh", "{}", "$$", "//", "::"};
 
       String additionalIngredient = null;
-      if (cake.specialtyIngredients[0].name == "chocolate") {
-        additionalIngredient = "SS";
-      } else if (cake.specialtyIngredients[0].name == "spice") {
-        additionalIngredient = "-;";
+      if(cake.specialtyIngredients.length != 0){
+        if (cake.specialtyIngredients[0].name == "chocolate") {
+          additionalIngredient = "SS";
+        } else if (cake.specialtyIngredients[0].name == "spice") {
+          additionalIngredient = "-;";
+        }
       }
+
 
       drawConvexPolygon(projectedPoints, surface, faces[i], additionalIngredient);
     }

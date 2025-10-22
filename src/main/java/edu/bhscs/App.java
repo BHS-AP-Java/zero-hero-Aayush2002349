@@ -1,7 +1,7 @@
 package edu.bhscs;
 
 public class App {
-  public static void main(String[] args){
+  public static void main(String[] args) {
 
     // Just getting the food (normally all of these steps are done by the user in the game)
     Food food = new Food("cake");
@@ -22,7 +22,7 @@ public class App {
     double height = user.getNumber("Height: ");
     double depth = user.getNumber("Depth: ");
 
-    food.draw(width, height, depth);
-
+    //food.draw(width, height, depth);
+    new Food("cake").draw(width,height,depth);
   }
 }

@@ -1,5 +1,3 @@
 package edu.bhscs;
 
-public class Matrix {
-  
-}
+public class Matrix {}

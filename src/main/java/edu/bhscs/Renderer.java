@@ -1,5 +1,3 @@
 package edu.bhscs;
 
-public class Renderer {
-  
-}
+public class Renderer {}
