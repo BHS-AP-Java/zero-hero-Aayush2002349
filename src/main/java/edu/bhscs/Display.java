@@ -225,14 +225,13 @@ public class Display {
       String[] faces = {"$$", "hh", "{}", "$$", "//", "::"};
 
       String additionalIngredient = null;
-      if(cake.specialtyIngredients.length != 0){
+      if (cake.specialtyIngredients.length != 0) {
         if (cake.specialtyIngredients[0].name == "chocolate") {
           additionalIngredient = "SS";
         } else if (cake.specialtyIngredients[0].name == "spice") {
           additionalIngredient = "-;";
         }
       }
-
 
       drawConvexPolygon(projectedPoints, surface, faces[i], additionalIngredient);
     }

@@ -22,7 +22,7 @@ public class App {
     double height = user.getNumber("Height: ");
     double depth = user.getNumber("Depth: ");
 
-    //food.draw(width, height, depth);
-    new Food("cake").draw(width,height,depth);
+    // food.draw(width, height, depth);
+    new Food("cake").draw(width, height, depth);
   }
 }

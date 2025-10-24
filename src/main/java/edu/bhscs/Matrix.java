@@ -77,13 +77,31 @@ public class Matrix {
     return new Matrix(rotYMatrix);
   }
 
-  //Not done
   public static Matrix getZRotMatrix(double theta) {
     double[][] rotXMatrix = {
-      {1, 0, 0, 0},
-      {0, Math.cos(theta), -Math.sin(theta), 0},
-      {0, Math.sin(theta), Math.cos(theta), 0},
+      {Math.cos(theta), -Math.sin(theta), 0, 0},
+      {Math.sin(theta), Math.cos(theta), 0, 0},
+      {0, 0, 1, 0},
       {0, 0, 0, 1}};
     return new Matrix(rotXMatrix);
+  }
+
+  //Gets a matrix that does a translation by the given vector
+  public static Matrix getTranslationMatrix(Vector translation){
+
+    double[][] translationMatrix = {
+      {1,0,0,translation.x},
+      {0,1,0,translation.y},
+      {0,0,1,translation.z},
+      {0,0,0,1}
+    };
+
+    return new Matrix(translationMatrix);
+  }
+
+  //Global to local space matrix
+  public static Matrix getGlobalToLocalMatrix(Vector basisX, Vector basisY, Vector basisZ, Vector pos){
+    Matrix ;
+    return null;
   }
 }

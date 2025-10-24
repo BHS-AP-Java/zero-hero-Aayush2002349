@@ -32,5 +32,11 @@ public class Vector {
     return crossed;
   }
 
+  //Scales the vector by the given constant
+  public void scale(double scalar){
+    this.x *= scalar;
+    this.y *= scalar;
+    this.z *= scalar;
+  }
 
 }
