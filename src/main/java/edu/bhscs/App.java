@@ -1,28 +1,15 @@
 package edu.bhscs;
 
 public class App {
-  public static void main(String[] args) {
+  public static void main(String[] args){
+    date10_27();
+  }
 
-    // Just getting the food (normally all of these steps are done by the user in the game)
-    Food food = new Food("cake");
-    food.addIngredient(new Ingredient("egg"));
-    food.addIngredient(new Ingredient("flour"));
-    Ingredient choco = new Ingredient("chocolate");
-    choco.cut();
-    food.addIngredient(choco);
-    for (int i = 0; i < 6; i++) {
-      food.cook();
-    }
-    food.cut();
-
-    User user = new User("");
-    System.out.println(user);
-
-    double width = user.getNumber("Width: ");
-    double height = user.getNumber("Height: ");
-    double depth = user.getNumber("Depth: ");
-
-    // food.draw(width, height, depth);
-    new Food("cake").draw(width, height, depth);
+  public static void date10_27(){
+    //Trying to display a cake ontop of a table
+    Person Bob = new Person("Bob");
+    Table table = new Table(25,10, 25);
+    Food bDay = Bob.bakes(5, "Suzzie");
+    bDay.draw(20,10,20,table);
   }
 }

@@ -39,4 +39,10 @@ public class Vector {
     this.z *= scalar;
   }
 
+  //The difference between scale and scaled is that scale scales itself while getScaled returns a new scaled version of the original vector
+
+  public Vector getScaled(double scalar){
+    return new Vector(this.x*scalar, this.y * scalar, this.z * scalar);
+  }
+
 }

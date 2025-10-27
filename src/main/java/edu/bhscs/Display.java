@@ -137,14 +137,20 @@ public class Display {
     System.out.println();
   }
 
-  public static void displayFood(Food food, double width, double height, double depth) {
+  public static String[][] getFoodDisplay(String[][] surface, Food food, double width, double height, double depth) {
+    String[][] newSurface = null;
     if (food.foodType == "cake") {
-      displayCake(food, width, height, depth);
+      newSurface = getCakeDisplay(surface,food, width, height, depth);
     }
+    return newSurface;
   }
 
-  // Displays a 3d cake
-  public static void displayCake(Food cake, double width, double height, double depth) {
+  public static String[][] getTableDisplay(String[][] surface, Table table){
+    return surface;
+  }
+
+  // Displays a 3d cake on the surface
+  public static String[][] getCakeDisplay(String[][] surface, Food cake, double width, double height, double depth) {
 
     // The process of drawing some 3d shape has a few steps
     // First we need to figure out what 3d points and polygons to actually draw
@@ -188,8 +194,6 @@ public class Display {
     // This is the surface we will draw the polygons onto
 
     int length = (int) (Math.max(Math.max(width, height), depth) + 10);
-
-    String[][] surface = getSurface(2 * length, 2 * length);
 
     // To do all the specific renderering we need to find a specific point in space to be in as
     // well as a direction to face in and which way is up
@@ -236,8 +240,7 @@ public class Display {
       drawConvexPolygon(projectedPoints, surface, faces[i], additionalIngredient);
     }
 
-    // Finally the surface is displayed
-    displaySurface(surface);
+    return surface;
   }
 
   // Sorts polygons so they can be drawn from back to front (higher z coordinate = further back)

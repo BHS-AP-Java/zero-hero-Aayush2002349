@@ -101,7 +101,22 @@ public class Matrix {
 
   //Global to local space matrix
   public static Matrix getGlobalToLocalMatrix(Vector basisX, Vector basisY, Vector basisZ, Vector pos){
-    Matrix ;
+
+    Matrix translation = getTranslationMatrix(pos.getScaled(-1));
+    double[][] changeBasisVectors = {
+      {basisX.x, basisX.y, basisX.z, 0},
+      {basisY.x, basisY.y, basisY.z, 0},
+      {basisZ.x, basisZ.y, basisZ.z, 0},
+      {0, 0, 0, 1}
+    };
+
+    Matrix basisVectors = new Matrix(changeBasisVectors);
+    Matrix toLocalSpace = basisVectors.multiplyMatrix(translation);
+    return toLocalSpace;
+  }
+
+  public static Matrix getProjectionMatrix(){
+    
     return null;
   }
 }
