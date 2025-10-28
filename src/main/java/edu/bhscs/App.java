@@ -8,7 +8,7 @@ public class App {
   public static void date10_27() {
     // Trying to display a cake ontop of a table
     Person bob = new Person("Bob");
-    Table table = new Table(2,26, 15);
+    Table table = new Table(3, 25, 15);
     Food bDay = bob.bakes(5, "Suzzie");
     bDay.draw(table);
   }

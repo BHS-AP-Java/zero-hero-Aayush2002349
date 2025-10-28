@@ -304,7 +304,7 @@ class Food extends Edible {
   // draws the cake ontop of a table
   public void draw(Table table) {
     String[][] surface = Display.getSurface(50, 50);
-    Display.getFoodDisplay(surface, this, 20,10,20);
+    Display.getFoodDisplay(surface, this, 20, 10, 20);
     Display.displaySurface(surface);
     table.draw();
   }

@@ -7,7 +7,7 @@ public class Table {
   double height;
   int legs;
 
-  //These are some default values, but they can be changed
+  // These are some default values, but they can be changed
   String leg = "|_|";
   String top = "=----=";
 
@@ -19,12 +19,12 @@ public class Table {
   }
 
   public void draw() {
-    String[][] surface = Display.getSurface((int) (width),(int) (height));
+    String[][] surface = Display.getSurface((int) (width), (int) (height));
     surface = Display.getTableDisplay(surface, this);
     Display.displaySurface(surface);
   }
 
-  public void setLegs(String leg){
+  public void setLegs(String leg) {
     this.leg = leg;
   }
 
