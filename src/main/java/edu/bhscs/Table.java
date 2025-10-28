@@ -2,20 +2,33 @@ package edu.bhscs;
 
 public class Table {
 
-  //fields and properties
-  int width;
-  int height;
-  int depth;
+  // fields and properties
+  double width;
+  double height;
+  int legs;
 
-  //Constructor
-  public Table(int width,int height,int depth){
+  //These are some default values, but they can be changed
+  String leg = "|_|";
+  String top = "=----=";
+
+  // Constructor
+  public Table(int legs, double width, double height) {
+    this.legs = legs;
     this.width = width;
     this.height = height;
-    this.depth = depth;
   }
 
-  public String[][] draw(String[][] surface){
-    return Display.getTableDisplay(surface,this);
+  public void draw() {
+    String[][] surface = Display.getSurface((int) (width),(int) (height));
+    surface = Display.getTableDisplay(surface, this);
+    Display.displaySurface(surface);
   }
 
+  public void setLegs(String leg){
+    this.leg = leg;
+  }
+
+  public void setTop(String top) {
+    this.top = top;
+  }
 }

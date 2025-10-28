@@ -235,9 +235,11 @@ public class Person {
     return null;
   }
 
-  //This method isn't used anywhere in the game itself, it isn't useful for a baker to just suddenly create a cake
-  //Instead, the bakers perform actions on cakes/burgers/other foods that are inside of a bakery (see doActionAtLocation)
-  public Food bakes(int age, String name){
+  // This method isn't used anywhere in the game itself, it isn't useful for a baker to just
+  // suddenly create a cake
+  // Instead, the bakers perform actions on cakes/burgers/other foods that are inside of a bakery
+  // (see doActionAtLocation)
+  public Food bakes(int age, String name) {
     Food cake = new Food("cake");
     cake.additionalInfo = name;
     cake.additionalInt = age;

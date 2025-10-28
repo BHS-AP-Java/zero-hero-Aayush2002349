@@ -33,7 +33,8 @@ class Food extends Edible {
   // A food may also be used to represent the menu
   Boolean isMenu = false;
 
-  // This piece of information can be different for every food, it just stores something about the state of the food
+  // This piece of information can be different for every food, it just stores something about the
+  // state of the food
   String additionalInfo = null;
   int additionalInt;
 
@@ -192,7 +193,7 @@ class Food extends Edible {
     }
   }
 
-  public void cut(int slices){
+  public void cut(int slices) {
     if (this.isCuttable) {
       if (!(this.isCut) && this.isCooked) {
         this.slices = slices;
@@ -295,15 +296,16 @@ class Food extends Edible {
 
   // draws the cake
   public void draw(double width, double height, double depth) {
-    String[][] surface = Display.getSurface(75,75);
-    Display.getFoodDisplay(surface,this, width, height, depth);
+    String[][] surface = Display.getSurface(75, 75);
+    Display.getFoodDisplay(surface, this, width, height, depth);
     Display.displaySurface(surface);
   }
 
   // draws the cake ontop of a table
-  public void draw(double width,double height,double depth,Table table){
+  public void draw(Table table) {
     String[][] surface = Display.getSurface(50, 50);
-    Display.getFoodDisplay(surface, this, width, height, depth);
+    Display.getFoodDisplay(surface, this, 20,10,20);
     Display.displaySurface(surface);
+    table.draw();
   }
 }

@@ -137,20 +137,58 @@ public class Display {
     System.out.println();
   }
 
-  public static String[][] getFoodDisplay(String[][] surface, Food food, double width, double height, double depth) {
+  public static String[][] getFoodDisplay(
+      String[][] surface, Food food, double width, double height, double depth) {
     String[][] newSurface = null;
     if (food.foodType == "cake") {
-      newSurface = getCakeDisplay(surface,food, width, height, depth);
+      newSurface = getCakeDisplay(surface, food, width, height, depth);
     }
     return newSurface;
   }
 
-  public static String[][] getTableDisplay(String[][] surface, Table table){
+  public static String[][] getTableDisplay(String[][] surface, Table table) {
+    double tableThickness = table.top.length();
+
+    for(int i = 0; i < tableThickness; i++){
+      for(int j = 0; j < surface[0].length; j++){
+        surface[i][j] = table.top.substring(i,i+1) + table.top.substring(i,i+1);
+      }
+    }
+
+
+    //Here is a small description of this computation:
+    //#########
+    // #  #  #
+    // #  #  #
+    // #  #  #
+    // #  #  #
+    //Total length of the spacing is length of the surface - 2(for the overhang on the left and right) - the number of legs multiplied by the width of one of the legs
+    //Then divide by the number of spaces which is the number of legs - 1
+
+
+    int spacing = (int) (table.width - 2 - (table.legs * table.leg.length()))/(table.legs - 1);
+    System.out.println(spacing);
+    for(int i = 0; i < table.legs; i++){
+      //This is the offset from the left side of the table
+      int leftOffset = 1 + i * (spacing + table.leg.length());
+      System.out.println(leftOffset);
+      //Now we draw each table leg onto the surface
+      for(int j = 0; j < table.leg.length(); j++){
+        for(int k = table.top.length(); k < table.height; k++){
+
+          surface[k][j+leftOffset] = table.leg.substring(j, j + 1) + table.leg.substring(j, j + 1);
+
+        }
+      }
+    }
+
+    
     return surface;
   }
 
   // Displays a 3d cake on the surface
-  public static String[][] getCakeDisplay(String[][] surface, Food cake, double width, double height, double depth) {
+  public static String[][] getCakeDisplay(
+      String[][] surface, Food cake, double width, double height, double depth) {
 
     // The process of drawing some 3d shape has a few steps
     // First we need to figure out what 3d points and polygons to actually draw
