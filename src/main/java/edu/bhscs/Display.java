@@ -158,23 +158,24 @@ public class Display {
     // Then divide by the number of spaces which is the number of legs - 1
     int spacing = (int) (table.width - 2 - (table.legs * table.leg.length())) / (table.legs - 1);
 
-    //Especially for smaller values of width the table legs may not be able to perfectly fit
-    // One potential solution for this is to reduce or increase the table's width to fit the tables nicely
+    // Especially for smaller values of width, the table legs may not be able to perfectly fit
+    // One potential solution for this is to reduce or increase the table's width to fit the tables
+    // We can recalculate the width using the 2 + the number of legs multiplied by the width of each
+    // leg + the length of the spacing multiplied by the number of spaces (which is the number of
+    // legs - 1)
 
     double tableThickness = table.top.length();
 
-    double tableWidth = 2 + table.legs * table.leg.length() + (table.legs-1) * spacing;
+    double tableWidth = 2 + table.legs * table.leg.length() + (table.legs - 1) * spacing;
     for (int i = 0; i < tableThickness; i++) {
       for (int j = 0; j < tableWidth; j++) {
         surface[i][j] = table.top.substring(i, i + 1) + table.top.substring(i, i + 1);
       }
     }
 
-
     for (int i = 0; i < table.legs; i++) {
       // This is the offset from the left side of the table
       int leftOffset = 1 + i * (spacing + table.leg.length());
-      System.out.println(leftOffset);
       // Now we draw each table leg onto the surface
       for (int j = 0; j < table.leg.length(); j++) {
         for (int k = table.top.length(); k < table.height; k++) {
@@ -217,9 +218,9 @@ public class Display {
         cake3d[i][j][1] -= 2;
         cake3d[i][j][2] -= 10;
       }
-      ;
+
     }
-    ;
+
 
     for (int i = 0; i < cake3d.length; i++) {
       for (int j = 0; j < cake3d[i].length; j++) {
@@ -227,22 +228,21 @@ public class Display {
         cake3d[i][j][1] *= height / 5;
         cake3d[i][j][2] *= depth / 10;
       }
-      ;
+
     }
-    ;
 
-    // This is the surface we will draw the polygons onto
-
-    int length = (int) (Math.max(Math.max(width, height), depth) + 10);
 
     // To do all the specific renderering we need to find a specific point in space to be in as
     // well as a direction to face in and which way is up
+
+    // These values for the camera pos and direction and up look nice but they don't center the cake well for drawing a table ontop
+    //double[] cameraPos = {10, -10, 0};
+    //double[] cameraDir = {1 / Math.sqrt(3), -1 / Math.sqrt(3), 1 / Math.sqrt(3)};
+    //double[] up = {1 / Math.sqrt(6), 2 / Math.sqrt(6), 1 / Math.sqrt(6)};
+
     double[] cameraPos = {10, -10, 0};
-
-    double[] cameraDir = {1 / Math.sqrt(3), -1 / Math.sqrt(3), 1 / Math.sqrt(3)};
-
-    // The up vector is just a 90 degree rotation from the camera direction
-    double[] up = {1 / Math.sqrt(6), 2 / Math.sqrt(6), 1 / Math.sqrt(6)};
+    double[] cameraDir = {0, -1 / Math.sqrt(2), -1 / Math.sqrt(2)};
+    double[] up = {0, 1 / Math.sqrt(2), -1 / Math.sqrt(2)};
 
     // To convert our 3d points to 2d ones there are 2 steps.
     // First we need to figure out where the shapes are relative to the camera, if you move the
@@ -339,13 +339,81 @@ public class Display {
     return surface;
   }
 
-  public static void displaySurface(String[][] surface) {
+  //Display surface also culls the top and bottom,left and right edges
+  //Additionally returns the new dimensions after the culling and has options to add a left or top offset
+  public static int[] displaySurface(String[][] surface,int leftOffset,int topOffset) {
+
+    int left = 0;
+    int top = 0;
+    int right = surface.length;
+    int bottom = surface.length;
+
+    Boolean foundLeftEdge = false;
+    Boolean foundTopEdge = false;
+    Boolean foundRightEdge = false;
+    Boolean foundBottomEdge = false;
+
     for (int i = 0; i < surface.length; i++) {
+      for (int j = 0; j < surface[i].length; j++) {
+        if(!(surface[i][j].matches("  "))){
+          foundTopEdge = true;
+        }
+        if (!(surface[surface.length - i - 1][j].matches("  "))) {
+          foundBottomEdge = true;
+        }
+      }
+
+      if(!(foundTopEdge)){
+        top += 1;
+      }
+      if (!(foundBottomEdge)) {
+        bottom -= 1;
+      }
+    }
+
+    for (int i = 0; i < surface[0].length; i++) {
+      for (int j = 0; j < surface.length; j++) {
+        if (!(surface[j][i].matches("  "))) {
+          foundLeftEdge = true;
+        }
+        if (!(surface[surface.length - j - 1][i].matches("  "))) {
+          foundRightEdge = true;
+        }
+      }
+
+      if (!(foundLeftEdge)) {
+        left += 1;
+      }
+      if (!(foundRightEdge)) {
+        right -= 1;
+      }
+    }
+
+    System.out.println(top);
+    System.out.println(bottom);
+    System.out.println(left);
+    System.out.println(right);
+
+    //top offset here
+    for(int i = 0; i < topOffset; i++){
+      System.out.println();
+    }
+
+    for (int i = 0; i < surface.length; i++) {
+
+      //left offset here
+      for(int j = 0; j < topOffset; j++){
+        System.out.print(" ");
+      }
+
       for (int j = 0; j < surface[i].length; j++) {
         System.out.print(surface[i][j]);
       }
       System.out.println();
     }
+
+    int[] dimensions = {bottom-top,right-left};
+    return dimensions;
   }
 
   // Draws a polygon given the points of the polygon as well as something to draw the polygon on

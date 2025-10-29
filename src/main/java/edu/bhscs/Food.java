@@ -298,14 +298,14 @@ class Food extends Edible {
   public void draw(double width, double height, double depth) {
     String[][] surface = Display.getSurface(75, 75);
     Display.getFoodDisplay(surface, this, width, height, depth);
-    Display.displaySurface(surface);
+    Display.displaySurface(surface,0,0);
   }
 
   // draws the cake ontop of a table
   public void draw(Table table) {
     String[][] surface = Display.getSurface(50, 50);
     Display.getFoodDisplay(surface, this, 20, 10, 20);
-    Display.displaySurface(surface);
+    Display.displaySurface(surface,0,0);
     table.draw();
   }
 }

@@ -21,7 +21,7 @@ public class Table {
   public void draw() {
     String[][] surface = Display.getSurface((int) (width), (int) (height));
     surface = Display.getTableDisplay(surface, this);
-    Display.displaySurface(surface);
+    Display.displaySurface(surface,0,0);
   }
 
   public void setLegs(String leg) {
