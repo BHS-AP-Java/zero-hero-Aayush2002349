@@ -341,11 +341,11 @@ public class Display {
 
   //Display surface also culls the top and bottom,left and right edges
   //Additionally returns the new dimensions after the culling and has options to add a left or top offset
-  public static int[] displaySurface(String[][] surface,int leftOffset,int topOffset) {
+  public static String[][] cullUnusedParts(String[][] surface){
 
     int left = 0;
     int top = 0;
-    int right = surface.length;
+    int right = surface[0].length;
     int bottom = surface.length;
 
     Boolean foundLeftEdge = false;
@@ -355,7 +355,7 @@ public class Display {
 
     for (int i = 0; i < surface.length; i++) {
       for (int j = 0; j < surface[i].length; j++) {
-        if(!(surface[i][j].matches("  "))){
+        if (!(surface[i][j].matches("  "))) {
           foundTopEdge = true;
         }
         if (!(surface[surface.length - i - 1][j].matches("  "))) {
@@ -363,7 +363,7 @@ public class Display {
         }
       }
 
-      if(!(foundTopEdge)){
+      if (!(foundTopEdge)) {
         top += 1;
       }
       if (!(foundBottomEdge)) {
@@ -389,10 +389,20 @@ public class Display {
       }
     }
 
-    System.out.println(top);
-    System.out.println(bottom);
-    System.out.println(left);
-    System.out.println(right);
+    String[][] newSurface = new String[bottom-top][right-left];
+
+    for(int i = top; i < bottom; i++){
+      for(int j = left; j < right; j++){
+
+        newSurface[i-top][j-left] = surface[i][j];
+
+      }
+
+    }
+
+    return newSurface;
+  }
+  public static void displaySurface(String[][] surface,int leftOffset,int topOffset) {
 
     //top offset here
     for(int i = 0; i < topOffset; i++){
@@ -411,9 +421,6 @@ public class Display {
       }
       System.out.println();
     }
-
-    int[] dimensions = {bottom-top,right-left};
-    return dimensions;
   }
 
   // Draws a polygon given the points of the polygon as well as something to draw the polygon on

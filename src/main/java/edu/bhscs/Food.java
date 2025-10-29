@@ -303,8 +303,12 @@ class Food extends Edible {
 
   // draws the cake ontop of a table
   public void draw(Table table) {
+
     String[][] surface = Display.getSurface(50, 50);
     Display.getFoodDisplay(surface, this, 20, 10, 20);
+    surface = Display.cullUnusedParts(surface);
+
+    //The left offset is the table's width minus the cakes width (the division by 2 is )
     Display.displaySurface(surface,0,0);
     table.draw();
   }

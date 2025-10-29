@@ -21,6 +21,7 @@ public class Table {
   public void draw() {
     String[][] surface = Display.getSurface((int) (width), (int) (height));
     surface = Display.getTableDisplay(surface, this);
+    Display.cullUnusedParts(surface);
     Display.displaySurface(surface,0,0);
   }
 
