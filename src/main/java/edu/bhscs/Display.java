@@ -237,8 +237,8 @@ public class Display {
     double[] cameraDir = {1 / Math.sqrt(3), -1 / Math.sqrt(3), 1 / Math.sqrt(3)};
     double[] up = {1 / Math.sqrt(6), 2 / Math.sqrt(6), 1 / Math.sqrt(6)};
 
-    //double[] cameraDir = {0, -1 / Math.sqrt(2), -1 / Math.sqrt(2)};
-    //double[] up = {0, 1 / Math.sqrt(2), -1 / Math.sqrt(2)};
+    // double[] cameraDir = {0, -1 / Math.sqrt(2), -1 / Math.sqrt(2)};
+    // double[] up = {0, 1 / Math.sqrt(2), -1 / Math.sqrt(2)};
 
     // To convert our 3d points to 2d ones there are 2 steps.
     // First we need to figure out where the shapes are relative to the camera, if you move the

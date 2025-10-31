@@ -309,20 +309,23 @@ class Food extends Edible {
 
     surface = Display.cullUnusedParts(surface);
 
-
     table.adjustWidth();
 
-    //Surface[0].length represents the length of the projected 3d cake
+    // Surface[0].length represents the length of the projected 3d cake
 
     // The left offset is the table's width minus the cakes width
-    // Note that 2 character (highlight the 2 spaces here: ) form a shape closer to a square. This means all draw methods draw 2 characters in a row to make things look nicer
-    // A side affect of this is that the division by 2 required to properly center the cake can be simulated by drawing only 1 character
+    // Note that 2 character (highlight the 2 spaces here: ) form a shape closer to a square. This
+    // means all draw methods draw 2 characters in a row to make things look nicer
+    // A side affect of this is that the division by 2 required to properly center the cake can be
+    // simulated by drawing only 1 character
     // This means there is no divison by 2
     int leftOffset = (int) (table.width - surface[0].length);
 
-    //Either the table is bigger than the cake in which case we center the cake onto the table or in a strange case, the cake is wider than the table in which case the table must be moved to be centered
+    // Either the table is bigger than the cake in which case we center the cake onto the table or
+    // in a strange case, the cake is wider than the table in which case the table must be moved to
+    // be centered
 
-    if(leftOffset >= 0){
+    if (leftOffset >= 0) {
       Display.displaySurface(surface, leftOffset, 0);
       table.draw(0);
     } else {
