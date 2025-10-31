@@ -1,11 +1,11 @@
 package edu.bhscs;
 
 public class App {
+
   public static void main(String[] args) {
 
     date10_27();
   }
-
   public static void date10_27() {
     // Trying to display a cake ontop of a table
     Person bob = new Person("Bob");
