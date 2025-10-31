@@ -298,7 +298,7 @@ class Food extends Edible {
   public void draw(double width, double height, double depth) {
     String[][] surface = Display.getSurface(75, 75);
     Display.getFoodDisplay(surface, this, width, height, depth);
-    Display.displaySurface(surface,0,0);
+    Display.displaySurface(surface, 0, 0);
   }
 
   // draws the cake ontop of a table
@@ -306,10 +306,28 @@ class Food extends Edible {
 
     String[][] surface = Display.getSurface(50, 50);
     Display.getFoodDisplay(surface, this, 20, 10, 20);
+
     surface = Display.cullUnusedParts(surface);
 
-    //The left offset is the table's width minus the cakes width (the division by 2 is )
-    Display.displaySurface(surface,0,0);
-    table.draw();
+
+    table.adjustWidth();
+
+    //Surface[0].length represents the length of the projected 3d cake
+
+    // The left offset is the table's width minus the cakes width
+    // Note that 2 character (highlight the 2 spaces here: ) form a shape closer to a square. This means all draw methods draw 2 characters in a row to make things look nicer
+    // A side affect of this is that the division by 2 required to properly center the cake can be simulated by drawing only 1 character
+    // This means there is no divison by 2
+    int leftOffset = (int) (table.width - surface[0].length);
+
+    //Either the table is bigger than the cake in which case we center the cake onto the table or in a strange case, the cake is wider than the table in which case the table must be moved to be centered
+
+    if(leftOffset >= 0){
+      Display.displaySurface(surface, leftOffset, 0);
+      table.draw(0);
+    } else {
+      Display.displaySurface(surface, 0, 0);
+      table.draw(-leftOffset);
+    }
   }
 }

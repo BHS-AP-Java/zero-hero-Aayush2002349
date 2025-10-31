@@ -218,9 +218,7 @@ public class Display {
         cake3d[i][j][1] -= 2;
         cake3d[i][j][2] -= 10;
       }
-
     }
-
 
     for (int i = 0; i < cake3d.length; i++) {
       for (int j = 0; j < cake3d[i].length; j++) {
@@ -228,21 +226,19 @@ public class Display {
         cake3d[i][j][1] *= height / 5;
         cake3d[i][j][2] *= depth / 10;
       }
-
     }
-
 
     // To do all the specific renderering we need to find a specific point in space to be in as
     // well as a direction to face in and which way is up
 
-    // These values for the camera pos and direction and up look nice but they don't center the cake well for drawing a table ontop
-    //double[] cameraPos = {10, -10, 0};
-    //double[] cameraDir = {1 / Math.sqrt(3), -1 / Math.sqrt(3), 1 / Math.sqrt(3)};
-    //double[] up = {1 / Math.sqrt(6), 2 / Math.sqrt(6), 1 / Math.sqrt(6)};
-
+    // These values for the direction and up look nice but they don't center the cake
+    // well for drawing a table ontop
     double[] cameraPos = {10, -10, 0};
-    double[] cameraDir = {0, -1 / Math.sqrt(2), -1 / Math.sqrt(2)};
-    double[] up = {0, 1 / Math.sqrt(2), -1 / Math.sqrt(2)};
+    double[] cameraDir = {1 / Math.sqrt(3), -1 / Math.sqrt(3), 1 / Math.sqrt(3)};
+    double[] up = {1 / Math.sqrt(6), 2 / Math.sqrt(6), 1 / Math.sqrt(6)};
+
+    //double[] cameraDir = {0, -1 / Math.sqrt(2), -1 / Math.sqrt(2)};
+    //double[] up = {0, 1 / Math.sqrt(2), -1 / Math.sqrt(2)};
 
     // To convert our 3d points to 2d ones there are 2 steps.
     // First we need to figure out where the shapes are relative to the camera, if you move the
@@ -339,9 +335,10 @@ public class Display {
     return surface;
   }
 
-  //Display surface also culls the top and bottom,left and right edges
-  //Additionally returns the new dimensions after the culling and has options to add a left or top offset
-  public static String[][] cullUnusedParts(String[][] surface){
+  // Display surface also culls the top and bottom,left and right edges
+  // Additionally returns the new dimensions after the culling and has options to add a left or top
+  // offset
+  public static String[][] cullUnusedParts(String[][] surface) {
 
     int left = 0;
     int top = 0;
@@ -376,7 +373,7 @@ public class Display {
         if (!(surface[j][i].matches("  "))) {
           foundLeftEdge = true;
         }
-        if (!(surface[surface.length - j - 1][i].matches("  "))) {
+        if (!(surface[j][surface[0].length - i - 1].matches("  "))) {
           foundRightEdge = true;
         }
       }
@@ -389,30 +386,29 @@ public class Display {
       }
     }
 
-    String[][] newSurface = new String[bottom-top][right-left];
+    String[][] newSurface = new String[bottom - top][right - left];
 
-    for(int i = top; i < bottom; i++){
-      for(int j = left; j < right; j++){
+    for (int i = top; i < bottom; i++) {
+      for (int j = left; j < right; j++) {
 
-        newSurface[i-top][j-left] = surface[i][j];
-
+        newSurface[i - top][j - left] = surface[i][j];
       }
-
     }
 
     return newSurface;
   }
-  public static void displaySurface(String[][] surface,int leftOffset,int topOffset) {
 
-    //top offset here
-    for(int i = 0; i < topOffset; i++){
+  public static void displaySurface(String[][] surface, int leftOffset, int topOffset) {
+
+    // top offset here
+    for (int i = 0; i < topOffset; i++) {
       System.out.println();
     }
 
     for (int i = 0; i < surface.length; i++) {
 
-      //left offset here
-      for(int j = 0; j < topOffset; j++){
+      // left offset here
+      for (int j = 0; j < leftOffset; j++) {
         System.out.print(" ");
       }
 
