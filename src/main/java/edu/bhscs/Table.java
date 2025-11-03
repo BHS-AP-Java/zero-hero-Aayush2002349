@@ -32,7 +32,7 @@ public class Table {
     Display.displaySurface(surface, leftOffset, 0);
   }
 
-  public void setLegs(String leg) {
+  public void setLeg(String leg) {
     this.leg = leg;
   }
 
