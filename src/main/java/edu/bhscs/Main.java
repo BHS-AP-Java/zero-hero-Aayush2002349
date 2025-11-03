@@ -19,7 +19,7 @@ package edu.bhscs;
 
 // Note: Springboot + sockets (figure out it)
 
-class Main {
+public class Main {
 
   public static void main(String[] args) {
 
