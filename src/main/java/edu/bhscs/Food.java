@@ -120,6 +120,7 @@ class Food extends Edible {
   public void addIngredient(Ingredient ingredient) {
     if (!(this.isCookable) || !(this.isCooked)) {
 
+      
       Ingredient[] currentIngredients;
 
       if (ingredient.isEssential) {
@@ -127,13 +128,12 @@ class Food extends Edible {
       } else {
         currentIngredients = this.specialtyIngredients;
       }
+
       Ingredient[] newIngredients = new Ingredient[currentIngredients.length + 1];
       for (int i = 0; i < currentIngredients.length; i++) {
         newIngredients[i] = currentIngredients[i];
       }
       newIngredients[newIngredients.length - 1] = ingredient;
-
-      currentIngredients = newIngredients;
 
       if (ingredient.isEssential) {
         this.essentialIngredients = newIngredients;
@@ -213,30 +213,36 @@ class Food extends Edible {
     // If they do then the specialty and essential ingredients must be matched (in the case that its
     // a menu item we are matching with then instead we check the required ingredients)
     if (this.isMenu) {
+
       if (!(this.matchIngredients(food.essentialIngredients, this.requiredIngredients))) {
         return false;
       }
+
     } else if (food.isMenu) {
+
       if (!(this.matchIngredients(food.requiredIngredients, this.essentialIngredients))) {
         return false;
       }
+
     } else {
+
       if (!(this.matchIngredients(food.essentialIngredients, this.essentialIngredients))) {
-        System.out.println("failed match essential test");
         return false;
       }
-    }
-    if (!(this.matchIngredients(food.specialtyIngredients, this.specialtyIngredients))) {
-      System.out.println("failed match specialty test");
-      return false;
+
     }
 
-    System.out.println("success");
+    //If the specialty ingrients match
+    if (!(this.matchIngredients(food.specialtyIngredients, this.specialtyIngredients))) {
+      return false;
+    }
 
     return true;
   }
 
+  //Helper method for matches
   public Boolean matchIngredients(Ingredient[] set1, Ingredient[] set2) {
+
     if (set1.length != set2.length) {
       return false;
     }
@@ -266,9 +272,8 @@ class Food extends Edible {
   @Override
   public String getFoodTitle() {
 
-    if ((!(this.matchIngredients(this.essentialIngredients, this.requiredIngredients))
-            || this.specialtyIngredients.length == 0)
-        && !(this.isMenu)) {
+    //Only the specialty ingredients matter for getting the title of a food
+    if ((this.specialtyIngredients.length == 0)) {
       return this.foodType;
     }
 
@@ -289,8 +294,7 @@ class Food extends Edible {
       ingredientNames += this.specialtyIngredients[i].name + ", ";
     }
 
-    ingredientNames +=
-        "and " + this.specialtyIngredients[this.specialtyIngredients.length - 1].name;
+    ingredientNames += "and " + this.specialtyIngredients[this.specialtyIngredients.length - 1].name;
     return this.foodType + " with " + ingredientNames;
   }
 
@@ -304,14 +308,13 @@ class Food extends Edible {
   // draws the cake ontop of a table
   public void draw(Table table) {
 
-    String[][] surface = Display.getSurface(50, 50);
-    Display.getFoodDisplay(surface, this, 20, 10, 20);
-
-    surface = Display.cullUnusedParts(surface);
-
+    //adjusts table width to be drawn nicely
     table.adjustWidth();
 
-    // Surface[0].length represents the length of the projected 3d cake
+    //gets the cake display
+    String[][] surface = Display.getSurface(50, 50);
+    Display.getFoodDisplay(surface, this, 20, 10, 20);
+    surface = Display.cullUnusedParts(surface);
 
     // The left offset is the table's width minus the cakes width
     // Note that 2 character (highlight the 2 spaces here: ) form a shape closer to a square. This
@@ -319,7 +322,8 @@ class Food extends Edible {
     // A side affect of this is that the division by 2 required to properly center the cake can be
     // simulated by drawing only 1 character
     // This means there is no divison by 2
-    int leftOffset = (int) (table.width - surface[0].length);
+    int cakeWidth = surface[0].length;
+    int leftOffset = (int) (table.width - cakeWidth);
 
     // Either the table is bigger than the cake in which case we center the cake onto the table or
     // in a strange case, the cake is wider than the table in which case the table must be moved to
