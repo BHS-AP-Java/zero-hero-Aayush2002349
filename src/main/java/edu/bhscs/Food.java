@@ -314,7 +314,8 @@ class Food extends Edible {
     // adjusts table width to be drawn nicely
     table.adjustWidth();
 
-    //gets the cake display
+    // gets the cake display
+    //gets the food display
     String[][] surface = Display.getSurface(50, 50);
     Display.getFoodDisplay(surface, this, 20, 10, 20);
     surface = Display.cullUnusedParts(surface);
