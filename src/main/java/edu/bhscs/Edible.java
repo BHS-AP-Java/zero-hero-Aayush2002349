@@ -1,7 +1,8 @@
 package edu.bhscs;
 
 // I don't like how I had to do this
-// The problem with using an interface here is that all fields are final, however many fields that exist in both the ingredient class and the food class are not final
+// The problem with using an interface here is that all fields are final, however many fields that
+// exist in both the ingredient class and the food class are not final
 // For lots of applications of foods and ingreidents their distinction does not matter
 // The edibles class serves only to have a type that represents both foods and ingredients
 public class Edible {

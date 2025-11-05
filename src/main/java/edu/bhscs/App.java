@@ -6,6 +6,7 @@ public class App {
 
     date10_27();
   }
+
   public static void date10_27() {
     // Trying to display a cake ontop of a table
     Person bob = new Person("Bob");
