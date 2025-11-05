@@ -120,7 +120,6 @@ class Food extends Edible {
   public void addIngredient(Ingredient ingredient) {
     if (!(this.isCookable) || !(this.isCooked)) {
 
-
       Ingredient[] currentIngredients;
 
       if (ingredient.isEssential) {
@@ -303,8 +302,13 @@ class Food extends Edible {
     String[][] surface = Display.getSurface(75, 75);
     Display.getFoodDisplay(surface, this, width, height, depth);
     Display.displaySurface(surface, 0, 0);
-    if(this.foodType == "cake"){
-      System.out.println("This cake is for " + this.additionalInfo + " who is " + this.additionalInt + " years old" );
+    if (this.foodType == "cake") {
+      System.out.println(
+          "This cake is for "
+              + this.additionalInfo
+              + " who is "
+              + this.additionalInt
+              + " years old");
     }
   }
 
@@ -315,7 +319,7 @@ class Food extends Edible {
     table.adjustWidth();
 
     // gets the cake display
-    //gets the food display
+    // gets the food display
     String[][] surface = Display.getSurface(50, 50);
     Display.getFoodDisplay(surface, this, 20, 10, 20);
     surface = Display.cullUnusedParts(surface);
@@ -341,8 +345,13 @@ class Food extends Edible {
       table.draw(-leftOffset);
     }
 
-    if(this.foodType == "cake"){
-      System.out.println("This cake is for " + this.additionalInfo + " who is " + this.additionalInt + " years old" );
+    if (this.foodType == "cake") {
+      System.out.println(
+          "This cake is for "
+              + this.additionalInfo
+              + " who is "
+              + this.additionalInt
+              + " years old");
     }
   }
 }
