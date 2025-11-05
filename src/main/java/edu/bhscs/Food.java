@@ -120,7 +120,6 @@ class Food extends Edible {
   public void addIngredient(Ingredient ingredient) {
     if (!(this.isCookable) || !(this.isCooked)) {
 
-      
       Ingredient[] currentIngredients;
 
       if (ingredient.isEssential) {
@@ -229,10 +228,9 @@ class Food extends Edible {
       if (!(this.matchIngredients(food.essentialIngredients, this.essentialIngredients))) {
         return false;
       }
-
     }
 
-    //If the specialty ingrients match
+    // If the specialty ingrients match
     if (!(this.matchIngredients(food.specialtyIngredients, this.specialtyIngredients))) {
       return false;
     }
@@ -240,7 +238,7 @@ class Food extends Edible {
     return true;
   }
 
-  //Helper method for matches
+  // Helper method for matches
   public Boolean matchIngredients(Ingredient[] set1, Ingredient[] set2) {
 
     if (set1.length != set2.length) {
@@ -272,7 +270,7 @@ class Food extends Edible {
   @Override
   public String getFoodTitle() {
 
-    //Only the specialty ingredients matter for getting the title of a food
+    // Only the specialty ingredients matter for getting the title of a food
     if ((this.specialtyIngredients.length == 0)) {
       return this.foodType;
     }
@@ -294,7 +292,8 @@ class Food extends Edible {
       ingredientNames += this.specialtyIngredients[i].name + ", ";
     }
 
-    ingredientNames += "and " + this.specialtyIngredients[this.specialtyIngredients.length - 1].name;
+    ingredientNames +=
+        "and " + this.specialtyIngredients[this.specialtyIngredients.length - 1].name;
     return this.foodType + " with " + ingredientNames;
   }
 
@@ -308,10 +307,10 @@ class Food extends Edible {
   // draws the cake ontop of a table
   public void draw(Table table) {
 
-    //adjusts table width to be drawn nicely
+    // adjusts table width to be drawn nicely
     table.adjustWidth();
 
-    //gets the cake display
+    // gets the cake display
     String[][] surface = Display.getSurface(50, 50);
     Display.getFoodDisplay(surface, this, 20, 10, 20);
     surface = Display.cullUnusedParts(surface);
