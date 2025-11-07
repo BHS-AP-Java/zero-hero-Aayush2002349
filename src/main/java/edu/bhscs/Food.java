@@ -1,6 +1,6 @@
 package edu.bhscs;
 
-class Food extends Edible {
+class Food extends Edible implements Offsetable {
   // Fields and properties
 
   // All of these fields depend on the food and will be set in the constructor
@@ -313,37 +313,21 @@ class Food extends Edible {
   }
 
   // draws the food ontop of a table
-  public void draw(Table table) {
+  public int getWidth() {
+    String[][] surface = Display.getSurface(50, 50);
+    Display.getFoodDisplay(surface, this, 20, 10, 20);
+    surface = Display.cullUnusedParts(surface);
+    return surface[0].length;
+  }
 
-    // adjusts table width to be drawn nicely
-    table.adjustWidth();
+  public void draw(Offsetable other) {
 
-    // gets the cake display
     // gets the food display
     String[][] surface = Display.getSurface(50, 50);
     Display.getFoodDisplay(surface, this, 20, 10, 20);
     surface = Display.cullUnusedParts(surface);
 
-    // The left offset is the table's width minus the foods width
-    // Note that 2 character (highlight the 2 spaces here: ) form a shape closer to a square. This
-    // means all draw methods draw 2 characters in a row to make things look nicer
-    // A side affect of this is that the division by 2 required to properly center the food can be
-    // simulated by drawing only 1 character
-    // This means there is no divison by 2
-    int foodWidth = surface[0].length;
-    int leftOffset = (int) (table.width - foodWidth);
-
-    // Either the table is bigger than the food in which case we center the food onto the table or
-    // in a strange case, the food is wider than the table in which case the table must be moved to
-    // be centered
-
-    if (leftOffset >= 0) {
-      Display.displaySurface(surface, leftOffset, 0);
-      table.draw(0);
-    } else {
-      Display.displaySurface(surface, 0, 0);
-      table.draw(-leftOffset);
-    }
+    Display.displaySurface(surface, this.getOffset(other), 0);
 
     if (this.foodType == "cake") {
       System.out.println(

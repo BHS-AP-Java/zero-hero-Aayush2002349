@@ -13,5 +13,6 @@ public class App {
     Table table = new Table(3, 50, 15);
     Food bDay = bob.bakes(5, "Suzzie");
     bDay.draw(table);
+    table.draw(bDay);
   }
 }

@@ -1,6 +1,6 @@
 package edu.bhscs;
 
-public class Table {
+public class Table implements Offsetable {
 
   // fields and properties
   double width;
@@ -16,6 +16,7 @@ public class Table {
     this.legs = legs;
     this.width = width;
     this.height = height;
+    this.adjustWidth();
   }
 
   // This adjusts the width of the table so that the legs can be spaced evenly, see
@@ -25,15 +26,21 @@ public class Table {
     this.width = 2 + this.legs * this.leg.length() + (this.legs - 1) * spacing;
   }
 
-  public void draw(int leftOffset) {
+  public void draw(Offsetable other) {
     String[][] surface = Display.getSurface((int) (width), (int) (height));
     surface = Display.getTableDisplay(surface, this);
     Display.cullUnusedParts(surface);
-    Display.displaySurface(surface, leftOffset, 0);
+
+    Display.displaySurface(surface, this.getOffset(other), 0);
+  }
+
+  public int getWidth() {
+    return (int) (this.width);
   }
 
   public void setLeg(String leg) {
     this.leg = leg;
+    this.adjustWidth();
   }
 
   public void setTop(String top) {
