@@ -4,11 +4,13 @@ class Food extends Edible implements Offsetable {
   // Fields and properties
 
   // All of these fields depend on the food and will be set in the constructor
-  Boolean isCookable;
-  int cookingTime;
-  int overcookingTime;
+  // These commented ones also exist but are inside the edible class
 
-  Boolean isCuttable;
+  //Boolean isCookable;
+  //int cookingTime;
+  //int overcookingTime;
+
+  //Boolean isCuttable;
 
   String foodType;
 
@@ -16,7 +18,7 @@ class Food extends Edible implements Offsetable {
 
   // These fields store information about the state of the food
 
-  // These commented ones also exist but are inside the edible class
+
   // int timeCooked = 0;
   // Boolean isCooked = false;
   // Boolean isOvercooked = false;
@@ -165,40 +167,12 @@ class Food extends Edible implements Offsetable {
   }
 
   // Ticks the state of cooking (if it can cook)
-  @Override
-  public void cook() {
-    if (this.isCookable) {
-      // Stop time cooked from becoming too high because display uses the time cooked as part of its
-      // display process
-      if (!(this.isOvercooked)) {
-        this.timeCooked += 1;
-      }
-      if (this.timeCooked == this.overcookingTime) {
-        this.isOvercooked = true;
-      } else if (this.timeCooked == this.cookingTime) {
-        this.isCooked = true;
-      }
-    }
-  }
+  //public void cook() {}
 
   // Updates the state of the food to be cut (if it can be cut)
   @Override
   public void cut() {
-    if (this.isCuttable) {
-      if (!(this.isCut) && this.isCooked) {
-        this.slices = 6;
-        this.isCut = true;
-      }
-    }
-  }
-
-  public void cut(int slices) {
-    if (this.isCuttable) {
-      if (!(this.isCut) && this.isCooked) {
-        this.slices = slices;
-        this.isCut = true;
-      }
-    }
+    this.cut(6);
   }
 
   // Some applications of the foods require you to see if 2 foods are the same. Given another food
