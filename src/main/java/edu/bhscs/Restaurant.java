@@ -6,7 +6,7 @@ public class Restaurant {
 
   // Kitchen related stuff
   int[][] layout;
-  Edible[][] edibleLocations;
+  Pickupable[][] itemLocations;
   Person[][] chefLocations;
 
   int cookingTime = 3;
@@ -40,7 +40,7 @@ public class Restaurant {
     this.name = name;
     this.width = width;
     this.height = height;
-    this.edibleLocations = new Edible[height][width];
+    this.itemLocations = new Pickupable[height][width];
     this.chefLocations = new Person[height][width];
     this.layout = layout;
     this.storedFoods = new Food[maxFoodStorage];
@@ -80,68 +80,69 @@ public class Restaurant {
     }
   }
 
-  // Boolean returns whether the edible was or was not placed
-  // places a edible at a given location
-  public Boolean placeEdible(Edible edible, int x, int y) {
+  // Boolean returns whether the item was or was not placed
+  // places a item at a given location
+  public Boolean place(Pickupable item, int x, int y) {
 
-    // Place edible just places the edible (makes sure there isn't already an edible there and that
-    // an edible
+    // Place just places the item (makes sure there isn't already an item there and that
+    // an thing
     // can be placed at the given location)
-    // All behavior of what to do when the edible is placed happens during "tick"
-    if (this.edibleLocations[y][x] != null) {
+    // All behavior of what to do when the thing is placed happens during "tick"
+    if (this.itemLocations[y][x] != null) {
       return false;
     }
 
     if (this.layout[y][x] >= 3) {
-      this.edibleLocations[y][x] = edible;
+      this.itemLocations[y][x] = item;
       return true;
     }
     return false;
   }
 
-  // Will return null if no edible is there
-  // Returns the edible at the given location
-  public Edible pickUpEdible(int x, int y) {
-    Edible edibleTemp = this.edibleLocations[y][x];
-    this.edibleLocations[y][x] = null;
-    return edibleTemp;
+  // Will return null if no item is there
+  // Returns the item at the given location
+  public Pickupable pickUp(int x, int y) {
+    Pickupable item = this.itemLocations[y][x];
+    this.itemLocations[y][x] = null;
+    return item;
   }
 
-  // Cuts the edible at the given location
-  public void cutEdible(int x, int y) {
-    this.edibleLocations[y][x].cut();
+  // Cuts the item at the given location
+  public void cut(int x, int y) {
+    Edible item = (Edible) this.itemLocations[y][x];
+    item.cut();
   }
 
-  // Adds an ingredient to the edible at the given location
+  // Adds an ingredient to the item at the given location
   public void addIngredient(int x, int y, Ingredient ingredient) {
-    Food food = (Food) this.edibleLocations[y][x];
+    Food food = (Food) this.itemLocations[y][x];
     food.addIngredient(ingredient);
   }
 
-  // Looks at all placed edibles and figures out what to do with them
+  // Looks at all placed items and figures out what to do with them
   // Additionally completes any orders that can be completed and ticks the pending orders as well
   public void tick() {
 
     for (int y = 0; y < this.height; y++) {
       for (int x = 0; x < this.width; x++) {
 
-        // Makes sure there is a edible there
-        if (this.edibleLocations[y][x] != null) {
+        // Makes sure there is a item there
+        if (this.itemLocations[y][x] != null) {
 
           // All of these are the 3 behaviors that need to be ticked
           // 3 = oven (it should be cooking)
           // 6 = delivery station (it should be delivered to the food stand)
           // 7 = trash (it should be thrown away)
           if (this.layout[y][x] == 3) {
-
-            this.edibleLocations[y][x].cook();
+            Edible item = (Edible) this.itemLocations[y][x];
+            item.cook();
           }
           if (this.layout[y][x] == 6) {
             this.deliver(x, y);
           }
           if (this.layout[y][x] == 7) {
-            // Picking up the edible without giving it to anyone is the equivalent of deleting it
-            this.pickUpEdible(x, y);
+            // Picking up the item without giving it to anyone is the equivalent of deleting it
+            this.pickUp(x, y);
           }
         }
       }
@@ -165,13 +166,8 @@ public class Restaurant {
   // The boolean returns whether or not the food was delivered
   // Delivering the food takes it from the kitchen onto the restaurant's inventory
   public Boolean deliver(int x, int y) {
-    Edible edible = this.pickUpEdible(x, y);
-    Food food;
-    if (edible instanceof Food) {
-      food = (Food) edible;
-    } else {
-      return false;
-    }
+    Food food = (Food) this.pickUp(x, y);
+
     if (food.isEdible()) {
       this.storeFood(food);
       return true;

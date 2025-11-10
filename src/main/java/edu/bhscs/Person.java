@@ -13,7 +13,7 @@ public class Person {
 
   Order order;
 
-  Edible edible;
+  Pickupable item;
 
   // Constructors
 
@@ -29,35 +29,35 @@ public class Person {
   }
 
   // All of these methods can be used by both customers and chefs
-  public void getEdible(Edible edible) {
-    this.edible = edible;
-    System.out.println(this.name + " got a " + this.edible.getFoodTitle());
+  public void get(Pickupable item) {
+    this.item = item;
+    System.out.println(this.name + " got a " + this.item.getTitle());
   }
 
-  public Edible giveEdible() {
-    Edible edibleTemp = this.edible;
-    this.edible = null;
-    return edibleTemp;
+  public Pickupable give() {
+    Pickupable item = this.item;
+    this.item = null;
+    return item;
   }
 
   public void eatFood() {
     Food food;
-    if ((this.edible instanceof Food)) {
-      food = (Food) this.edible;
+    if ((this.item instanceof Food)) {
+      food = (Food) this.item;
     } else {
-      System.out.println(this.name + " can't eat the " + this.edible.getFoodTitle());
+      System.out.println(this.name + " can't eat the " + this.item.getTitle());
       return;
     }
     if (food != null) {
       if (food.isEdible()) {
         food.eat();
-        System.out.println(this.name + " ate a " + food.getFoodTitle());
+        System.out.println(this.name + " ate a " + food.getTitle());
       } else {
-        System.out.println(this.name + " can't eat the " + food.getFoodTitle());
+        System.out.println(this.name + " can't eat the " + food.getTitle());
       }
 
       if (food.isEaten) {
-        this.edible = null;
+        this.item = null;
       }
     } else {
       System.out.println(this.name + " doesn't have anything to eat");
@@ -100,36 +100,34 @@ public class Person {
     int x = actionLocation[0];
     int y = actionLocation[1];
 
-    // If both the chef and location have an edible then either they are traded or an ingredient is
+    // If both the chef and location have an item then either they are traded or an ingredient is
     // added to the food
-    if (this.edible != null && this.restaurant.edibleLocations[y][x] != null) {
-      Edible bakerEdible = this.giveEdible();
-      Edible restaurantEdible = this.restaurant.pickUpEdible(x, y);
+    if (this.item != null && this.restaurant.itemLocations[y][x] != null) {
+      Pickupable bakerItem = this.give();
+      Pickupable restaurantItem = this.restaurant.pickUp(x, y);
 
-      // If the if statement is true that means that both are ingredients or foods meaning they
-      // cannot be combined
-      if ((bakerEdible instanceof Ingredient && restaurantEdible instanceof Ingredient)
-          || (bakerEdible instanceof Food && restaurantEdible instanceof Food)) {
+      // If one of the baker items is a food and the other is an ingredient then we can combine them
+      if (bakerItem instanceof Ingredient && restaurantItem instanceof Food){
 
-        this.getEdible(restaurantEdible);
-        this.restaurant.placeEdible(bakerEdible, x, y);
+        Food food = (Food) restaurantItem;
+        Ingredient ingredient = (Ingredient) bakerItem;
+        food.addIngredient(ingredient);
+        this.restaurant.place(food, x, y);
+        return;
+      }
+      if (bakerItem instanceof Food && restaurantItem instanceof Ingredient) {
+
+        Food food = (Food) bakerItem;
+        Ingredient ingredient = (Ingredient) restaurantItem;
+        food.addIngredient(ingredient);
+        this.restaurant.place(food, x, y);
         return;
       }
 
-      // Otherwise the ingredient is added to the food and the food is placed in the kitchen
-      Food food;
-      Ingredient ingredient;
-      if ((bakerEdible instanceof Food)) {
-        food = (Food) bakerEdible;
-        ingredient = (Ingredient) restaurantEdible;
-      } else {
-        food = (Food) restaurantEdible;
-        ingredient = (Ingredient) bakerEdible;
-      }
-
-      food.addIngredient(ingredient);
-      this.restaurant.placeEdible(food, x, y);
+      this.get(restaurantItem);
+      this.restaurant.place(bakerItem, x, y);
       return;
+
     }
 
     // This gets the kind of thing at the given location according to the key below
@@ -143,8 +141,8 @@ public class Person {
     // 8 = ingredient station
     int location = this.restaurant.layout[y][x];
 
-    // If the chef is holding an edible then he just places down the edible at the given location
-    if (this.edible != null) {
+    // If the chef is holding an item then he just places down the item at the given location
+    if (this.item != null) {
 
       if (location >= 2 && location <= 8) {
         this.restaurant.placeEdible(this.giveEdible(), x, y);

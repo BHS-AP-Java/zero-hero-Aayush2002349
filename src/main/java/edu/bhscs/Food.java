@@ -1,23 +1,22 @@
 package edu.bhscs;
 
-class Food extends Edible implements Offsetable {
+class Food extends Edible implements Offsetable,Pickupable {
   // Fields and properties
 
   // All of these fields depend on the food and will be set in the constructor
   // These commented ones also exist but are inside the edible class
 
-  //Boolean isCookable;
-  //int cookingTime;
-  //int overcookingTime;
+  // Boolean isCookable;
+  // int cookingTime;
+  // int overcookingTime;
 
-  //Boolean isCuttable;
+  // Boolean isCuttable;
 
   String foodType;
 
   Ingredient[] requiredIngredients;
 
   // These fields store information about the state of the food
-
 
   // int timeCooked = 0;
   // Boolean isCooked = false;
@@ -167,7 +166,7 @@ class Food extends Edible implements Offsetable {
   }
 
   // Ticks the state of cooking (if it can cook)
-  //public void cook() {}
+  // public void cook() {}
 
   // Updates the state of the food to be cut (if it can be cut)
   @Override
@@ -241,8 +240,8 @@ class Food extends Edible implements Offsetable {
 
   // This gets whatever the food is called (ex: burger with cheese and lettuce or chocolate cake or
   // burger with cheese, lettuce, and meat)
-  @Override
-  public String getFoodTitle() {
+
+  public String getTitle() {
 
     // Only the specialty ingredients matter for getting the title of a food
     if ((this.specialtyIngredients.length == 0)) {

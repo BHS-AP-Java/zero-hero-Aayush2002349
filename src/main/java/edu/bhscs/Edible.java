@@ -7,25 +7,19 @@ package edu.bhscs;
 // The edibles class serves only to have a type that represents both foods and ingredients
 public class Edible {
 
-  //All of these will be set in the constructor
+  // All of these will be set in the constructor
   Boolean isCookable;
   int cookingTime;
   int overcookingTime;
   Boolean isCuttable;
 
-  //These will be updated throughout
+  // These will be updated throughout
   int timeCooked = 0;
   Boolean isCooked = false;
   Boolean isOvercooked = false;
 
   Boolean isCut = false;
   int slices = 0;
-
-
-
-  public String getFoodTitle() {
-    return null;
-  }
 
   public void cut() {}
 
@@ -53,7 +47,6 @@ public class Edible {
         this.isCooked = true;
       }
     }
-
   }
 
   public Boolean isEdible() {

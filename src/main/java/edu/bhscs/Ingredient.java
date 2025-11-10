@@ -1,17 +1,16 @@
 package edu.bhscs;
 
-public class Ingredient extends Edible {
+public class Ingredient extends Edible implements Pickupable {
   // Fields and properties
 
   // All of these fields depend on the ingredient and will be set in the constructor
   // These commented ones also exist but are inside the edible class
 
+  // Boolean isCookable;
+  // int cookingTime;
+  // int overcookingTime;
 
-  //Boolean isCookable;
-  //int cookingTime;
-  //int overcookingTime;
-
-  //Boolean isCuttable;
+  // Boolean isCuttable;
 
   String name;
   int baseCost;
@@ -19,7 +18,6 @@ public class Ingredient extends Edible {
   Boolean isEssential;
 
   // These fields store information about the state of the food
-
 
   // int timeCooked = 0;
   // Boolean isCooked = false;
@@ -162,7 +160,7 @@ public class Ingredient extends Edible {
 
   // Ticks the state of cooking (if it can cook)
 
-  //public void cook() {}
+  // public void cook() {}
 
   // Updates the state of the ingredient to be cut (if it can be cut)
   @Override
@@ -180,7 +178,7 @@ public class Ingredient extends Edible {
   }
 
   @Override
-  public String getFoodTitle() {
+  public String getTitle() {
     return this.name;
   }
 }
