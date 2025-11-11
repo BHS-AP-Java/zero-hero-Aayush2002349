@@ -195,7 +195,7 @@ public class Person {
     // 8 = ingredient station
     int location = this.restaurant.layout[y][x];
 
-    if(additionalPlayerAction != null){
+    if (additionalPlayerAction != null) {
       // Cutting
 
       if (location == 5
@@ -210,20 +210,15 @@ public class Person {
       }
 
       // Getting food/ingredients
-      if (location == 2
-          && bakerItem == null
-          && restaurantItem == null) {
+      if (location == 2 && bakerItem == null && restaurantItem == null) {
         this.get(new Food(additionalPlayerAction));
         return;
       }
-      if (location == 8
-          && bakerItem == null
-          && restaurantItem == null) {
+      if (location == 8 && bakerItem == null && restaurantItem == null) {
         this.get(new Ingredient(additionalPlayerAction));
         return;
       }
     }
-
 
     // If neither of those were the action then combining the 2 items from the restaurant and baker
     // is the action

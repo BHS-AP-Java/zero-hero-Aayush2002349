@@ -212,23 +212,23 @@ public class Display {
     }
 
     String cut = " ";
-    if(edible.isCut){
+    if (edible.isCut) {
       cut = "X";
     }
 
     String cooked = " ";
-    if(edible.isOvercooked){
+    if (edible.isOvercooked) {
       cooked = "O";
-    } else if(edible.isCooked){
+    } else if (edible.isCooked) {
       cooked = "S";
-    } else if(edible.timeCooked > 0){
-      String[] cookingTimeToLetter = {"A","B","C","D","E","F","G","H","I","J","K","L"};
+    } else if (edible.timeCooked > 0) {
+      String[] cookingTimeToLetter = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"};
       cooked = cookingTimeToLetter[edible.timeCooked - 1];
     }
     String[][] art = {
       {" ", " ", " ", " "},
       {" ", name.substring(0, 2), name.substring(2, 4), " "},
-      {" ", name.substring(4, 6), cooked+cut, " "},
+      {" ", name.substring(4, 6), cooked + cut, " "},
       {" ", " ", " ", " "}
     };
     return art;
@@ -474,7 +474,7 @@ public class Display {
 
       String additionalIngredient = null;
       if (cake.specialtyIngredients.length != 0) {
-        if(cake.specialtyIngredients[0].name != null){
+        if (cake.specialtyIngredients[0].name != null) {
           if (cake.specialtyIngredients[0].name.matches("chocolate")) {
             additionalIngredient = "SS";
           } else if (cake.specialtyIngredients[0].name.matches("spice")) {

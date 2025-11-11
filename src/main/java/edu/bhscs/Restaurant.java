@@ -110,7 +110,7 @@ public class Restaurant {
   // Cuts the item at the given location
   public void cut(int x, int y) {
     Edible item = (Edible) this.itemLocations[y][x];
-    if(item != null){
+    if (item != null) {
       item.cut();
     }
   }
