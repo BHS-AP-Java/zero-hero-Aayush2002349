@@ -30,8 +30,11 @@ public class Person {
 
   // All of these methods can be used by both customers and chefs
   public void get(Pickupable item) {
-    this.item = item;
-    System.out.println(this.name + " got a " + this.item.getTitle());
+    if(item != null){
+      this.item = item;
+      System.out.println(this.name + " got a " + this.item.getTitle());
+    }
+
   }
 
   public Pickupable give() {
@@ -92,43 +95,93 @@ public class Person {
     }
   }
 
+  //Combine items essentially takes 2 items and combines them (one of those items may be null)
+  public Pickupable[] combineItems(Pickupable item1,Pickupable item2){
+    // The way combining works is it either swaps the 2 locations if one of the items is null or combines a food and ingreident and puts the combined thing as item2.
+    // Additionally combining will also happen with things that are on tableware and the tableware will always come as item 2
+    // If no combining can happen then the items are returned as is
+
+    //If either 1 of them is null then swapping their locations is the equivalent of picking up or placing them
+    if(item1 == null || item2 == null){
+      Pickupable[] items = {item2,item1};
+      return items;
+    }
+
+    //This handles if one of them is a food and the other is an ingreident
+    Food food;
+    Ingredient ingredient;
+
+    if (item1 instanceof Ingredient && item2 instanceof Food) {
+
+      food = (Food) item2;
+      ingredient = (Ingredient) item1;
+      food.addIngredient(ingredient);
+
+      Pickupable[] items = {null,food};
+      return items;
+    }
+    if (item2 instanceof Ingredient && item1 instanceof Food) {
+
+      food = (Food) item1;
+      ingredient = (Ingredient) item2;
+      food.addIngredient(ingredient);
+
+      Pickupable[] items = {null, food};
+      return items;
+    }
+
+    //This handles if there is tableware mixed in as well
+    Tableware ware1;
+    Tableware ware2;
+
+
+    if(item1 instanceof Tableware && item2 instanceof Tableware){
+      ware1 = (Tableware) item1;
+      ware2 = (Tableware) item2;
+      Edible[] foods = (Edible[]) this.combineItems((Pickupable) ware1.get(), (Pickupable) ware2.get());
+      ware1.set(foods[0]);
+      ware2.set(foods[1]);
+      Pickupable[] items = {(Pickupable) ware1, (Pickupable) ware2};
+      return items;
+    }
+
+    //This handles if only one of them is tableware
+    if(item1 instanceof Tableware){
+      ware1 = (Tableware) item1;
+      Edible[] foods = (Edible[]) this.combineItems(item2, (Pickupable)ware1.get());
+
+
+      ware1.set(foods[1]);
+      Pickupable[] items = {(Pickupable) foods[0], (Pickupable) ware1};
+      return items;
+    }
+
+    if (item1 instanceof Tableware) {
+      ware2 = (Tableware) item2;
+      Edible[] foods = (Edible[]) this.combineItems(item2, (Pickupable) ware2.get());
+
+
+      ware2.set(foods[1]);
+      Pickupable[] items = {(Pickupable) foods[0], (Pickupable) ware2};
+      return items;
+    }
+
+    //Finally if no combining happened we return as is
+    Pickupable[] items = {item1,item2};
+    return items;
+  }
   // Given a certain position to do the action on and potentially any additional information (like
   // what to create)
   // does whatever the action is
-  public void doActionAtLocation(int[] actionLocation, String additionalInfo) {
+
+  public void doActionAtLocation(int[] actionLocation, String additionalPlayerAction) {
 
     int x = actionLocation[0];
     int y = actionLocation[1];
+    Pickupable bakerItem = this.give();
+    Pickupable restaurantItem = this.restaurant.pickUp(x, y);
 
-    // If both the chef and location have an item then either they are traded or an ingredient is
-    // added to the food
-    if (this.item != null && this.restaurant.itemLocations[y][x] != null) {
-      Pickupable bakerItem = this.give();
-      Pickupable restaurantItem = this.restaurant.pickUp(x, y);
-
-      // If one of the baker items is a food and the other is an ingredient then we can combine them
-      if (bakerItem instanceof Ingredient && restaurantItem instanceof Food){
-
-        Food food = (Food) restaurantItem;
-        Ingredient ingredient = (Ingredient) bakerItem;
-        food.addIngredient(ingredient);
-        this.restaurant.place(food, x, y);
-        return;
-      }
-      if (bakerItem instanceof Food && restaurantItem instanceof Ingredient) {
-
-        Food food = (Food) bakerItem;
-        Ingredient ingredient = (Ingredient) restaurantItem;
-        food.addIngredient(ingredient);
-        this.restaurant.place(food, x, y);
-        return;
-      }
-
-      this.get(restaurantItem);
-      this.restaurant.place(bakerItem, x, y);
-      return;
-
-    }
+    //The baker item and the restaurant item are combined according to this.combine
 
     // This gets the kind of thing at the given location according to the key below
 
@@ -141,50 +194,27 @@ public class Person {
     // 8 = ingredient station
     int location = this.restaurant.layout[y][x];
 
-    // If the chef is holding an item then he just places down the item at the given location
-    if (this.item != null) {
-
-      if (location >= 2 && location <= 8) {
-        this.restaurant.placeEdible(this.giveEdible(), x, y);
-        return;
-      }
-
-      // If the chef isnt holding an edible but the place that the chef is performing the action on
-      // does then he either just picks up the edible or performs an action on it
-    } else if (this.restaurant.edibleLocations[y][x] != null) {
-      // In the case there is no additional information about the action the default is to pick it
-      // up
-      if (additionalInfo == null) {
-        this.getEdible(this.restaurant.pickUpEdible(x, y));
-        return;
-      }
-      // In the case of an oven or counter the chef simply picks it up
-      if (location == 3 || location == 4) {
-        this.getEdible(this.restaurant.pickUpEdible(x, y));
-        return;
-      }
-
-      // In the case of a cutting station the chef cuts
-      if (location == 5) {
-        this.restaurant.cutEdible(x, y);
-        return;
-      }
-
-      // In the case that nobody is holding a edible then we get a new edible
-    } else {
-      if (additionalInfo == null) {
-        return;
-      }
-      if (location == 2) {
-        this.getEdible(new Food(additionalInfo));
-      }
-      // In the case of an ingrediant station the chef gets an ingredient
-      if (location == 8) {
-        this.getEdible(new Ingredient(additionalInfo));
-        return;
-      }
+    //Cutting
+    if(location == 5 && additionalPlayerAction == "x" && bakerItem == null && restaurantItem instanceof Edible){
+      this.restaurant.cut(x,y);
+      this.restaurant.place(restaurantItem,x,y);
       return;
     }
+
+    //Getting food/ingredients
+    if(location == 2 && additionalPlayerAction != null && bakerItem == null && restaurantItem == null){
+      this.get(new Food(additionalPlayerAction));
+      return;
+    }
+    if (location == 8 && additionalPlayerAction != null && bakerItem == null && restaurantItem == null) {
+      this.get(new Ingredient(additionalPlayerAction));
+      return;
+    }
+
+    //If neither of those were the action then combining the 2 items from the restaurant and baker is the action
+    Pickupable[] newItems = this.combineItems(bakerItem, restaurantItem);
+    this.get(newItems[0]);
+    this.restaurant.place(newItems[1],x,y);
   }
 
   // This moves the chef. If the chef doesn't move it instead returns the location at which it did

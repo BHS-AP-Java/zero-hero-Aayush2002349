@@ -7,7 +7,7 @@ public class Display {
   // Constructor
   public Display() {}
 
-  public static void displayEverything(int timeLeft, Restaurant restaurant) {
+  public static void displayGame(int timeLeft, Restaurant restaurant) {
     displayTime(timeLeft);
     displayRestaurantRating(restaurant.rating);
     displayRestaurantMoney(restaurant.money);
@@ -15,12 +15,10 @@ public class Display {
     displayRestaurant(restaurant);
   }
 
-  // Displays the restaurant
-  public static void displayRestaurant(Restaurant restaurant) {
-
-    // Display is as follows:
+  public static String[][] getLocationDisplay(int location){
+    // Layout:
     // 0 = empty
-    // 1 = chef starting location(considered empty so it will be 0)
+    // 1 = chef starting location(considered empty)
     // 2 = base station
     // 3 = oven
     // 4 = counter
@@ -28,65 +26,267 @@ public class Display {
     // 6 = delivery station
     // 7 = trash
     // 8 = ingredient station
-    // u = chef
-    // U = chef holding edible
-    // Uppercase represents a food while lowercase represents an ingredient
-    // A = edible mix
-    // A,B,C,D,E,F,H,I,J = edible cooking
-    // J = fully cooked
-    // K = also cut
-    // Z = overcooked
-    // S = ready to serve (this overrides everything)
 
+    // $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'.
+    if(location == 0 || location == 1){
+      String[][] art = {
+        {":",":"," "," "},
+        {":",":"," "," "},
+        {" "," ",":",":"},
+        {" "," ",":",":"}
+      };
+      return art;
+    }
+    if(location == 2){
+      String[][] art = {
+        {"#","#","#","#"},
+        {"#"," F","O ","#"},
+        {"#"," O","D ","#"},
+        {"#","#","#","#"}
+      };
+      return art;
+    }
+
+    if(location == 3){
+      String[][] art = {
+        {"\\"," "," ","/"},
+        {" ","\\","/"," "},
+        {" ","/","\\"," "},
+        {"/"," "," ","\\"}
+      };
+      return art;
+    }
+
+    if(location == 4){
+      String[][] art = {
+        {"#","#","#","#"},
+        {"#","#","#","#"},
+        {"#","#","#","#"},
+        {"#","#","#","#"}
+      };
+      return art;
+    }
+
+    if(location == 5){
+      String[][] art = {
+        {"| ",".","/-","-|"},
+        {"| ",".","\\-","-|"},
+        {"|-","-\\","."," |"},
+        {"|-","-/","."," |"}
+      };
+      return art;
+    }
+    if(location == 6){
+      String[][] art = {
+        {".","."," \\","."},
+        {"-","-","-"," \\"},
+        {"-","-","-","/"},
+        {".",".","/","."}
+      };
+      return art;
+    }
+
+    if(location == 7){
+      String[][] art = {
+        {"#","#","#","#"},
+        {"#"," "," ","#"},
+        {"#"," "," ","#"},
+        {"#","#","#","#"}
+      };
+      return art;
+    }
+    if(location == 8){
+      String[][] art = {
+        {"#","#","#","#"},
+        {"#"," I","N ","#"},
+        {"#"," G","R ","#"},
+        {"#","#","#","#"}
+      };
+      return art;
+    }
+    return null;
+  }
+
+  public static String[][] getChefDisplay(Person chef){
+    if(chef != null){
+      String[][] tile = {
+        {"CH","EF"," ",">"},
+        {" "," "," "," "},
+        {" "," "," "," "},
+        {"<"," ","CH","EF"}
+      };
+
+      Pickupable item = chef.item;
+      if (item instanceof Tableware) {
+        Tableware tableware = (Tableware) item;
+        String[][] wareTile = Display.getTablewareDisplay(tableware);
+        String[][] edibleTile = Display.getEdibleDisplay(tableware.edible);
+        tile = Display.overlap(wareTile, tile);
+        tile = Display.overlap(edibleTile, tile);
+      }
+
+      if (item instanceof Edible) {
+        String[][] edibleTile = Display.getEdibleDisplay((Edible) item);
+        tile = Display.overlap(edibleTile, tile);
+      }
+
+      return tile;
+    } else {
+      String[][] art = {
+        {" "," "," "," "},
+        {" "," "," "," "},
+        {" "," "," "," "},
+        {" "," "," "," "}
+      };
+      return art;
+    }
+  }
+
+  public static String[][] getTablewareDisplay(Tableware ware) {
+    // $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'.
+    if(ware.type == "plate"){
+      String[][] art = {
+        {" ", "$", "$", " "},
+        {"$", "$", "$", "$"},
+        {"$", "$", "$", "$"},
+        {" ", "$", "$", " "}
+      };
+      return art;
+    }
+    if(ware.type == "cup"){
+      String[][] art = {
+        {" ", "$-", "-$", " "},
+        {"$", " ", " ", "$"},
+        {"$", " ", " ", "$"},
+        {" ", "$-", "-$", " "}
+      };
+      return art;
+    }
+    if(ware.type == "pan"){
+      String[][] art = {
+        {" ", " |", "| ", " "},
+        {" ", "$", "$", " "},
+        {"$", "$", "$", "$"},
+        {" ", "$", "$", " "}
+      };
+      return art;
+    }
+    if(ware.type == "oven"){
+      String[][] art = {
+        {"-", "[]", "[]", "-"},
+        {"|", " ", " ", "|"},
+        {"|", " ", " ", "|"},
+        {"-", "O", "O", "-"}
+      };
+      return art;
+    }
+
+    String[][] art = {
+      {" ", " ", " ", " "},
+      {" ", " ", " ", " "},
+      {" ", " ", " ", " "},
+      {" ", " ", " ", " "}
+    };
+    return art;
+  }
+
+  //This is a little lazy, i didn't want to have a unique display for every food so I just made the display the name of the food
+  public static String[][] getEdibleDisplay(Edible edible){
+
+    if(edible == null){
+      String[][] art = {
+        {" ", " ", " ", " "},
+        {" ", " ", " ", " "},
+        {" ", " ", " ", " "},
+        {" ", " ", " ", " "}
+      };
+      return art;
+    }
+
+    String name = edible.name.substring(0);
+    System.out.println(name.length());
+    int leftover = 8 - name.length();
+    for(int i = 0; i < leftover; i++){
+      name += " ";
+    }
+    String[][] art = {
+      {" "," "," "," "},
+      {" ", name.substring(0,2), name.substring(2, 4)," "},
+      {" ", name.substring(4, 6), name.substring(6, 8)," "},
+      {" "," "," "," "}
+    };
+    return art;
+  }
+
+
+
+  //Overlaps one thing ontop of the other (spaces are omitted)
+  public static String[][] overlap(String[][] top,String[][] bottom){
+    String[][] overlapped = new String[top.length][top[0].length];
+
+    for(int i = 0; i < top.length; i++){
+      for (int j = 0; j < top[0].length; j++) {
+        if(top[i][j] == " "){
+          overlapped[i][j] = bottom[i][j];
+        } else {
+          overlapped[i][j] = top[i][j];
+        }
+      }
+    }
+
+    return overlapped;
+  }
+
+  public static String[][] getTileDisplay(Restaurant restaurant,int x,int y){
+
+
+
+    String[][] floorTile = Display.getLocationDisplay(restaurant.layout[y][x]);
+    String[][] chefTile = Display.getChefDisplay(restaurant.chefLocations[y][x]);
+
+    String[][] tile = floorTile;
+
+    Pickupable item = restaurant.itemLocations[y][x];
+    if(item instanceof Tableware){
+      Tableware tableware = (Tableware) item;
+      String[][] wareTile = Display.getTablewareDisplay(tableware);
+      String[][] edibleTile = Display.getEdibleDisplay(tableware.edible);
+      tile = Display.overlap(wareTile, tile);
+      tile = Display.overlap(edibleTile, tile);
+    }
+
+    if(item instanceof Edible){
+      String[][] edibleTile = Display.getEdibleDisplay((Edible) item);
+      tile = Display.overlap(edibleTile, tile);
+    }
+
+    tile = Display.overlap(chefTile, tile);
+
+    return tile;
+
+  }
+
+  // Displays the restaurant
+  public static void displayRestaurant(Restaurant restaurant) {
+    String[][] surface = Display.getSurface(4*restaurant.layout[0].length, 4*restaurant.layout.length);
     for (int y = 0; y < restaurant.layout.length; y++) {
       for (int x = 0; x < restaurant.layout[y].length; x++) {
 
-        if (restaurant.chefLocations[y][x] != null) {
+        String[][] tile = Display.getTileDisplay(restaurant,x,y);
+        for(int n = 4*y; n < 4*y+4; n++){
+          for (int m = 4 * x; m < 4 * x + 4; m++) {
 
-          if (restaurant.chefLocations[y][x].edible != null) {
-            System.out.print("U");
-          } else {
-            System.out.print("u");
-          }
-
-        } else if (restaurant.edibleLocations[y][x] != null) {
-
-          Edible edible = restaurant.edibleLocations[y][x];
-
-          char character;
-
-          if (edible.isEdible()) {
-            character = 's';
-          } else if (edible.isOvercooked) {
-            character = 'z';
-          } else if (edible.isCut) {
-            character = 'k';
-          } else if (edible.isCooked) {
-            character = 'j';
-          } else {
-            char[] numToLetter = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'};
-            character = numToLetter[restaurant.edibleLocations[y][x].timeCooked];
-          }
-
-          if (edible instanceof Food) {
-            System.out.print(Character.toUpperCase(character));
-          } else {
-            System.out.print(character);
-          }
-
-        } else {
-
-          if (restaurant.layout[y][x] == 1) {
-            System.out.print("0");
-          } else {
-            System.out.print("" + restaurant.layout[y][x]);
+            String str = tile[n%4][m%4];
+            if(str.length() == 1){
+              str = str + str;
+            }
+            surface[n][m] = str;
           }
         }
       }
-      System.out.println();
     }
 
-    System.out.println();
+    Display.displaySurface(surface,0,0);
   }
 
   // Displays the currently pending orders
@@ -103,14 +303,14 @@ public class Display {
             "  Order #"
                 + (i + 1)
                 + ": "
-                + orders[i].food.getFoodTitle()
+                + orders[i].food.getTitle()
                 + ": This order is failed");
       } else {
         System.out.println(
             "  Order #"
                 + (i + 1)
                 + ": "
-                + orders[i].food.getFoodTitle()
+                + orders[i].food.getTitle()
                 + ": Time left "
                 + (orders[i].timeToComplete - orders[i].timeElapsed));
       }
@@ -140,7 +340,7 @@ public class Display {
   public static String[][] getFoodDisplay(
       String[][] surface, Food food, double width, double height, double depth) {
     String[][] newSurface = null;
-    if (food.foodType == "cake") {
+    if (food.name == "cake") {
       newSurface = getCakeDisplay(surface, food, width, height, depth);
     }
     return newSurface;

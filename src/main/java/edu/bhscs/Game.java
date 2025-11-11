@@ -82,7 +82,7 @@ public class Game {
         this.restaurant.takeOrder(new Order(this.restaurant.menu, this.restaurant.rating));
       }
 
-      Display.displayEverything((time - i), this.restaurant);
+      Display.displayGame((time - i), this.restaurant);
 
       for (int j = 0; j < this.bakers.length; j++) {
         this.bakers[j].getAndDoAction();

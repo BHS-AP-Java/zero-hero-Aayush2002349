@@ -1,6 +1,6 @@
 package edu.bhscs;
 
-class Food extends Edible implements Offsetable,Pickupable {
+class Food extends Edible implements Offsetable, Pickupable {
   // Fields and properties
 
   // All of these fields depend on the food and will be set in the constructor
@@ -12,7 +12,7 @@ class Food extends Edible implements Offsetable,Pickupable {
 
   // Boolean isCuttable;
 
-  String foodType;
+  //String name;
 
   Ingredient[] requiredIngredients;
 
@@ -39,10 +39,10 @@ class Food extends Edible implements Offsetable,Pickupable {
   String additionalInfo = null;
   int additionalInt;
 
-  public Food(String foodType) {
-    this.foodType = foodType;
+  public Food(String name) {
+    this.name = name;
 
-    if (foodType.matches("cake")) {
+    if (name.matches("cake")) {
       this.isCookable = true;
       this.cookingTime = 5;
       this.overcookingTime = 7;
@@ -53,7 +53,7 @@ class Food extends Edible implements Offsetable,Pickupable {
       this.requiredIngredients[0] = new Ingredient("egg");
       this.requiredIngredients[1] = new Ingredient("flour");
     }
-    if (foodType.matches("burger")) {
+    if (name.matches("burger")) {
       this.isCookable = false;
       // this.cookingTime;
       // this.overcookingTime;
@@ -178,7 +178,7 @@ class Food extends Edible implements Offsetable,Pickupable {
   // this returns whether or not the 2 match
   public Boolean matches(Food food) {
     // First checks if the food's types even match
-    if (!(food.foodType.equals(this.foodType))) {
+    if (!(food.name.equals(this.name))) {
       return false;
     }
 
@@ -245,15 +245,15 @@ class Food extends Edible implements Offsetable,Pickupable {
 
     // Only the specialty ingredients matter for getting the title of a food
     if ((this.specialtyIngredients.length == 0)) {
-      return this.foodType;
+      return this.name;
     }
 
     if (this.specialtyIngredients.length == 1) {
-      return this.specialtyIngredients[0].name + " " + this.foodType;
+      return this.specialtyIngredients[0].name + " " + this.name;
     }
 
     if (this.specialtyIngredients.length == 2) {
-      return this.foodType
+      return this.name
           + " with "
           + this.specialtyIngredients[0].name
           + " and "
@@ -267,7 +267,7 @@ class Food extends Edible implements Offsetable,Pickupable {
 
     ingredientNames +=
         "and " + this.specialtyIngredients[this.specialtyIngredients.length - 1].name;
-    return this.foodType + " with " + ingredientNames;
+    return this.name + " with " + ingredientNames;
   }
 
   // draws the food
@@ -275,7 +275,7 @@ class Food extends Edible implements Offsetable,Pickupable {
     String[][] surface = Display.getSurface(75, 75);
     Display.getFoodDisplay(surface, this, width, height, depth);
     Display.displaySurface(surface, 0, 0);
-    if (this.foodType == "cake") {
+    if (this.name == "cake") {
       System.out.println(
           "This cake is for "
               + this.additionalInfo
@@ -302,7 +302,7 @@ class Food extends Edible implements Offsetable,Pickupable {
 
     Display.displaySurface(surface, this.getOffset(other), 0);
 
-    if (this.foodType == "cake") {
+    if (this.name == "cake") {
       System.out.println(
           "This cake is for "
               + this.additionalInfo
