@@ -12,7 +12,7 @@ class Food extends Edible implements Offsetable, Pickupable {
 
   // Boolean isCuttable;
 
-  //String name;
+  // String name;
 
   Ingredient[] requiredIngredients;
 
@@ -275,7 +275,7 @@ class Food extends Edible implements Offsetable, Pickupable {
     String[][] surface = Display.getSurface(75, 75);
     Display.getFoodDisplay(surface, this, width, height, depth);
     Display.displaySurface(surface, 0, 0);
-    if (this.name == "cake") {
+    if (this.name.matches("cake")) {
       System.out.println(
           "This cake is for "
               + this.additionalInfo
@@ -302,7 +302,7 @@ class Food extends Edible implements Offsetable, Pickupable {
 
     Display.displaySurface(surface, this.getOffset(other), 0);
 
-    if (this.name == "cake") {
+    if (this.name.matches("cake")) {
       System.out.println(
           "This cake is for "
               + this.additionalInfo

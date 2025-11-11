@@ -30,11 +30,10 @@ public class Person {
 
   // All of these methods can be used by both customers and chefs
   public void get(Pickupable item) {
-    if(item != null){
+    if (item != null) {
       this.item = item;
       System.out.println(this.name + " got a " + this.item.getTitle());
     }
-
   }
 
   public Pickupable give() {
@@ -95,19 +94,22 @@ public class Person {
     }
   }
 
-  //Combine items essentially takes 2 items and combines them (one of those items may be null)
-  public Pickupable[] combineItems(Pickupable item1,Pickupable item2){
-    // The way combining works is it either swaps the 2 locations if one of the items is null or combines a food and ingreident and puts the combined thing as item2.
-    // Additionally combining will also happen with things that are on tableware and the tableware will always come as item 2
+  // Combine items essentially takes 2 items and combines them (one of those items may be null)
+  public Pickupable[] combineItems(Pickupable item1, Pickupable item2) {
+    // The way combining works is it either swaps the 2 locations if one of the items is null or
+    // combines a food and ingreident and puts the combined thing as item2.
+    // Additionally combining will also happen with things that are on tableware and the tableware
+    // will always come as item 2
     // If no combining can happen then the items are returned as is
 
-    //If either 1 of them is null then swapping their locations is the equivalent of picking up or placing them
-    if(item1 == null || item2 == null){
-      Pickupable[] items = {item2,item1};
+    // If either 1 of them is null then swapping their locations is the equivalent of picking up or
+    // placing them
+    if (item1 == null || item2 == null) {
+      Pickupable[] items = {item2, item1};
       return items;
     }
 
-    //This handles if one of them is a food and the other is an ingreident
+    // This handles if one of them is a food and the other is an ingreident
     Food food;
     Ingredient ingredient;
 
@@ -117,7 +119,7 @@ public class Person {
       ingredient = (Ingredient) item1;
       food.addIngredient(ingredient);
 
-      Pickupable[] items = {null,food};
+      Pickupable[] items = {null, food};
       return items;
     }
     if (item2 instanceof Ingredient && item1 instanceof Food) {
@@ -130,26 +132,25 @@ public class Person {
       return items;
     }
 
-    //This handles if there is tableware mixed in as well
+    // This handles if there is tableware mixed in as well
     Tableware ware1;
     Tableware ware2;
 
-
-    if(item1 instanceof Tableware && item2 instanceof Tableware){
+    if (item1 instanceof Tableware && item2 instanceof Tableware) {
       ware1 = (Tableware) item1;
       ware2 = (Tableware) item2;
-      Edible[] foods = (Edible[]) this.combineItems((Pickupable) ware1.get(), (Pickupable) ware2.get());
+      Edible[] foods =
+          (Edible[]) this.combineItems((Pickupable) ware1.get(), (Pickupable) ware2.get());
       ware1.set(foods[0]);
       ware2.set(foods[1]);
       Pickupable[] items = {(Pickupable) ware1, (Pickupable) ware2};
       return items;
     }
 
-    //This handles if only one of them is tableware
-    if(item1 instanceof Tableware){
+    // This handles if only one of them is tableware
+    if (item1 instanceof Tableware) {
       ware1 = (Tableware) item1;
-      Edible[] foods = (Edible[]) this.combineItems(item2, (Pickupable)ware1.get());
-
+      Edible[] foods = (Edible[]) this.combineItems(item2, (Pickupable) ware1.get());
 
       ware1.set(foods[1]);
       Pickupable[] items = {(Pickupable) foods[0], (Pickupable) ware1};
@@ -160,16 +161,16 @@ public class Person {
       ware2 = (Tableware) item2;
       Edible[] foods = (Edible[]) this.combineItems(item2, (Pickupable) ware2.get());
 
-
       ware2.set(foods[1]);
       Pickupable[] items = {(Pickupable) foods[0], (Pickupable) ware2};
       return items;
     }
 
-    //Finally if no combining happened we return as is
-    Pickupable[] items = {item1,item2};
+    // Finally if no combining happened we return as is
+    Pickupable[] items = {item1, item2};
     return items;
   }
+
   // Given a certain position to do the action on and potentially any additional information (like
   // what to create)
   // does whatever the action is
@@ -181,7 +182,7 @@ public class Person {
     Pickupable bakerItem = this.give();
     Pickupable restaurantItem = this.restaurant.pickUp(x, y);
 
-    //The baker item and the restaurant item are combined according to this.combine
+    // The baker item and the restaurant item are combined according to this.combine
 
     // This gets the kind of thing at the given location according to the key below
 
@@ -194,27 +195,41 @@ public class Person {
     // 8 = ingredient station
     int location = this.restaurant.layout[y][x];
 
-    //Cutting
-    if(location == 5 && additionalPlayerAction == "x" && bakerItem == null && restaurantItem instanceof Edible){
-      this.restaurant.cut(x,y);
-      this.restaurant.place(restaurantItem,x,y);
-      return;
+    if(additionalPlayerAction != null){
+      // Cutting
+
+      if (location == 5
+          && additionalPlayerAction.matches("x")
+          && bakerItem == null
+          && restaurantItem instanceof Edible) {
+
+        this.restaurant.place(restaurantItem, x, y);
+        this.restaurant.cut(x, y);
+
+        return;
+      }
+
+      // Getting food/ingredients
+      if (location == 2
+          && bakerItem == null
+          && restaurantItem == null) {
+        this.get(new Food(additionalPlayerAction));
+        return;
+      }
+      if (location == 8
+          && bakerItem == null
+          && restaurantItem == null) {
+        this.get(new Ingredient(additionalPlayerAction));
+        return;
+      }
     }
 
-    //Getting food/ingredients
-    if(location == 2 && additionalPlayerAction != null && bakerItem == null && restaurantItem == null){
-      this.get(new Food(additionalPlayerAction));
-      return;
-    }
-    if (location == 8 && additionalPlayerAction != null && bakerItem == null && restaurantItem == null) {
-      this.get(new Ingredient(additionalPlayerAction));
-      return;
-    }
 
-    //If neither of those were the action then combining the 2 items from the restaurant and baker is the action
+    // If neither of those were the action then combining the 2 items from the restaurant and baker
+    // is the action
     Pickupable[] newItems = this.combineItems(bakerItem, restaurantItem);
     this.get(newItems[0]);
-    this.restaurant.place(newItems[1],x,y);
+    this.restaurant.place(newItems[1], x, y);
   }
 
   // This moves the chef. If the chef doesn't move it instead returns the location at which it did

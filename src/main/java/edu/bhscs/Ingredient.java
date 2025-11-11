@@ -12,7 +12,7 @@ public class Ingredient extends Edible implements Pickupable {
 
   // Boolean isCuttable;
 
-  //String name;
+  // String name;
   int baseCost;
 
   Boolean isEssential;

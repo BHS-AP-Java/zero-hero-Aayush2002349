@@ -23,39 +23,6 @@ public class Main {
 
   public static void main(String[] args) {
 
-    // Layout:
-    // 0 = empty
-    // 1 = chef starting location(considered empty so it will be 0)
-    // 2 = base station
-    // 3 = oven
-    // 4 = counter
-    // 5 = cutting station
-    // 6 = delivery station
-    // 7 = trash
-    // 8 = ingredient station
-    // u = chef
-    // U = chef holding edible
-    // Uppercase represents a food while lowercase represents an ingredient
-    // A = edible mix
-    // A,B,C,D,E,F,H,I,J = edible cooking
-    // J = fully cooked
-    // K = also cut
-    // Z = overcooked
-    // S = ready to serve (this overrides everything)
-
-    // Controls:
-    // wasd to move or select the place you want to do an action at
-
-    // The default action is either placing down or picking up a cake
-    // For all places except the base station you need to place the cake down at the location and
-    // then perform an action on it
-
-    // To override the default do the following:
-    // if at cake mix or ingredient station also type what you want to get/add with no space right
-    // after the direction (ex: wcake)
-    // if at a cutting station then type x right after the direction to cut instead of picking the
-    // cake up (ex: sx)
-
     // Creating a new game with no arguments creates a default game
 
     Game game = new Game();
