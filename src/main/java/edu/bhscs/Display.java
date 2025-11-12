@@ -20,12 +20,13 @@ public class Display {
     // 0 = empty
     // 1 = chef starting location(considered empty)
     // 2 = base station
-    // 3 = oven
+    // 3 = power
     // 4 = counter
     // 5 = cutting station
     // 6 = delivery station
     // 7 = trash
     // 8 = ingredient station
+    // 9 = ware station
 
     // $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'.
     if (location == 0 || location == 1) {
@@ -100,6 +101,15 @@ public class Display {
         {"#", "#", "#", "#"},
         {"#", " I", "N ", "#"},
         {"#", " G", "R ", "#"},
+        {"#", "#", "#", "#"}
+      };
+      return art;
+    }
+    if (location == 9) {
+      String[][] art = {
+        {"#", "#", "#", "#"},
+        {"#", " W", "A ", "#"},
+        {"#", " R", "E ", "#"},
         {"#", "#", "#", "#"}
       };
       return art;

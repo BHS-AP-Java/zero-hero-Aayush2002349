@@ -187,12 +187,13 @@ public class Person {
     // This gets the kind of thing at the given location according to the key below
 
     // 2 = base station
-    // 3 = oven
+    // 3 = power
     // 4 = counter
     // 5 = cutting station
     // 6 = delivery station
     // 7 = trash
     // 8 = ingredient station
+    // 9 = ware station
     int location = this.restaurant.layout[y][x];
 
     if (additionalPlayerAction != null) {
@@ -203,21 +204,29 @@ public class Person {
           && bakerItem == null
           && restaurantItem instanceof Edible) {
 
+        Edible cuttable = (Edible) restaurantItem;
+        cuttable.cut();
         this.restaurant.place(restaurantItem, x, y);
-        this.restaurant.cut(x, y);
 
         return;
       }
 
-      // Getting food/ingredients
-      if (location == 2 && bakerItem == null && restaurantItem == null) {
-        this.get(new Food(additionalPlayerAction));
-        return;
+      // Getting food/ingredients/wares
+      if(bakerItem == null && restaurantItem == null){
+        if (location == 2) {
+          this.get(new Food(additionalPlayerAction));
+          return;
+        }
+        if (location == 8) {
+          this.get(new Ingredient(additionalPlayerAction));
+          return;
+        }
+        if (location == 9) {
+          this.get(new Tableware(additionalPlayerAction,"servingWare"));
+          return;
+        }
       }
-      if (location == 8 && bakerItem == null && restaurantItem == null) {
-        this.get(new Ingredient(additionalPlayerAction));
-        return;
-      }
+
     }
 
     // If neither of those were the action then combining the 2 items from the restaurant and baker

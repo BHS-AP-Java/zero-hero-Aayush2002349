@@ -11,8 +11,13 @@ public class Edible {
   Boolean isCookable;
   int cookingTime;
   int overcookingTime;
+  String cookingWare = "none";
+
   Boolean isCuttable;
   String name;
+
+
+  String servingWare;
 
   // These will be updated throughout
   int timeCooked = 0;

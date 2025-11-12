@@ -9,8 +9,11 @@ class Food extends Edible implements Offsetable, Pickupable {
   // Boolean isCookable;
   // int cookingTime;
   // int overcookingTime;
+  // String cookingWare;
 
   // Boolean isCuttable;
+
+  // String servingWare
 
   // String name;
 
@@ -46,22 +49,25 @@ class Food extends Edible implements Offsetable, Pickupable {
       this.isCookable = true;
       this.cookingTime = 5;
       this.overcookingTime = 7;
+      this.cookingWare = "oven";
 
       this.isCuttable = true;
 
       this.requiredIngredients = new Ingredient[2];
       this.requiredIngredients[0] = new Ingredient("egg");
       this.requiredIngredients[1] = new Ingredient("flour");
+
+      this.servingWare = "plate";
     }
     if (name.matches("burger")) {
       this.isCookable = false;
-      // this.cookingTime;
-      // this.overcookingTime;
 
       this.isCuttable = false;
 
       this.requiredIngredients = new Ingredient[1];
       this.requiredIngredients[0] = new Ingredient("bun");
+
+      this.servingWare = "plate";
     }
   }
 

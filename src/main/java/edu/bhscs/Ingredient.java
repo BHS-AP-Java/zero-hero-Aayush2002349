@@ -9,8 +9,11 @@ public class Ingredient extends Edible implements Pickupable {
   // Boolean isCookable;
   // int cookingTime;
   // int overcookingTime;
+  // String cookingWare;
 
   // Boolean isCuttable;
+
+  // String servingWare;
 
   // String name;
   int baseCost;
@@ -27,115 +30,100 @@ public class Ingredient extends Edible implements Pickupable {
 
   // Constructor
 
-  public Ingredient(
-      String name,
-      Boolean isCookable,
-      int cookingTime,
-      int overcookingTime,
-      Boolean isCuttable,
-      int baseCost) {
-    this.name = name;
-
-    this.isCookable = isCookable;
-    this.cookingTime = cookingTime;
-    this.overcookingTime = overcookingTime;
-
-    this.isCuttable = isCuttable;
-
-    this.baseCost = baseCost;
-  }
-
   // There are some preset ingredients
   public Ingredient(String name) {
     this.name = name;
 
     if (name.matches("egg")) {
       this.isCookable = false;
-      // this.cookingTime;
-      // this.overcookingTime;
 
       this.isCuttable = false;
 
       this.baseCost = 10;
 
       this.isEssential = true;
+
+      this.servingWare = "plate";
     }
     if (name.matches("flour")) {
       this.isCookable = false;
-      // this.cookingTime;
-      // this.overcookingTime;
 
       this.isCuttable = false;
 
       this.baseCost = 10;
 
       this.isEssential = true;
+
+      this.servingWare = "plate";
     }
     if (name.matches("meat")) {
       this.isCookable = true;
       this.cookingTime = 5;
       this.overcookingTime = 10;
+      this.cookingWare = "pan";
 
       this.isCuttable = false;
 
       this.baseCost = 20;
 
       this.isEssential = false;
+
+      this.servingWare = "plate";
     }
     if (name.matches("cheese")) {
       this.isCookable = false;
-      // this.cookingTime;
-      // this.overcookingTime;
 
       this.isCuttable = false;
 
       this.baseCost = 5;
 
       this.isEssential = false;
+
+      this.servingWare = "plate";
     }
     if (name.matches("lettuce")) {
       this.isCookable = false;
-      // this.cookingTime;
-      // this.overcookingTime;
 
       this.isCuttable = true;
 
       this.baseCost = 5;
 
       this.isEssential = false;
+
+      this.servingWare = "plate";
     }
     if (name.matches("bun")) {
       this.isCookable = false;
-      // this.cookingTime;
-      // this.overcookingTime;
 
       this.isCuttable = true;
 
       this.baseCost = 5;
 
       this.isEssential = true;
+
+      this.servingWare = "plate";
     }
     if (name.matches("chocolate")) {
       this.isCookable = false;
-      // this.cookingTime;
-      // this.overcookingTime;
 
       this.isCuttable = true;
 
       this.baseCost = 10;
 
       this.isEssential = false;
+
+      this.servingWare = "plate";
     }
     if (name.matches("spice")) {
       this.isCookable = false;
-      // this.cookingTime;
-      // this.overcookingTime;
 
       this.isCuttable = true;
 
       this.baseCost = 10;
 
       this.isEssential = false;
+
+      this.servingWare = "plate";
     }
   }
 

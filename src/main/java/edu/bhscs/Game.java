@@ -23,18 +23,18 @@ public class Game {
     // 0 = empty
     // 1 = chef starting location(considered empty)
     // 2 = base station
-    // 3 = oven
+    // 3 = power
     // 4 = counter
     // 5 = cutting station
     // 6 = delivery station
     // 7 = trash
     // 8 = ingrediant station
-    //
+    // 9 = ware station
     int[][] layout = {
       {3, 0, 2, 8, 2, 0, 6},
       {5, 0, 1, 0, 1, 0, 6},
       {3, 0, 0, 4, 0, 0, 5},
-      {3, 0, 0, 4, 0, 0, 5},
+      {3, 0, 0, 9, 0, 0, 5},
       {3, 0, 0, 4, 0, 0, 5},
       {5, 0, 1, 0, 1, 0, 7},
       {3, 0, 2, 8, 2, 0, 7}
