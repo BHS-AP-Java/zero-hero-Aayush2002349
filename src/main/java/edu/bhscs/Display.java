@@ -119,11 +119,18 @@ public class Display {
 
   public static String[][] getChefDisplay(Person chef) {
     if (chef != null) {
-      String[][] tile = {
+      String[][] chefTile = {
         {"CH", "EF", " ", ">"},
         {" ", " ", " ", " "},
         {" ", " ", " ", " "},
         {"<", " ", "CH", "EF"}
+      };
+
+      String[][] tile = {
+        {" ", " ", " ", " "},
+        {" ", " ", " ", " "},
+        {" ", " ", " ", " "},
+        {" ", " ", " ", " "}
       };
 
       Pickupable item = chef.item;
@@ -139,6 +146,8 @@ public class Display {
         String[][] edibleTile = Display.getEdibleDisplay((Edible) item);
         tile = Display.overlap(edibleTile, tile);
       }
+
+      tile = Display.overlap(chefTile,tile);
 
       return tile;
     } else {

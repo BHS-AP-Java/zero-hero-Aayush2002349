@@ -11,9 +11,9 @@ public class Game {
 
   // Constructors below
   // This one creates a game with the given inputs
-  public Game(int[][] layout, Person[] bakers, Food[] menu) {
+  public Game(int[][] layout, Person[] bakers, Food[] menu, Pickupable[][] initalItemLocations) {
     this.restaurant =
-        new Restaurant(layout, layout[0].length, layout.length, 10, "The Restaurant", menu);
+        new Restaurant(layout, layout[0].length, layout.length, 10, "The Restaurant", menu, initalItemLocations);
     this.restaurant.hireChefs(bakers);
     this.bakers = bakers;
   }
@@ -38,6 +38,16 @@ public class Game {
       {3, 0, 0, 4, 0, 0, 5},
       {5, 0, 1, 0, 1, 0, 7},
       {3, 0, 2, 8, 2, 0, 7}
+    };
+
+    Pickupable[][] initalItemLocations = {
+      {new Tableware("oven","cookingware"), null, null, null, null, null, null},
+      {null, null, null, null, null, null, null},
+      {new Tableware("pan","cookingware"), null, null, null, null, null, null},
+      {new Tableware("pan","cookingware"), null, null, null, null, null, null},
+      {new Tableware("pan","cookingware"), null, null, null, null, null, null},
+      {null, null, null, null, null, null, null},
+      {new Tableware("oven", "cookingware"), null, null, null, null, null, null}
     };
 
     this.bakers = new Person[2];
@@ -69,7 +79,8 @@ public class Game {
     menu[4].addIngredient(new Ingredient("lettuce"));
 
     this.restaurant =
-        new Restaurant(layout, layout[0].length, layout.length, 10, "The Restaurant", menu);
+        new Restaurant(layout, layout[0].length, layout.length, 10, "The Restaurant", menu,
+            initalItemLocations);
     this.restaurant.hireChefs(bakers);
   }
 

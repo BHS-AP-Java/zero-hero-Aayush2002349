@@ -157,7 +157,7 @@ public class Person {
       return items;
     }
 
-    if (item1 instanceof Tableware) {
+    if (item2 instanceof Tableware) {
       ware2 = (Tableware) item2;
       Edible[] foods = (Edible[]) this.combineItems(item2, (Pickupable) ware2.get());
 
@@ -212,7 +212,7 @@ public class Person {
       }
 
       // Getting food/ingredients/wares
-      if(bakerItem == null && restaurantItem == null){
+      if (bakerItem == null && restaurantItem == null) {
         if (location == 2) {
           this.get(new Food(additionalPlayerAction));
           return;
@@ -222,11 +222,10 @@ public class Person {
           return;
         }
         if (location == 9) {
-          this.get(new Tableware(additionalPlayerAction,"servingWare"));
+          this.get(new Tableware(additionalPlayerAction, "servingWare"));
           return;
         }
       }
-
     }
 
     // If neither of those were the action then combining the 2 items from the restaurant and baker

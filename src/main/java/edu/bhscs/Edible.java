@@ -16,7 +16,6 @@ public class Edible {
   Boolean isCuttable;
   String name;
 
-
   String servingWare;
 
   // These will be updated throughout

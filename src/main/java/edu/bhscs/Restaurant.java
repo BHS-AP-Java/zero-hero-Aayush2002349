@@ -36,11 +36,17 @@ public class Restaurant {
   // 7 = trash
   // 8 = ingredient station
   public Restaurant(
-      int[][] layout, int width, int height, int maxFoodStorage, String name, Food[] menu) {
+      int[][] layout,
+      int width,
+      int height,
+      int maxFoodStorage,
+      String name,
+      Food[] menu,
+      Pickupable[][] initalItemLocations) {
     this.name = name;
     this.width = width;
     this.height = height;
-    this.itemLocations = new Pickupable[height][width];
+    this.itemLocations = initalItemLocations;
     this.chefLocations = new Person[height][width];
     this.layout = layout;
     this.storedFoods = new Food[maxFoodStorage];
@@ -107,32 +113,31 @@ public class Restaurant {
     return item;
   }
 
-  public void tickLocation(int x, int y){
+  public void tickLocation(int x, int y) {
     // All of these are the 3 behaviors that need to be ticked
     // 3 = power (it should be cooking)
     // 6 = delivery station (it should be delivered to the food stand)
     // 7 = trash (it should be thrown away)
 
-
     if (this.layout[y][x] == 3 && this.itemLocations[y][x] instanceof Tableware) {
 
       Tableware item = (Tableware) this.itemLocations[y][x];
-      if(item.edible.cookingWare.matches(item.type) && item.wareType == "cookingWare"){
-        item.edible.cook();
+      if(!(item.isEmpty)){
+        if (item.edible.cookingWare.matches(item.type) && item.wareType == "cookingWare") {
+          item.edible.cook();
+        }
       }
-
     }
     if (this.layout[y][x] == 6 && this.itemLocations[y][x] instanceof Tableware) {
 
-      Tableware item = (Tableware) this.pickUp(x,y);
-      if(item.wareType.matches("servingWare") && !(item.isEmpty)){
+      Tableware item = (Tableware) this.pickUp(x, y);
+      if (item.wareType.matches("servingWare") && !(item.isEmpty)) {
         this.deliver(item);
       } else {
-        this.place(item,x,y);
+        this.place(item, x, y);
       }
-
     }
-    if (this.layout[y][x] == 7) {
+    if (this.layout[y][x] == 7 && this.itemLocations[y][x] instanceof Edible) {
       // Picking up the item without giving it to anyone is the equivalent of deleting it
       this.pickUp(x, y);
     }
@@ -146,8 +151,7 @@ public class Restaurant {
       for (int x = 0; x < this.width; x++) {
         // Makes sure there is a item there
         if (this.itemLocations[y][x] != null) {
-
-
+          this.tickLocation(x, y);
         }
       }
     }
@@ -172,7 +176,9 @@ public class Restaurant {
   // Delivering the food takes it from the kitchen onto the restaurant's inventory
   public Boolean deliver(Tableware item) {
 
-    if (item.type.matches(item.edible.servingWare) && item.edible.isEdible() && item.edible instanceof Food) {
+    if (item.type.matches(item.edible.servingWare)
+        && item.edible.isEdible()
+        && item.edible instanceof Food) {
       this.storeFood((Food) item.edible);
       return true;
     }

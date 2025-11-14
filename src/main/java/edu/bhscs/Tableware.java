@@ -2,16 +2,15 @@ package edu.bhscs;
 
 public class Tableware implements Pickupable {
   Edible edible;
-  //Can be servingWare or cookingWare
+  // Can be servingWare or cookingWare
   String wareType;
   String type;
   Boolean isEmpty = true;
 
-  public Tableware(String ware,String wareType){
+  public Tableware(String ware, String wareType) {
 
     this.type = ware;
     this.wareType = wareType;
-
   }
 
   public void set(Edible edible) {
