@@ -147,7 +147,7 @@ public class Display {
         tile = Display.overlap(edibleTile, tile);
       }
 
-      tile = Display.overlap(chefTile,tile);
+      tile = Display.overlap(chefTile, tile);
 
       return tile;
     } else {

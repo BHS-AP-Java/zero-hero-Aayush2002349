@@ -122,7 +122,7 @@ public class Restaurant {
     if (this.layout[y][x] == 3 && this.itemLocations[y][x] instanceof Tableware) {
 
       Tableware item = (Tableware) this.itemLocations[y][x];
-      if(!(item.isEmpty)){
+      if (!(item.isEmpty)) {
         if (item.edible.cookingWare.matches(item.type) && item.wareType == "cookingWare") {
           item.edible.cook();
         }

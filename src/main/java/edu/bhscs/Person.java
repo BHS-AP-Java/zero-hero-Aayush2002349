@@ -139,10 +139,12 @@ public class Person {
     if (item1 instanceof Tableware && item2 instanceof Tableware) {
       ware1 = (Tableware) item1;
       ware2 = (Tableware) item2;
-      Edible[] foods =
-          (Edible[]) this.combineItems((Pickupable) ware1.get(), (Pickupable) ware2.get());
-      ware1.set(foods[0]);
-      ware2.set(foods[1]);
+
+      Pickupable[] foods = this.combineItems((Pickupable) ware1.get(), (Pickupable) ware2.get());
+
+      ware1.set((Edible) foods[0]);
+      ware2.set((Edible) foods[1]);
+
       Pickupable[] items = {(Pickupable) ware1, (Pickupable) ware2};
       return items;
     }
@@ -150,19 +152,20 @@ public class Person {
     // This handles if only one of them is tableware
     if (item1 instanceof Tableware) {
       ware1 = (Tableware) item1;
-      Edible[] foods = (Edible[]) this.combineItems(item2, (Pickupable) ware1.get());
 
-      ware1.set(foods[1]);
-      Pickupable[] items = {(Pickupable) foods[0], (Pickupable) ware1};
+      Pickupable[] foods = this.combineItems(item2, (Pickupable) ware1.get());
+      ware1.set((Edible) foods[1]);
+
+      Pickupable[] items = {foods[0], (Pickupable) ware1};
       return items;
     }
 
     if (item2 instanceof Tableware) {
       ware2 = (Tableware) item2;
-      Edible[] foods = (Edible[]) this.combineItems(item2, (Pickupable) ware2.get());
+      Pickupable[] foods = this.combineItems(item2, (Pickupable) ware2.get());
 
-      ware2.set(foods[1]);
-      Pickupable[] items = {(Pickupable) foods[0], (Pickupable) ware2};
+      ware2.set((Edible) foods[1]);
+      Pickupable[] items = {foods[0], (Pickupable) ware2};
       return items;
     }
 
