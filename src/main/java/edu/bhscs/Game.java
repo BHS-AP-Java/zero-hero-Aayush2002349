@@ -48,13 +48,13 @@ public class Game {
     };
 
     Pickupable[][] initalItemLocations = {
-      {new Tableware("oven", "cookingware"), null, null, null, null, null, null},
+      {new Tableware("oven", "cookingWare"), null, null, null, null, null, null},
       {null, null, null, null, null, null, null},
-      {new Tableware("pan", "cookingware"), null, null, null, null, null, null},
-      {new Tableware("pan", "cookingware"), null, null, null, null, null, null},
-      {new Tableware("pan", "cookingware"), null, null, null, null, null, null},
+      {new Tableware("pan", "cookingWare"), null, null, null, null, null, null},
+      {new Tableware("pan", "cookingWare"), null, null, null, null, null, null},
+      {new Tableware("pan", "cookingWare"), null, null, null, null, null, null},
       {null, null, null, null, null, null, null},
-      {new Tableware("oven", "cookingware"), null, null, null, null, null, null}
+      {new Tableware("oven", "cookingWare"), null, null, null, null, null, null}
     };
 
     this.bakers = new Person[2];

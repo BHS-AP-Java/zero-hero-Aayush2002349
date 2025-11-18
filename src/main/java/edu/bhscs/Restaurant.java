@@ -123,8 +123,10 @@ public class Restaurant {
 
       Tableware item = (Tableware) this.itemLocations[y][x];
       if (!(item.isEmpty)) {
-        if (item.edible.cookingWare.matches(item.type) && item.wareType == "cookingWare") {
+        System.out.println("::");
+        if (item.edible.cookingWare.matches(item.type) && item.wareType.matches("cookingWare")) {
           item.edible.cook();
+          System.out.println("cooking");
         }
       }
     }

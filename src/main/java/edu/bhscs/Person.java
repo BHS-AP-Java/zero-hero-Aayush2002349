@@ -162,7 +162,7 @@ public class Person {
 
     if (item2 instanceof Tableware) {
       ware2 = (Tableware) item2;
-      Pickupable[] foods = this.combineItems(item2, (Pickupable) ware2.get());
+      Pickupable[] foods = this.combineItems(item1, (Pickupable) ware2.get());
 
       ware2.set((Edible) foods[1]);
       Pickupable[] items = {foods[0], (Pickupable) ware2};

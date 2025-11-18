@@ -14,14 +14,16 @@ public class Tableware implements Pickupable {
   }
 
   public void set(Edible edible) {
-    this.edible = edible;
-    this.isEmpty = false;
+    if(edible != null){
+      this.edible = edible;
+      this.isEmpty = false;
+    }
   }
 
   public Edible get() {
     Edible edible = this.edible;
     this.edible = null;
-    this.isEmpty = false;
+    this.isEmpty = true;
     return edible;
   }
 
