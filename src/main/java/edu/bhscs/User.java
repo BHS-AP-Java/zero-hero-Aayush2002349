@@ -5,13 +5,10 @@ import java.util.Scanner;
 public class User {
 
   // Fields and properties
-  Scanner scanner = new Scanner(System.in);
-  String name;
+  private Scanner scanner = new Scanner(System.in);
 
   // Constructor
-  public User(String name) {
-    this.name = name;
-  }
+  public User() {}
 
   public String answerQuestion(String question) {
     System.out.println(question);

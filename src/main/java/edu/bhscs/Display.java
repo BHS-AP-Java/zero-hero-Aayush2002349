@@ -137,7 +137,7 @@ public class Display {
       if (item instanceof Tableware) {
         Tableware tableware = (Tableware) item;
         String[][] wareTile = Display.getTablewareDisplay(tableware);
-        String[][] edibleTile = Display.getEdibleDisplay(tableware.edible);
+        String[][] edibleTile = Display.getEdibleDisplay(tableware.getEdible());
         tile = Display.overlap(wareTile, tile);
         tile = Display.overlap(edibleTile, tile);
       }
@@ -163,7 +163,8 @@ public class Display {
 
   public static String[][] getTablewareDisplay(Tableware ware) {
     // $@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'.
-    if (ware.type.matches("plate")) {
+    String type = ware.getType();
+    if (type.matches("plate")) {
       String[][] art = {
         {" ", "$", "$", " "},
         {"$", "$", "$", "$"},
@@ -172,7 +173,7 @@ public class Display {
       };
       return art;
     }
-    if (ware.type.matches("cup")) {
+    if (type.matches("cup")) {
       String[][] art = {
         {" ", "$-", "-$", " "},
         {"$", " ", " ", "$"},
@@ -181,7 +182,7 @@ public class Display {
       };
       return art;
     }
-    if (ware.type.matches("pan")) {
+    if (type.matches("pan")) {
       String[][] art = {
         {" ", " |", "| ", " "},
         {" ", "$", "$", " "},
@@ -190,7 +191,7 @@ public class Display {
       };
       return art;
     }
-    if (ware.type.matches("oven")) {
+    if (type.matches("oven")) {
       String[][] art = {
         {"-", "[]", "[]", "-"},
         {"|", " ", " ", "|"},
@@ -281,7 +282,7 @@ public class Display {
     if (item instanceof Tableware) {
       Tableware tableware = (Tableware) item;
       String[][] wareTile = Display.getTablewareDisplay(tableware);
-      String[][] edibleTile = Display.getEdibleDisplay(tableware.edible);
+      String[][] edibleTile = Display.getEdibleDisplay(tableware.getEdible());
       tile = Display.overlap(wareTile, tile);
       tile = Display.overlap(edibleTile, tile);
     }
@@ -383,7 +384,17 @@ public class Display {
     // Total length of the spacing is length of the surface - 2(for the overhang on the left and
     // right) - the number of legs multiplied by the width of one of the legs
     // Then divide by the number of spaces which is the number of legs - 1
-    int spacing = (int) (table.width - 2 - (table.legs * table.leg.length())) / (table.legs - 1);
+
+    int width = table.getWidth();
+    int height = table.getHeight();
+    int legCount = table.getLegCount();
+    String leg = table.getLeg();
+    String top = table.getTop();
+
+    int tableThickness = top.length();
+    int legThickness = leg.length();
+    int spacing = (int) (width - 2 - (legCount * legThickness)) / (legCount - 1);
+    width = 2 + legCount * legThickness + (legCount - 1) * spacing;
 
     // Especially for smaller values of width, the table legs may not be able to perfectly fit
     // One potential solution for this is to reduce or increase the table's width to fit the tables
@@ -391,24 +402,22 @@ public class Display {
     // leg + the length of the spacing multiplied by the number of spaces (which is the number of
     // legs - 1)
 
-    double tableThickness = table.top.length();
 
-    double tableWidth = 2 + table.legs * table.leg.length() + (table.legs - 1) * spacing;
     for (int i = 0; i < tableThickness; i++) {
-      for (int j = 0; j < tableWidth; j++) {
-        surface[i][j] = table.top.substring(i, i + 1) + table.top.substring(i, i + 1);
+      for (int j = 0; j < width; j++) {
+        surface[i][j] = top.substring(i, i + 1) + top.substring(i, i + 1);
       }
     }
 
-    for (int i = 0; i < table.legs; i++) {
+    for (int i = 0; i < legCount; i++) {
       // This is the offset from the left side of the table
-      int leftOffset = 1 + i * (spacing + table.leg.length());
+      int leftOffset = 1 + i * (spacing + legThickness);
       // Now we draw each table leg onto the surface
-      for (int j = 0; j < table.leg.length(); j++) {
-        for (int k = table.top.length(); k < table.height; k++) {
+      for (int j = 0; j < legThickness; j++) {
+        for (int k = tableThickness; k < height; k++) {
 
           surface[k][j + leftOffset] =
-              table.leg.substring(j, j + 1) + table.leg.substring(j, j + 1);
+              leg.substring(j, j + 1) + leg.substring(j, j + 1);
         }
       }
     }

@@ -1,11 +1,11 @@
 package edu.bhscs;
 
 public class Tableware implements Pickupable {
-  Edible edible;
+  private Edible edible;
   // Can be servingWare or cookingWare
-  String wareType;
-  String type;
-  Boolean isEmpty = true;
+  private String wareType;
+  private String type;
+  private Boolean isEmpty = true;
 
   public Tableware(String ware, String wareType) {
 
@@ -14,7 +14,7 @@ public class Tableware implements Pickupable {
   }
 
   public void set(Edible edible) {
-    if(edible != null){
+    if (edible != null) {
       this.edible = edible;
       this.isEmpty = false;
     }
@@ -29,5 +29,21 @@ public class Tableware implements Pickupable {
 
   public String getTitle() {
     return this.type;
+  }
+
+  public Edible getEdible() {
+    return this.edible;
+  }
+
+  public String getType(){
+    return this.type;
+  }
+
+  public String getWareType(){
+    return this.wareType;
+  }
+
+  public Boolean hasEdible(){
+    return this.isEmpty;
   }
 }

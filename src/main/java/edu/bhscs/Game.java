@@ -59,7 +59,7 @@ public class Game {
 
     this.bakers = new Person[2];
 
-    User player1 = new User("");
+    User player1 = new User();
 
     this.bakers[0] = new Person("Alice", player1);
     this.bakers[1] = new Person("Bob", player1);

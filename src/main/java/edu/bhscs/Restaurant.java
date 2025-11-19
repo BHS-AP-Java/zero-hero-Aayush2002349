@@ -5,25 +5,23 @@ public class Restaurant {
   // Fields and properties
 
   // Kitchen related stuff
-  int[][] layout;
-  Pickupable[][] itemLocations;
-  Person[][] chefLocations;
+  private int[][] layout;
+  private Pickupable[][] itemLocations;
+  private Person[][] chefLocations;
 
-  int cookingTime = 3;
-
-  int width;
-  int height;
+  private int width;
+  private int height;
 
   // Customer related stuff
-  String name;
+  private String name;
 
-  Food[] storedFoods;
+  private Food[] storedFoods;
 
-  int money = 0;
+  private int money = 0;
 
-  Order[] orders = new Order[5];
-  int rating = 10;
-  Food[] menu;
+  private Order[] orders = new Order[5];
+  private int rating = 10;
+  private Food[] menu;
 
   // Layout:
   // 0 = empty
@@ -122,18 +120,18 @@ public class Restaurant {
     if (this.layout[y][x] == 3 && this.itemLocations[y][x] instanceof Tableware) {
 
       Tableware item = (Tableware) this.itemLocations[y][x];
-      if (!(item.isEmpty)) {
-        System.out.println("::");
-        if (item.edible.cookingWare.matches(item.type) && item.wareType.matches("cookingWare")) {
-          item.edible.cook();
-          System.out.println("cooking");
+      if (!(item.hasEdible())) {
+
+        Edible containedFood = item.getEdible();
+        if (containedFood.cookingWare.matches(item.getType()) && item.getWareType().matches("cookingWare")) {
+          containedFood.cook();
         }
       }
     }
     if (this.layout[y][x] == 6 && this.itemLocations[y][x] instanceof Tableware) {
 
       Tableware item = (Tableware) this.pickUp(x, y);
-      if (item.wareType.matches("servingWare") && !(item.isEmpty)) {
+      if (item.getWareType().matches("servingWare") && !(item.hasEdible())) {
         this.deliver(item);
       } else {
         this.place(item, x, y);
@@ -178,10 +176,12 @@ public class Restaurant {
   // Delivering the food takes it from the kitchen onto the restaurant's inventory
   public Boolean deliver(Tableware item) {
 
-    if (item.type.matches(item.edible.servingWare)
-        && item.edible.isEdible()
-        && item.edible instanceof Food) {
-      this.storeFood((Food) item.edible);
+    Edible containedFood = item.getEdible();
+    if (item.getType().matches(
+        containedFood.servingWare)
+        && containedFood.isEdible()
+        && containedFood instanceof Food) {
+      this.storeFood((Food) containedFood);
       return true;
     }
     return false;
@@ -257,5 +257,17 @@ public class Restaurant {
         }
       }
     }
+  }
+
+  public int getLocation(int x, int y){
+    return this.layout[y][x];
+  }
+
+  public int getWidth(){
+    return this.width;
+  }
+
+  public int getHeight() {
+    return this.height;
   }
 }

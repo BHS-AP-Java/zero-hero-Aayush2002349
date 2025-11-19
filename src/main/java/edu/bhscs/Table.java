@@ -3,13 +3,13 @@ package edu.bhscs;
 public class Table implements Offsetable {
 
   // fields and properties
-  double width;
-  double height;
-  int legs;
+  private double width;
+  private double height;
+  private int legs;
 
   // These are some default values, but they can be changed
-  String leg = "|_|";
-  String top = "=----=";
+  private String leg = "|_|";
+  private String top = "=----=";
 
   // Constructor
   public Table(int legs, double width, double height) {
@@ -36,6 +36,22 @@ public class Table implements Offsetable {
 
   public int getWidth() {
     return (int) (this.width);
+  }
+
+  public int getHeight() {
+    return (int) (this.height);
+  }
+
+  public int getLegCount(){
+    return (int) (this.legs);
+  }
+
+  public String getLeg(){
+    return this.leg;
+  }
+
+  public String getTop(){
+    return this.top;
   }
 
   public void setLeg(String leg) {
