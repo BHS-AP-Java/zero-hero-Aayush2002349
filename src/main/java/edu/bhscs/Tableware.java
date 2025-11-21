@@ -35,15 +35,15 @@ public class Tableware implements Pickupable {
     return this.edible;
   }
 
-  public String getType(){
+  public String getType() {
     return this.type;
   }
 
-  public String getWareType(){
+  public String getWareType() {
     return this.wareType;
   }
 
-  public Boolean hasEdible(){
+  public Boolean hasEdible() {
     return this.isEmpty;
   }
 }

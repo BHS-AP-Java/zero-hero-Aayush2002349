@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class User {
 
   // Fields and properties
-  private Scanner scanner = new Scanner(System.in);
+  private final Scanner scanner = new Scanner(System.in);
 
   // Constructor
   public User() {}

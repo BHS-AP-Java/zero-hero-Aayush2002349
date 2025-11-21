@@ -123,7 +123,8 @@ public class Restaurant {
       if (!(item.hasEdible())) {
 
         Edible containedFood = item.getEdible();
-        if (containedFood.cookingWare.matches(item.getType()) && item.getWareType().matches("cookingWare")) {
+        if (containedFood.cookingWare.matches(item.getType())
+            && item.getWareType().matches("cookingWare")) {
           containedFood.cook();
         }
       }
@@ -177,8 +178,7 @@ public class Restaurant {
   public Boolean deliver(Tableware item) {
 
     Edible containedFood = item.getEdible();
-    if (item.getType().matches(
-        containedFood.servingWare)
+    if (item.getType().matches(containedFood.servingWare)
         && containedFood.isEdible()
         && containedFood instanceof Food) {
       this.storeFood((Food) containedFood);
@@ -259,11 +259,11 @@ public class Restaurant {
     }
   }
 
-  public int getLocation(int x, int y){
+  public int getLocation(int x, int y) {
     return this.layout[y][x];
   }
 
-  public int getWidth(){
+  public int getWidth() {
     return this.width;
   }
 

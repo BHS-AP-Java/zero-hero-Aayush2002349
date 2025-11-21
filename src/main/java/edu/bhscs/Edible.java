@@ -8,23 +8,23 @@ package edu.bhscs;
 public class Edible {
 
   // All of these will be set in the constructor
-  Boolean isCookable;
-  int cookingTime;
-  int overcookingTime;
-  String cookingWare = "none";
+  protected Boolean isCookable;
+  protected int cookingTime;
+  protected int overcookingTime;
+  protected String cookingWare = "none";
 
-  Boolean isCuttable;
-  String name;
+  protected Boolean isCuttable;
+  protected String name;
 
-  String servingWare;
+  protected String servingWare;
 
   // These will be updated throughout
-  int timeCooked = 0;
-  Boolean isCooked = false;
-  Boolean isOvercooked = false;
+  protected int timeCooked = 0;
+  protected Boolean isCooked = false;
+  protected Boolean isOvercooked = false;
 
-  Boolean isCut = false;
-  int slices = 0;
+  protected Boolean isCut = false;
+  protected int slices = 0;
 
   public void cut() {}
 

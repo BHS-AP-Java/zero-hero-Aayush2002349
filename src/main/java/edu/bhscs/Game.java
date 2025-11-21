@@ -4,8 +4,8 @@ public class Game {
 
   // fields + properties
 
-  Restaurant restaurant;
-  Person[] bakers;
+  private final Restaurant restaurant;
+  private final Person[] bakers;
 
   int time = 200;
 
@@ -66,21 +66,16 @@ public class Game {
     // this.bakers[1] = new Person("Bob", player1);
 
     Food[] menu = new Food[5];
-    menu[0] = new Food("cake");
-    menu[0].isMenu = true;
+    menu[0] = new Food("cake",true);
     menu[0].addIngredient(new Ingredient("chocolate"));
-    menu[1] = new Food("cake");
-    menu[1].isMenu = true;
+    menu[1] = new Food("cake",true);
     menu[1].addIngredient(new Ingredient("spice"));
-    menu[2] = new Food("burger");
-    menu[2].isMenu = true;
+    menu[2] = new Food("burger",true);
     menu[2].addIngredient(new Ingredient("meat"));
-    menu[3] = new Food("burger");
-    menu[3].isMenu = true;
+    menu[3] = new Food("burger",true);
     menu[3].addIngredient(new Ingredient("meat"));
     menu[3].addIngredient(new Ingredient("cheese"));
-    menu[4] = new Food("burger");
-    menu[4].isMenu = true;
+    menu[4] = new Food("burger",true);
     menu[4].addIngredient(new Ingredient("meat"));
     menu[4].addIngredient(new Ingredient("cheese"));
     menu[4].addIngredient(new Ingredient("lettuce"));
@@ -103,7 +98,7 @@ public class Game {
 
       // Creates an order every 3 turns
       if (i % 3 == 0) {
-        this.restaurant.takeOrder(new Order(this.restaurant.menu, this.restaurant.rating));
+        this.restaurant.takeOrder(new Order(this.restaurant.getMenu(), this.restaurant.getRating()));
       }
 
       Display.displayGame((time - i), this.restaurant);

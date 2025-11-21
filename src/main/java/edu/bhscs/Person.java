@@ -197,7 +197,7 @@ public class Person {
     // 7 = trash
     // 8 = ingredient station
     // 9 = ware station
-    int location = this.restaurant.getLocation(x,y);
+    int location = this.restaurant.getLocation(x, y);
 
     if (additionalPlayerAction != null) {
       // Cutting
@@ -272,7 +272,7 @@ public class Person {
       return null;
     }
 
-    if (restaurant.getLocation(x,y) == 0 || restaurant.getLocation(x, y) == 1) {
+    if (restaurant.getLocation(x, y) == 0 || restaurant.getLocation(x, y) == 1) {
       restaurant.chefMoved(this.location[0], this.location[1], x, y);
       this.location[0] = x;
       this.location[1] = y;

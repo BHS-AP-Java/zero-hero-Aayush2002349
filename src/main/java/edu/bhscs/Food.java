@@ -17,7 +17,7 @@ class Food extends Edible implements Offsetable, Pickupable {
 
   // String name;
 
-  Ingredient[] requiredIngredients;
+  private final Ingredient[] requiredIngredients;
 
   // These fields store information about the state of the food
 
@@ -27,23 +27,24 @@ class Food extends Edible implements Offsetable, Pickupable {
 
   // Boolean isCut = false;
 
-  int slices = -1;
+  private int slices = -1;
 
-  Ingredient[] essentialIngredients = new Ingredient[0];
-  Ingredient[] specialtyIngredients = new Ingredient[0];
+  private Ingredient[] essentialIngredients = new Ingredient[0];
+  private Ingredient[] specialtyIngredients = new Ingredient[0];
 
-  Boolean isEaten = false;
+  private Boolean eaten = false;
 
   // A food may also be used to represent the menu
-  Boolean isMenu = false;
+  private final Boolean isMenu;
 
   // This piece of information can be different for every food, it just stores something about the
   // state of the food
   String additionalInfo = null;
   int additionalInt;
 
-  public Food(String name) {
+  public Food(String name,Boolean isMenu) {
     this.name = name;
+    this.isMenu = isMenu;
 
     if (name.matches("cake")) {
       this.isCookable = true;
@@ -59,7 +60,7 @@ class Food extends Edible implements Offsetable, Pickupable {
 
       this.servingWare = "plate";
     }
-    if (name.matches("burger")) {
+    else if (name.matches("burger")) {
       this.isCookable = false;
 
       this.isCuttable = false;
@@ -69,16 +70,25 @@ class Food extends Edible implements Offsetable, Pickupable {
 
       this.servingWare = "plate";
     }
+    else {
+      this.isCookable = false;
+
+      this.isCuttable = false;
+
+      this.requiredIngredients = null;
+
+      this.servingWare = "plate";
+    }
   }
 
   public int getBaseCost() {
     int cost = 0;
 
     for (int i = 0; i < this.essentialIngredients.length; i++) {
-      cost += this.essentialIngredients[i].baseCost;
+      cost += this.essentialIngredients[i].getCost();
     }
     for (int i = 0; i < this.specialtyIngredients.length; i++) {
-      cost += this.specialtyIngredients[i].baseCost;
+      cost += this.specialtyIngredients[i].getCost();
     }
 
     return cost;
@@ -89,7 +99,7 @@ class Food extends Edible implements Offsetable, Pickupable {
   public Boolean isEdible() {
 
     // Checks if the food is eaten
-    if (this.isEaten) {
+    if (this.eaten) {
       return false;
     }
 
@@ -129,7 +139,7 @@ class Food extends Edible implements Offsetable, Pickupable {
 
       Ingredient[] currentIngredients;
 
-      if (ingredient.isEssential) {
+      if (ingredient.getIsEssential()) {
         currentIngredients = this.essentialIngredients;
       } else {
         currentIngredients = this.specialtyIngredients;
@@ -141,7 +151,7 @@ class Food extends Edible implements Offsetable, Pickupable {
       }
       newIngredients[newIngredients.length - 1] = ingredient;
 
-      if (ingredient.isEssential) {
+      if (ingredient.getIsEssential()) {
         this.essentialIngredients = newIngredients;
       } else {
         this.specialtyIngredients = newIngredients;
@@ -162,10 +172,10 @@ class Food extends Edible implements Offsetable, Pickupable {
     if (this.isCuttable) {
       this.slices -= 1;
       if (this.slices == 0) {
-        this.isEaten = true;
+        this.eaten = true;
       }
     } else {
-      this.isEaten = true;
+      this.eaten = true;
     }
 
     return true;
@@ -316,5 +326,17 @@ class Food extends Edible implements Offsetable, Pickupable {
               + this.additionalInt
               + " years old");
     }
+  }
+
+  public Boolean isEaten(){
+    return this.eaten;
+  }
+
+  public Ingredient[] getEssentialIngredients(){
+    return this.essentialIngredients;
+  }
+
+  public Ingredient[] getSpecialtyIngredients() {
+    return this.specialtyIngredients;
   }
 }

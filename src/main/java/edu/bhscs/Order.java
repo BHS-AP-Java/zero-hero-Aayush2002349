@@ -5,15 +5,15 @@ import java.util.Random;
 public class Order {
 
   // Fields and properties
-  Food food;
-  int timeToComplete;
-  int timeElapsed = 0;
-  int payment;
-  int tip;
+  private final Food food;
+  private final int timeToComplete;
+  private int timeElapsed = 0;
+  private final int payment;
+  private int tip;
 
-  Boolean late = false;
+  private Boolean late = false;
 
-  Random random = new Random();
+  private final Random random = new Random();
 
   // Constructors
 
@@ -50,5 +50,21 @@ public class Order {
     if (this.tip < 0) {
       this.tip = 0;
     }
+  }
+
+  public Food getFood(){
+    return this.food;
+  }
+
+  public int getTimeToComplete() {
+    return this.timeToComplete;
+  }
+
+  public int getTimeElapsed(){
+    return this.timeElapsed;
+  }
+
+  public boolean isLate(){
+    return this.late;
   }
 }

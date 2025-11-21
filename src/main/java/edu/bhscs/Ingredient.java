@@ -16,9 +16,9 @@ public class Ingredient extends Edible implements Pickupable {
   // String servingWare;
 
   // String name;
-  int baseCost;
+  private final int baseCost;
 
-  Boolean isEssential;
+  private final Boolean essential;
 
   // These fields store information about the state of the food
 
@@ -41,22 +41,22 @@ public class Ingredient extends Edible implements Pickupable {
 
       this.baseCost = 10;
 
-      this.isEssential = true;
+      this.essential = true;
 
       this.servingWare = "plate";
     }
-    if (name.matches("flour")) {
+    else if (name.matches("flour")) {
       this.isCookable = false;
 
       this.isCuttable = false;
 
       this.baseCost = 10;
 
-      this.isEssential = true;
+      this.essential = true;
 
       this.servingWare = "plate";
     }
-    if (name.matches("meat")) {
+    else if (name.matches("meat")) {
       this.isCookable = true;
       this.cookingTime = 5;
       this.overcookingTime = 10;
@@ -66,62 +66,74 @@ public class Ingredient extends Edible implements Pickupable {
 
       this.baseCost = 20;
 
-      this.isEssential = false;
+      this.essential = false;
 
       this.servingWare = "plate";
     }
-    if (name.matches("cheese")) {
+    else if (name.matches("cheese")) {
       this.isCookable = false;
 
       this.isCuttable = false;
 
       this.baseCost = 5;
 
-      this.isEssential = false;
+      this.essential = false;
 
       this.servingWare = "plate";
     }
-    if (name.matches("lettuce")) {
+    else if (name.matches("lettuce")) {
       this.isCookable = false;
 
       this.isCuttable = true;
 
       this.baseCost = 5;
 
-      this.isEssential = false;
+      this.essential = false;
 
       this.servingWare = "plate";
     }
-    if (name.matches("bun")) {
+    else if (name.matches("bun")) {
       this.isCookable = false;
 
       this.isCuttable = true;
 
       this.baseCost = 5;
 
-      this.isEssential = true;
+      this.essential = true;
 
       this.servingWare = "plate";
     }
-    if (name.matches("chocolate")) {
+    else if (name.matches("chocolate")) {
       this.isCookable = false;
 
       this.isCuttable = true;
 
       this.baseCost = 10;
 
-      this.isEssential = false;
+      this.essential = false;
 
       this.servingWare = "plate";
     }
-    if (name.matches("spice")) {
+    else if (name.matches("spice")) {
       this.isCookable = false;
 
       this.isCuttable = true;
 
       this.baseCost = 10;
 
-      this.isEssential = false;
+      this.essential = false;
+
+      this.servingWare = "plate";
+    }
+
+    else {
+      this.isCookable = false;
+
+      this.isCuttable = false;
+
+      this.baseCost = 0;
+
+      this.essential = false;
 
       this.servingWare = "plate";
     }
@@ -168,5 +180,13 @@ public class Ingredient extends Edible implements Pickupable {
   @Override
   public String getTitle() {
     return this.name;
+  }
+
+  public int getCost(){
+    return this.baseCost;
+  }
+
+  public boolean getIsEssential(){
+    return this.essential;
   }
 }

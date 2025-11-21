@@ -42,15 +42,15 @@ public class Table implements Offsetable {
     return (int) (this.height);
   }
 
-  public int getLegCount(){
+  public int getLegCount() {
     return (int) (this.legs);
   }
 
-  public String getLeg(){
+  public String getLeg() {
     return this.leg;
   }
 
-  public String getTop(){
+  public String getTop() {
     return this.top;
   }
 

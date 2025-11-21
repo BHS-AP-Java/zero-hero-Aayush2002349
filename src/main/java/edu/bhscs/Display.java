@@ -402,7 +402,6 @@ public class Display {
     // leg + the length of the spacing multiplied by the number of spaces (which is the number of
     // legs - 1)
 
-
     for (int i = 0; i < tableThickness; i++) {
       for (int j = 0; j < width; j++) {
         surface[i][j] = top.substring(i, i + 1) + top.substring(i, i + 1);
@@ -416,8 +415,7 @@ public class Display {
       for (int j = 0; j < legThickness; j++) {
         for (int k = tableThickness; k < height; k++) {
 
-          surface[k][j + leftOffset] =
-              leg.substring(j, j + 1) + leg.substring(j, j + 1);
+          surface[k][j + leftOffset] = leg.substring(j, j + 1) + leg.substring(j, j + 1);
         }
       }
     }
