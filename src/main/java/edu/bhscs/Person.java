@@ -4,16 +4,16 @@ package edu.bhscs;
 // restaurant they work at and a customer can theoretically become a chef
 public class Person {
   // fields/properties
-  String name;
-  int[] location = new int[2];
+  private final String name;
+  private int[] location = new int[2];
 
-  User user;
-  Restaurant restaurant;
-  Boolean isHired = false;
+  private User user;
+  private Restaurant restaurant;
+  private Boolean hired = false;
 
-  Order order;
+  private Order order;
 
-  Pickupable item;
+  private Pickupable item;
 
   // Constructors
 
@@ -26,6 +26,7 @@ public class Person {
   // This one is to create a customer (or a chef that isn't controlled by a player)
   public Person(String name) {
     this.name = name;
+    this.user = null;
   }
 
   // All of these methods can be used by both customers and chefs
@@ -58,7 +59,7 @@ public class Person {
         System.out.println(this.name + " can't eat the " + food.getTitle());
       }
 
-      if (food.isEaten) {
+      if (food.isEaten()) {
         this.item = null;
       }
     } else {
@@ -69,7 +70,7 @@ public class Person {
   // All methods below are generally specific chefs
   public void getHired(Restaurant restaurant) {
     this.restaurant = restaurant;
-    this.isHired = true;
+    this.hired = true;
   }
 
   // This gets and does the action given by the player
@@ -197,7 +198,7 @@ public class Person {
     // 7 = trash
     // 8 = ingredient station
     // 9 = ware station
-    int location = this.restaurant.getLocation(x, y);
+    int location = this.restaurant.getLocation(x,y);
 
     if (additionalPlayerAction != null) {
       // Cutting
@@ -217,7 +218,7 @@ public class Person {
       // Getting food/ingredients/wares
       if (bakerItem == null && restaurantItem == null) {
         if (location == 2) {
-          this.get(new Food(additionalPlayerAction));
+          this.get(new Food(additionalPlayerAction,false));
           return;
         }
         if (location == 8) {
@@ -268,11 +269,11 @@ public class Person {
     if (x < 0 || y < 0 || x >= restaurant.getWidth() || y >= restaurant.getHeight()) {
       return null;
     }
-    if (restaurant.chefLocations[y][x] != null) {
+    if (restaurant.getChef(x,y) != null) {
       return null;
     }
 
-    if (restaurant.getLocation(x, y) == 0 || restaurant.getLocation(x, y) == 1) {
+    if (restaurant.getLocation(x,y) == 0 || restaurant.getLocation(x, y) == 1) {
       restaurant.chefMoved(this.location[0], this.location[1], x, y);
       this.location[0] = x;
       this.location[1] = y;
@@ -289,9 +290,17 @@ public class Person {
   // Instead, the bakers perform actions on cakes/burgers/other foods that are inside of a bakery
   // (see doActionAtLocation)
   public Food bakes(int age, String name) {
-    Food cake = new Food("cake");
+    Food cake = new Food("cake",false);
     cake.additionalInfo = name;
     cake.additionalInt = age;
     return cake;
+  }
+
+  public void setLocation(int[] location){
+    this.location = location;
+  }
+
+  public Pickupable viewItem(){
+    return this.item;
   }
 }

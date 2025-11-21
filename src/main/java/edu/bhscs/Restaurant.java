@@ -5,15 +5,15 @@ public class Restaurant {
   // Fields and properties
 
   // Kitchen related stuff
-  private int[][] layout;
+  private final int[][] layout;
   private Pickupable[][] itemLocations;
   private Person[][] chefLocations;
 
-  private int width;
-  private int height;
+  private final int width;
+  private final int height;
 
   // Customer related stuff
-  private String name;
+  private final String name;
 
   private Food[] storedFoods;
 
@@ -21,7 +21,7 @@ public class Restaurant {
 
   private Order[] orders = new Order[5];
   private int rating = 10;
-  private Food[] menu;
+  private final Food[] menu;
 
   // Layout:
   // 0 = empty
@@ -67,8 +67,9 @@ public class Restaurant {
         if (this.layout[y][x] == 1) {
           if (this.chefLocations[y][x] == null) {
             this.chefLocations[y][x] = chef;
-            chef.location[0] = x;
-            chef.location[1] = y;
+
+            int[] location = {x,y};
+            chef.setLocation(location);
             return true;
           }
         }
@@ -120,11 +121,10 @@ public class Restaurant {
     if (this.layout[y][x] == 3 && this.itemLocations[y][x] instanceof Tableware) {
 
       Tableware item = (Tableware) this.itemLocations[y][x];
-      if (!(item.hasEdible())) {
+      if (!(item.isEmpty())) {
 
         Edible containedFood = item.getEdible();
-        if (containedFood.cookingWare.matches(item.getType())
-            && item.getWareType().matches("cookingWare")) {
+        if (containedFood.cookingWare.matches(item.getType()) && item.getWareType().matches("cookingWare")) {
           containedFood.cook();
         }
       }
@@ -132,7 +132,7 @@ public class Restaurant {
     if (this.layout[y][x] == 6 && this.itemLocations[y][x] instanceof Tableware) {
 
       Tableware item = (Tableware) this.pickUp(x, y);
-      if (item.getWareType().matches("servingWare") && !(item.hasEdible())) {
+      if (item.getWareType().matches("servingWare") && !(item.isEmpty())) {
         this.deliver(item);
       } else {
         this.place(item, x, y);
@@ -161,7 +161,7 @@ public class Restaurant {
     this.completeOrders();
     for (int i = 0; i < this.orders.length; i++) {
       if (this.orders[i] != null) {
-        if (this.orders[i].late) {
+        if (this.orders[i].isLate()) {
           this.rating -= 1;
         }
         this.orders[i].tick();
@@ -178,7 +178,8 @@ public class Restaurant {
   public Boolean deliver(Tableware item) {
 
     Edible containedFood = item.getEdible();
-    if (item.getType().matches(containedFood.servingWare)
+    if (item.getType().matches(
+        containedFood.servingWare)
         && containedFood.isEdible()
         && containedFood instanceof Food) {
       this.storeFood((Food) containedFood);
@@ -206,7 +207,7 @@ public class Restaurant {
   public Food getFood(Order order) {
     for (int i = 0; i < this.storedFoods.length; i++) {
       if (this.storedFoods[i] != null) {
-        if (this.storedFoods[i].matches(order.food)) {
+        if (this.storedFoods[i].matches(order.getFood())) {
           Food food = this.storedFoods[i];
           this.storedFoods[i] = null;
           return food;
@@ -237,7 +238,7 @@ public class Restaurant {
         Food food = this.getFood(this.orders[i]);
         // Here is where the order is completed
         if (food != null) {
-          if (!(this.orders[i].late)) {
+          if (!(this.orders[i].isLate())) {
             this.rating += 15;
           }
           if (i == 0) {
@@ -259,15 +260,39 @@ public class Restaurant {
     }
   }
 
-  public int getLocation(int x, int y) {
+  public int getLocation(int x, int y){
     return this.layout[y][x];
   }
 
-  public int getWidth() {
+  public Person getChef(int x, int y) {
+    return this.chefLocations[y][x];
+  }
+
+  public Pickupable getItem(int x, int y) {
+    return this.itemLocations[y][x];
+  }
+
+  public Food[] getMenu(){
+    return this.menu;
+  }
+
+  public Order[] getOrders() {
+    return this.orders;
+  }
+
+  public int getRating(){
+    return this.rating;
+  }
+
+  public int getWidth(){
     return this.width;
   }
 
   public int getHeight() {
     return this.height;
+  }
+
+  public int getMoney(){
+    return this.money;
   }
 }
