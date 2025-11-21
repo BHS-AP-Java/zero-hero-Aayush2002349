@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
 
 class MainTest {
 
@@ -15,13 +14,9 @@ class MainTest {
   // Project name
   // Date
   /*
-   * TEST CLASS DESCRIPTION:
-   *  - Verify Main.drawIt builds a right-angled staircase string.
-   * TEST CASES:
-   *  - height=3, stepChar='#' -> "#\n##\n###\n"
-   *  - height=0 -> ""
-   * EDGE CASE TESTS:
-   *  - height<0 throws IllegalArgumentException
+   * TEST CLASS DESCRIPTION: - Verify Main.drawIt builds a right-angled staircase string. TEST
+   * CASES: - height=3, stepChar='#' -> "#\n##\n###\n" - height=0 -> "" EDGE CASE TESTS: - height<0
+   * throws IllegalArgumentException
    */
 
   @Test
