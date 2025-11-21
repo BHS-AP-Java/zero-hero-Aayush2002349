@@ -9,9 +9,9 @@ public class Display {
 
   public static void displayGame(int timeLeft, Restaurant restaurant) {
     displayTime(timeLeft);
-    displayRestaurantRating(restaurant.rating);
-    displayRestaurantMoney(restaurant.money);
-    displayRestaurantOrders(restaurant.orders);
+    displayRestaurantRating(restaurant.getRating());
+    displayRestaurantMoney(restaurant.getMoney());
+    displayRestaurantOrders(restaurant.getOrders());
     displayRestaurant(restaurant);
   }
 
@@ -133,7 +133,7 @@ public class Display {
         {" ", " ", " ", " "}
       };
 
-      Pickupable item = chef.item;
+      Pickupable item = chef.viewItem();
       if (item instanceof Tableware) {
         Tableware tableware = (Tableware) item;
         String[][] wareTile = Display.getTablewareDisplay(tableware);
@@ -273,12 +273,12 @@ public class Display {
 
   public static String[][] getTileDisplay(Restaurant restaurant, int x, int y) {
 
-    String[][] floorTile = Display.getLocationDisplay(restaurant.layout[y][x]);
-    String[][] chefTile = Display.getChefDisplay(restaurant.chefLocations[y][x]);
+    String[][] floorTile = Display.getLocationDisplay(restaurant.getLocation(x, y));
+    String[][] chefTile = Display.getChefDisplay(restaurant.getChef(x,y));
 
     String[][] tile = floorTile;
 
-    Pickupable item = restaurant.itemLocations[y][x];
+    Pickupable item = restaurant.getItem(x, y);
     if (item instanceof Tableware) {
       Tableware tableware = (Tableware) item;
       String[][] wareTile = Display.getTablewareDisplay(tableware);
@@ -299,10 +299,14 @@ public class Display {
 
   // Displays the restaurant
   public static void displayRestaurant(Restaurant restaurant) {
+
+    int width = restaurant.getWidth();
+    int height = restaurant.getHeight();
+
     String[][] surface =
-        Display.getSurface(4 * restaurant.layout[0].length, 4 * restaurant.layout.length);
-    for (int y = 0; y < restaurant.layout.length; y++) {
-      for (int x = 0; x < restaurant.layout[y].length; x++) {
+        Display.getSurface(4 * width, 4 * height);
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
 
         String[][] tile = Display.getTileDisplay(restaurant, x, y);
         for (int n = 4 * y; n < 4 * y + 4; n++) {
@@ -330,17 +334,17 @@ public class Display {
         System.out.println();
         return;
       }
-      if (orders[i].late) {
+      if (orders[i].isLate()) {
         System.out.println(
-            "  Order #" + (i + 1) + ": " + orders[i].food.getTitle() + ": This order is failed");
+            "  Order #" + (i + 1) + ": " + orders[i].getFood().getTitle() + ": This order is failed");
       } else {
         System.out.println(
             "  Order #"
                 + (i + 1)
                 + ": "
-                + orders[i].food.getTitle()
+                + orders[i].getFood().getTitle()
                 + ": Time left "
-                + (orders[i].timeToComplete - orders[i].timeElapsed));
+                + (orders[i].getTimeToComplete() - orders[i].getTimeElapsed()));
       }
     }
 
@@ -402,6 +406,7 @@ public class Display {
     // leg + the length of the spacing multiplied by the number of spaces (which is the number of
     // legs - 1)
 
+
     for (int i = 0; i < tableThickness; i++) {
       for (int j = 0; j < width; j++) {
         surface[i][j] = top.substring(i, i + 1) + top.substring(i, i + 1);
@@ -415,7 +420,8 @@ public class Display {
       for (int j = 0; j < legThickness; j++) {
         for (int k = tableThickness; k < height; k++) {
 
-          surface[k][j + leftOffset] = leg.substring(j, j + 1) + leg.substring(j, j + 1);
+          surface[k][j + leftOffset] =
+              leg.substring(j, j + 1) + leg.substring(j, j + 1);
         }
       }
     }
@@ -499,11 +505,13 @@ public class Display {
       String[] faces = {"$$", "hh", "{}", "$$", "//", "::"};
 
       String additionalIngredient = null;
-      if (cake.specialtyIngredients.length != 0) {
-        if (cake.specialtyIngredients[0].name != null) {
-          if (cake.specialtyIngredients[0].name.matches("chocolate")) {
+
+      Ingredient[] specialtyIngredients = cake.getSpecialtyIngredients();
+      if (specialtyIngredients.length != 0) {
+        if (specialtyIngredients[0].name != null) {
+          if (specialtyIngredients[0].name.matches("chocolate")) {
             additionalIngredient = "SS";
-          } else if (cake.specialtyIngredients[0].name.matches("spice")) {
+          } else if (specialtyIngredients[0].name.matches("spice")) {
             additionalIngredient = "-;";
           }
         }
